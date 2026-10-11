@@ -1,0 +1,212 @@
+{
+  "users": [
+    {
+      "id": "5250848b-f70c-4985-aa92-555a8e55c3f5",
+      "email": "admin@nexuslink.network",
+      "password_hash": "$2b$10$DPOrQtk3zhhKh5h3BvHRJeRNdM50z3ZdqtzxVePnyXewlnf8YWxbG",
+      "role": "admin",
+      "wallet_balance": 15420.5,
+      "device_fingerprint": null,
+      "country": "Global / Multi-Node",
+      "community_types": "[]",
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "430b63be-3cc9-48a3-a37b-4ee7049fd70f",
+      "email": "growth@web3defi.io",
+      "password_hash": "$2b$10$DPOrQtk3zhhKh5h3BvHRJefl0tdxScv6Sz8xiopd8sJTgmtZXrsVO",
+      "role": "client",
+      "wallet_balance": 850.0,
+      "device_fingerprint": null,
+      "country": "United States",
+      "community_types": "[]",
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "ba9e5036-691b-4b29-83b9-8cb688a8f8b9",
+      "email": "alex.seeder@community.org",
+      "password_hash": "$2b$10$DPOrQtk3zhhKh5h3BvHRJeLd0S9JH4cM45vTCl271V/3DoFCjgJ96",
+      "role": "promoter",
+      "wallet_balance": 143.10000000000002,
+      "device_fingerprint": null,
+      "country": "United Kingdom",
+      "community_types": "[\"Discord\",\"Telegram\",\"Reddit\"]",
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "ef6cc1e6-1bbd-4d56-999d-f417e3af6883",
+      "email": "elena.growth@nexuslink.io",
+      "password_hash": "$2b$10$DPOrQtk3zhhKh5h3BvHRJeLd0S9JH4cM45vTCl271V/3DoFCjgJ96",
+      "role": "promoter",
+      "wallet_balance": 65.4,
+      "device_fingerprint": null,
+      "country": "Germany",
+      "community_types": "[\"WhatsApp\",\"Telegram\"]",
+      "created_at": "2026-10-10 18:52:58"
+    }
+  ],
+  "campaigns": [
+    {
+      "id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "client_id": "430b63be-3cc9-48a3-a37b-4ee7049fd70f",
+      "title": "NexusDeFi Decentralized Staking Hub Launch",
+      "target_url": "https://example.com/nexus-defi-staking",
+      "total_budget": 1000.0,
+      "remaining_budget": 784.0,
+      "cost_per_click": 0.5,
+      "geo_target": "[\"US\",\"UK\",\"DE\",\"SG\"]",
+      "community_niches": "[\"Discord\",\"Telegram\",\"Reddit\"]",
+      "status": "active",
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "c2e7611f-9430-47b5-839f-606414e4608f",
+      "client_id": "430b63be-3cc9-48a3-a37b-4ee7049fd70f",
+      "title": "CyberShield Zero-Knowledge VPN Early Access",
+      "target_url": "https://example.com/cybershield-vpn-beta",
+      "total_budget": 500.0,
+      "remaining_budget": 310.2,
+      "cost_per_click": 0.4,
+      "geo_target": "[\"Global\",\"CA\",\"AU\",\"JP\"]",
+      "community_niches": "[\"WhatsApp\",\"Reddit\"]",
+      "status": "active",
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "be1ed7e4-f807-40eb-ba25-c7fcaba4ebdc",
+      "client_id": "430b63be-3cc9-48a3-a37b-4ee7049fd70f",
+      "title": "AlphaGame Play-to-Earn Season 4 Whitelist",
+      "target_url": "https://example.com/alphagame-season4",
+      "total_budget": 250.0,
+      "remaining_budget": 12.0,
+      "cost_per_click": 0.6,
+      "geo_target": "[\"BR\",\"PH\",\"ID\",\"IN\"]",
+      "community_niches": "[\"Discord\",\"Telegram\"]",
+      "status": "paused",
+      "created_at": "2026-10-10 18:52:58"
+    }
+  ],
+  "promoter_links": [
+    {
+      "id": "b9dafac9-c2fa-4b34-a851-9efec987636b",
+      "promoter_id": "ba9e5036-691b-4b29-83b9-8cb688a8f8b9",
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "custom_slug": "alex-defi-alpha",
+      "total_clicks": 432,
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "9f046fa2-66bc-4e9f-8ed4-6f806651e8f9",
+      "promoter_id": "ba9e5036-691b-4b29-83b9-8cb688a8f8b9",
+      "campaign_id": "c2e7611f-9430-47b5-839f-606414e4608f",
+      "custom_slug": "alex-vpn-secure",
+      "total_clicks": 112,
+      "created_at": "2026-10-10 18:52:58"
+    }
+  ],
+  "tasks": [
+    {
+      "id": "483c9cd5-f50e-4bae-a797-285d5fe3e0ba",
+      "promoter_id": "ba9e5036-691b-4b29-83b9-8cb688a8f8b9",
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "screenshot_url": "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80",
+      "proof_notes": "Posted announcement in 42k Telegram Web3 Alpha Channel & pinned for 24h.",
+      "status": "pending",
+      "payout_amount": 25.0,
+      "created_at": "2026-10-10 18:52:58"
+    }
+  ],
+  "financial_ledger": [
+    {
+      "id": "325be64a-562b-4882-9bea-1acc633aed78",
+      "transaction_type": "deposit",
+      "account_id": "430b63be-3cc9-48a3-a37b-4ee7049fd70f",
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "amount": 1000.0,
+      "notes": "Initial smart-escrow deposit for DeFi Campaign",
+      "timestamp": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "3b583b75-8aa7-4722-8a7e-e1dc052e9513",
+      "transaction_type": "platform_revenue",
+      "account_id": "5250848b-f70c-4985-aa92-555a8e55c3f5",
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "amount": 86.2,
+      "notes": "System spread fee accrued",
+      "timestamp": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "ecc04479-f846-45a3-94d6-18aacf21d630",
+      "transaction_type": "payout",
+      "account_id": "ba9e5036-691b-4b29-83b9-8cb688a8f8b9",
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "amount": 129.3,
+      "notes": "Promoter click earnings aggregated",
+      "timestamp": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "9f5f1124-f735-4cfe-a357-e7aa37f9fe73",
+      "transaction_type": "payout",
+      "account_id": "ba9e5036-691b-4b29-83b9-8cb688a8f8b9",
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "amount": 0.3,
+      "notes": "Valid referral click via slug: alex-defi-alpha (60% split)",
+      "timestamp": "2026-10-10 19:01:38"
+    },
+    {
+      "id": "5c22ae18-2677-4f2d-bad3-7c8dccb0e822",
+      "transaction_type": "platform_revenue",
+      "account_id": null,
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "amount": 0.2,
+      "notes": "Platform commission fee (40% split) for click on alex-defi-alpha",
+      "timestamp": "2026-10-10 19:01:38"
+    }
+  ],
+  "threat_logs": [
+    {
+      "id": "6a15334d-dc91-4d9e-9c49-15ac9a76ffb4",
+      "ip_address": "198.51.100.42",
+      "user_agent": "Mozilla/5.0 (compatible; DatacenterBot/1.0)",
+      "referrer": "https://anonymous-crawler.net",
+      "reason": "Known Datacenter IP Subnet (AS16509 AWS)",
+      "risk_score": 92,
+      "slug": "alex-defi-alpha",
+      "campaign_id": null,
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "dc9a70e9-0c25-4242-af4f-01e2970d3c52",
+      "ip_address": "203.0.113.88",
+      "user_agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) HeadlessChrome/118.0.0.0",
+      "referrer": "",
+      "reason": "Commercial VPN / Tor Exit Node Signature",
+      "risk_score": 88,
+      "slug": "alex-vpn-secure",
+      "campaign_id": null,
+      "created_at": "2026-10-10 18:52:58"
+    },
+    {
+      "id": "f4dfb5d0-7204-4c41-a535-0bfa2ce7b48c",
+      "ip_address": "1",
+      "user_agent": "curl/8.21.0",
+      "referrer": "",
+      "reason": "Automated Bot/Scraper/Headless signature detected: (curl)",
+      "risk_score": 95,
+      "slug": "alex-defi-alpha",
+      "campaign_id": "121042d0-68e2-4cc9-8256-424d91c448c4",
+      "created_at": "2026-10-10 18:56:57"
+    }
+  ],
+  "withdrawals": [
+    {
+      "id": "c28b6073-73d4-4b7e-a880-1db7eb15ef80",
+      "user_id": "ba9e5036-691b-4b29-83b9-8cb688a8f8b9",
+      "amount": 100.0,
+      "destination_wallet": "0x71C...B9e4",
+      "network": "Polygon / USDT",
+      "status": "pending",
+      "created_at": "2026-10-10 18:52:58"
+    }
+  ]
+}

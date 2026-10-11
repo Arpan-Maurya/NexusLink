@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NexusLink | Decentralized Community Affiliate Network &amp; Anti-Fraud Engine</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  
+  <!-- FontAwesome & Chart.js -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    :root {
+      --bg-base: #090d16;
+      --bg-surface: #111726;
+      --bg-card: rgba(17, 24, 39, 0.75);
+      --bg-glass: rgba(15, 23, 42, 0.65);
+      --border-subtle: rgba(255, 255, 255, 0.08);
+      --border-highlight: rgba(99, 102, 241, 0.4);
+      --primary: #6366f1;
+      --primary-glow: rgba(99, 102, 241, 0.3);
+      --accent-cyan: #06b6d4;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-rose: #f43f5e;
+      --text-main: #f8fafc;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
+
+    /* Ambient Background Glow */
+    .ambient-glow {
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
+                  radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 45%);
+    }
+
+    /* Glass Panels */
+    .glass-card {
+      background: var(--bg-card);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.65rem 1.25rem;
+      border-radius: var(--radius-sm);
+      font-weight: 600;
+      font-size: 0.9rem;
+      cursor: pointer;
+      border: none;
+      transition: all 0.2s ease;
+    }
+    .btn-primary {
+      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
+      color: #fff;
+      box-shadow: 0 4px 14px var(--primary-glow);
+    }
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+    }
+    .btn-secondary {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+    }
+    .btn-secondary:hover {
+      background: rgba(255, 255, 255, 0.1);
+      transform: translateY(-2px);
+    }
+    .btn-success {
+      background: linear-gradient(135deg, #10b981 0%, #059669 100%);
+      color: #fff;
+    }
+    .btn-danger {
+      background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
+      color: #fff;
+    }
+
+    /* Header Nav */
+    header.top-nav {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(10, 15, 26, 0.85);
+      backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    .nav-inner {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0.85rem 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+    }
+    .brand-icon {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.25rem; color: #fff;
+      box-shadow: 0 0 15px var(--primary-glow);
+    }
+    .brand-text h1 {
+      font-size: 1.25rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+    }
+    .brand-text span {
+      font-size: 0.68rem;
+      color: var(--accent-cyan);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Role Switcher Toolbar */
+    .role-switcher {
+      display: flex;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.04);
+      padding: 0.3rem;
+      border-radius: 12px;
+      border: 1px solid var(--border-subtle);
+      gap: 0.35rem;
+    }
+    .role-btn {
+      padding: 0.45rem 1rem;
+      border-radius: 8px;
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      cursor: pointer;
+      border: none;
+      background: transparent;
+      transition: all 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .role-btn.active {
+      background: var(--primary);
+      color: #fff;
+      box-shadow: 0 2px 10px var(--primary-glow);
+    }
+
+    /* Main Workspace */
+    .app-main {
+      flex: 1;
+      position: relative;
+      z-index: 1;
+      max-width: 1400px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 5rem;
+    }
+
+    /* Role Views */
+    .role-view { display: none; }
+    .role-view.active { display: block; }
+
+    /* Metrics Grid */
+    .metrics-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.25rem;
+      margin-bottom: 2rem;
+    }
+    .metric-card {
+      padding: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+    .metric-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: var(--primary);
+    }
+    .metric-card.cyan::before { background: var(--accent-cyan); }
+    .metric-card.emerald::before { background: var(--accent-emerald); }
+    .metric-card.rose::before { background: var(--accent-rose); }
+    .metric-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: var(--text-dim);
+      margin-bottom: 0.4rem;
+    }
+    .metric-value {
+      font-size: 1.9rem;
+      font-weight: 800;
+      color: #fff;
+      font-feature-settings: 'tnum';
+    }
+
+    /* Data Tables */
+    .data-table-wrap {
+      overflow-x: auto;
+    }
+    table.data-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.88rem;
+    }
+    table.data-table th {
+      text-align: left;
+      padding: 0.85rem 1rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--text-dim);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+    table.data-table td {
+      padding: 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+    }
+    table.data-table tr:hover td {
+      background: rgba(255, 255, 255, 0.02);
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 700;
+    }
+    .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
+    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
+    .badge-rose { background: rgba(244, 63, 94, 0.15); color: #f43f5e; }
+    .badge-indigo { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; }
+
+    /* Form Inputs */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+    .form-group label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+    }
+    .form-input {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 0.7rem 1rem;
+      color: #fff;
+      font-size: 0.9rem;
+      outline: none;
+      transition: all 0.2s;
+    }
+    .form-input:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px var(--primary-glow);
+    }
+
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.8);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      max-width: 600px;
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem; right: 2rem;
+      z-index: 3000;
+      background: rgba(15, 23, 42, 0.95);
+      border: 1px solid var(--accent-emerald);
+      padding: 1rem 1.5rem;
+      border-radius: var(--radius-md);
+      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      display: none;
+      align-items: center;
+      gap: 0.75rem;
+      color: #fff;
+      font-size: 0.9rem;
+    }
+    .toast.show { display: flex; }
+  </style>
+</head>
+<body>
+
+  <div class="ambient-glow"></div>
+
+  <!-- Top Navigation Bar -->
+  <header class="top-nav">
+    <div class="nav-inner">
+      <div class="brand" onclick="switchRole('admin')">
+        <div class="brand-icon">
+          <i class="fa-solid fa-network-wired"></i>
+        </div>
+        <div class="brand-text">
+          <h1>NexusLink</h1>
+          <span>Decentralized Community Affiliate Protocol</span>
+        </div>
+      </div>
+
+      <!-- Live Role Switcher -->
+      <div class="role-switcher">
+        <button class="role-btn active" id="btn-role-admin" onclick="switchRole('admin')">
+          <i class="fa-solid fa-shield-halved"></i> Admin
+        </button>
+        <button class="role-btn" id="btn-role-client" onclick="switchRole('client')">
+          <i class="fa-solid fa-building"></i> Client / Brand
+        </button>
+        <button class="role-btn" id="btn-role-promoter" onclick="switchRole('promoter')">
+          <i class="fa-solid fa-bullhorn"></i> Promoter ("Seeder")
+        </button>
+        <button class="role-btn" id="btn-role-test" onclick="openTestModal()">
+          <i class="fa-solid fa-flask-vial"></i> Test Anti-Fraud
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="app-main">
+
+    <!-- ================================================================= -->
+    <!-- 1. ADMINISTRATOR DASHBOARD VIEW -->
+    <!-- ================================================================= -->
+    <div class="role-view active" id="view-admin">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Global Financial Ledger &amp; Security Protocol</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Real-time smart escrow monitoring, bot inspection telemetry, and payout authorization</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-secondary" onclick="exportLedgerCSV()"><i class="fa-solid fa-download"></i> Export Audit</button>
+          <button class="btn btn-primary" onclick="openTestModal()"><i class="fa-solid fa-radar"></i> Run Bot Simulator</button>
+        </div>
+      </div>
+
+      <!-- Metrics Grid -->
+      <div class="metrics-grid">
+        <div class="glass-card metric-card">
+          <div class="metric-label">Escrow Deposits</div>
+          <div class="metric-value" id="adm-deposits">$1,250.00</div>
+        </div>
+        <div class="glass-card metric-card cyan">
+          <div class="metric-label">Total Verified Clicks</div>
+          <div class="metric-value" id="adm-clicks">544</div>
+        </div>
+        <div class="glass-card metric-card emerald">
+          <div class="metric-label">Platform Net Revenue</div>
+          <div class="metric-value" id="adm-revenue">$86.20</div>
+        </div>
+        <div class="glass-card metric-card rose">
+          <div class="metric-label">Threats Quarantined</div>
+          <div class="metric-value" id="adm-threats">3</div>
+        </div>
+      </div>
+
+      <!-- Pending Withdrawal Authorizations -->
+      <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-money-bill-transfer" style="color: var(--accent-amber);"></i> Pending Payout Authorizations
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table" id="table-withdrawals">
+            <thead>
+              <tr>
+                <th>Promoter Account</th>
+                <th>Requested Payout</th>
+                <th>Destination Wallet</th>
+                <th>Network</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-withdrawals">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Anti-Fraud Threat Log -->
+      <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-shield-virus" style="color: var(--accent-rose);"></i> Live Bot / Datacenter Threat Interception Logs
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Connecting IP</th>
+                <th>User-Agent / Signature</th>
+                <th>Target Slug</th>
+                <th>Risk Score</th>
+                <th>Detection Reason</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-threats">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Double-Entry Financial Ledger -->
+      <div class="glass-card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-book-journal-whills" style="color: var(--primary);"></i> Double-Entry Financial Ledger
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Transaction Type</th>
+                <th>Amount</th>
+                <th>Associated Account</th>
+                <th>Notes</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-ledger">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- 2. CLIENT / BRAND DASHBOARD VIEW -->
+    <!-- ================================================================= -->
+    <div class="role-view" id="view-client">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Client &amp; Brand Campaign Vault</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Fund smart-escrow contracts, set geographic targeting, and review verified community clicks</p>
+        </div>
+        <button class="btn btn-primary" onclick="openCampaignModal()">
+          <i class="fa-solid fa-plus"></i> Create New Campaign
+        </button>
+      </div>
+
+      <!-- Client Metrics -->
+      <div class="metrics-grid">
+        <div class="glass-card metric-card">
+          <div class="metric-label">Client Escrow Vault Balance</div>
+          <div class="metric-value">$850.00</div>
+        </div>
+        <div class="glass-card metric-card cyan">
+          <div class="metric-label">Active Campaigns</div>
+          <div class="metric-value" id="client-campaign-count">2</div>
+        </div>
+        <div class="glass-card metric-card emerald">
+          <div class="metric-label">Total Verified Referral Visits</div>
+          <div class="metric-value" id="client-total-clicks">544</div>
+        </div>
+      </div>
+
+      <!-- Active Client Campaigns -->
+      <div class="glass-card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i> Active Client Campaigns
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Campaign Title</th>
+                <th>Cost Per Click</th>
+                <th>Budget (Spent / Total)</th>
+                <th>Geo Targets</th>
+                <th>Community Niches</th>
+                <th>Status</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-client-campaigns">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- ================================================================= -->
+    <!-- 3. PROMOTER DASHBOARD ("SEEDERS") VIEW -->
+    <!-- ================================================================= -->
+    <div class="role-view" id="view-promoter">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Promoter &amp; Community Seeder Portal</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Earn 60% of CPC rewards on every verified human community click</p>
+        </div>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-primary" onclick="openWithdrawModal()">
+            <i class="fa-solid fa-wallet"></i> Request Payout ($143.10)
+          </button>
+        </div>
+      </div>
+
+      <!-- Promoter Metrics -->
+      <div class="metrics-grid">
+        <div class="glass-card metric-card emerald">
+          <div class="metric-label">Claimable Wallet Balance</div>
+          <div class="metric-value" id="promoter-balance">$143.10</div>
+        </div>
+        <div class="glass-card metric-card cyan">
+          <div class="metric-label">Total Generated Clicks</div>
+          <div class="metric-value" id="promoter-clicks">544</div>
+        </div>
+        <div class="glass-card metric-card">
+          <div class="metric-label">Active Slugs Joined</div>
+          <div class="metric-value" id="promoter-slugs-count">2</div>
+        </div>
+      </div>
+
+      <!-- Marketplace -->
+      <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-shop" style="color: var(--primary);"></i> Community Seeding Marketplace (Available Campaigns)
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Your Reward / Click</th>
+                <th>Niches Supported</th>
+                <th>Escrow Pool Left</th>
+                <th>Unique Tracking Link</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-marketplace">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Proof of Seed Postings -->
+      <div class="glass-card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-camera" style="color: var(--accent-cyan);"></i> Proof of Seeding Submissions (Screenshot Tasks)
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Campaign</th>
+                <th>Proof Notes</th>
+                <th>Screenshot Evidence</th>
+                <th>Reward</th>
+                <th>Review Status</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-tasks">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- Anti-Fraud Simulation Modal -->
+  <div class="modal-overlay" id="modal-test">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-flask-vial" style="color: var(--accent-rose);"></i> Anti-Fraud Inspection Engine Test
+        </h3>
+        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;" onclick="closeTestModal()">&times;</button>
+      </div>
+      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
+        Simulate an incoming click against the automated inspection algorithm (Checks IP datacenter prefix, bot user-agents, proxy headers, and rate limits).
+      </p>
+
+      <div class="form-group">
+        <label>Simulation Preset</label>
+        <select class="form-input" id="sim-preset" onchange="applySimPreset()">
+          <option value="clean">Clean Human Visitor (Chrome / Residential IP)</option>
+          <option value="bot">Headless Bot (Puppeteer / Python-Requests)</option>
+          <option value="datacenter">Datacenter Cloud IP (AWS EC2 / DigitalOcean)</option>
+          <option value="tor">VPN / Tor Anonymizer Header</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>Visitor IP Address</label>
+        <input type="text" id="sim-ip" class="form-input" value="103.21.244.12" />
+      </div>
+
+      <div class="form-group">
+        <label>HTTP User-Agent</label>
+        <input type="text" id="sim-ua" class="form-input" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" />
+      </div>
+
+      <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
+        <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="runFraudTest()">
+          Evaluate Through Anti-Fraud Engine
+        </button>
+      </div>
+
+      <!-- Results Box -->
+      <div id="sim-results" style="display: none; margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle);">
+        <!-- Injected via JS -->
+      </div>
+    </div>
+  </div>
+
+  <!-- Campaign Creation Modal -->
+  <div class="modal-overlay" id="modal-campaign">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.25rem; font-weight: 800;">Create Brand Campaign &amp; Fund Escrow</h3>
+        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;" onclick="closeCampaignModal()">&times;</button>
+      </div>
+
+      <form onsubmit="handleCreateCampaign(event)">
+        <div class="form-group">
+          <label>Campaign Title</label>
+          <input type="text" id="camp-title" class="form-input" placeholder="e.g. NexusStaking Community Airdrop" required />
+        </div>
+        <div class="form-group">
+          <label>Destination Target URL</label>
+          <input type="url" id="camp-url" class="form-input" placeholder="https://mydefi.io/launch" required />
+        </div>
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+          <div class="form-group">
+            <label>Total Escrow Budget ($)</label>
+            <input type="number" id="camp-budget" class="form-input" min="10" step="5" value="500" required />
+          </div>
+          <div class="form-group">
+            <label>Cost-Per-Click Rate ($)</label>
+            <input type="number" id="camp-cpc" class="form-input" min="0.05" max="5" step="0.05" value="0.50" required />
+          </div>
+        </div>
+        <div class="form-group">
+          <label>Community Niches</label>
+          <input type="text" id="camp-niches" class="form-input" value="Telegram, Discord, Reddit" />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; justify-content: center; margin-top: 1rem;">
+          Fund Escrow &amp; Launch Campaign
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- Notification Toast -->
+  <div class="toast" id="toast">
+    <i class="fa-solid fa-circle-check" style="color: var(--accent-emerald);"></i>
+    <span id="toast-text">Operation completed</span>
+  </div>
+
+  <script>
+    // In-memory seed database with localStorage persistence
+    const DEFAULT_SEED = {
+      users: [
+        { id: "admin-1", email: "admin@nexuslink.network", role: "admin", wallet_balance: 15420.50 },
+        { id: "client-1", email: "growth@web3defi.io", role: "client", wallet_balance: 850.00 },
+        { id: "promoter-1", email: "alex.seeder@community.org", role: "promoter", wallet_balance: 143.10 }
+      ],
+      campaigns: [
+        {
+          id: "camp-1",
+          client_id: "client-1",
+          title: "NexusDeFi Decentralized Staking Hub Launch",
+          target_url: "https://example.com/nexus-defi-staking",
+          total_budget: 1000.0,
+          remaining_budget: 784.0,
+          cost_per_click: 0.50,
+          geo_target: ["US", "UK", "DE", "SG"],
+          community_niches: ["Discord", "Telegram", "Reddit"],
+          status: "active",
+          created_at: "2026-10-10 18:52:58"
+        },
+        {
+          id: "camp-2",
+          client_id: "client-1",
+          title: "CyberShield Zero-Knowledge VPN Early Access",
+          target_url: "https://example.com/cybershield-vpn-beta",
+          total_budget: 500.0,
+          remaining_budget: 310.2,
+          cost_per_click: 0.40,
+          geo_target: ["Global", "CA", "AU", "JP"],
+          community_niches: ["WhatsApp", "Reddit"],
+          status: "active",
+          created_at: "2026-10-10 18:52:58"
+        },
+        {
+          id: "camp-3",
+          client_id: "client-1",
+          title: "AlphaGame Play-to-Earn Season 4 Whitelist",
+          target_url: "https://example.com/alphagame-season4",
+          total_budget: 250.0,
+          remaining_budget: 12.0,
+          cost_per_click: 0.60,
+          geo_target: ["BR", "PH", "ID", "IN"],
+          community_niches: ["Discord", "Telegram"],
+          status: "paused",
+          created_at: "2026-10-10 18:52:58"
+        }
+      ],
+      promoter_links: [
+        { id: "link-1", promoter_id: "promoter-1", campaign_id: "camp-1", custom_slug: "alex-defi-alpha", total_clicks: 432 },
+        { id: "link-2", promoter_id: "promoter-1", campaign_id: "camp-2", custom_slug: "alex-vpn-secure", total_clicks: 112 }
+      ],
+      withdrawals: [
+        { id: "w-1", user_id: "promoter-1", email: "alex.seeder@community.org", amount: 100.00, destination_wallet: "0x71C...B9e4", network: "Polygon / USDT", status: "pending" }
+      ],
+      threat_logs: [
+        { id: "t-1", ip_address: "198.51.100.42", user_agent: "DatacenterBot/1.0", slug: "alex-defi-alpha", risk_score: 92, reason: "Known Datacenter IP Subnet (AS16509 AWS)", created_at: "2026-10-10 18:52:58" },
+        { id: "t-2", ip_address: "203.0.113.88", user_agent: "HeadlessChrome/118.0.0.0", slug: "alex-vpn-secure", risk_score: 88, reason: "Commercial VPN / Tor Exit Node Signature", created_at: "2026-10-10 18:52:58" }
+      ],
+      ledger: [
+        { type: "deposit", amount: 1000.00, account: "growth@web3defi.io", notes: "Initial escrow deposit for DeFi Campaign", timestamp: "2026-10-10 18:52:58" },
+        { type: "platform_revenue", amount: 86.20, account: "admin@nexuslink.network", notes: "System spread fee accrued", timestamp: "2026-10-10 18:52:58" },
+        { type: "payout", amount: 129.30, account: "alex.seeder@community.org", notes: "Promoter click earnings aggregated", timestamp: "2026-10-10 18:52:58" }
+      ],
+      tasks: [
+        { id: "task-1", campaign_title: "NexusDeFi Staking Hub Launch", notes: "Pinned announcement in 42k Telegram Web3 Alpha Channel for 24h.", screenshot: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80", payout: 25.00, status: "pending" }
+      ]
+    };
+
+    function getStore() {
+      const data = localStorage.getItem('nexuslink_store');
+      return data ? JSON.parse(data) : DEFAULT_SEED;
+    }
+
+    function saveStore(store) {
+      localStorage.setItem('nexuslink_store', JSON.stringify(store));
+    }
+
+    function switchRole(role) {
+      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.role-view').forEach(v => v.classList.remove('active'));
+
+      const btn = document.getElementById(`btn-role-${role}`);
+      if (btn) btn.classList.add('active');
+
+      const view = document.getElementById(`view-${role}`);
+      if (view) view.classList.add('active');
+
+      renderAll();
+    }
+
+    function renderAll() {
+      const store = getStore();
+
+      // 1. Admin Views
+      const tbodyWithdrawals = document.getElementById('tbody-withdrawals');
+      tbodyWithdrawals.innerHTML = '';
+      store.withdrawals.forEach(w => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${w.email}</strong></td>
+          <td><strong style="color: var(--accent-emerald);">$${w.amount.toFixed(2)}</strong></td>
+          <td><code>${w.destination_wallet}</code></td>
+          <td>${w.network}</td>
+          <td><span class="badge ${w.status === 'pending' ? 'badge-amber' : w.status === 'authorized' ? 'badge-emerald' : 'badge-rose'}">${w.status.toUpperCase()}</span></td>
+          <td>
+            ${w.status === 'pending' ? `
+              <button class="btn btn-success" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="handleWithdrawAction('${w.id}', 'authorize')"><i class="fa-solid fa-check"></i> Authorize</button>
+              <button class="btn btn-danger" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="handleWithdrawAction('${w.id}', 'reject')"><i class="fa-solid fa-xmark"></i> Reject</button>
+            ` : '<span style="color:var(--text-dim);">Resolved</span>'}
+          </td>
+        `;
+        tbodyWithdrawals.appendChild(tr);
+      });
+
+      const tbodyThreats = document.getElementById('tbody-threats');
+      tbodyThreats.innerHTML = '';
+      store.threat_logs.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><code>${t.ip_address}</code></td>
+          <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.user_agent}</td>
+          <td><code>/r/${t.slug}</code></td>
+          <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score} / 100</span></td>
+          <td>${t.reason}</td>
+          <td><small style="color: var(--text-dim);">${t.created_at}</small></td>
+        `;
+        tbodyThreats.appendChild(tr);
+      });
+
+      const tbodyLedger = document.getElementById('tbody-ledger');
+      tbodyLedger.innerHTML = '';
+      store.ledger.forEach(l => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><span class="badge badge-indigo">${l.type.toUpperCase()}</span></td>
+          <td><strong style="color: var(--text-main);">$${l.amount.toFixed(2)}</strong></td>
+          <td>${l.account}</td>
+          <td>${l.notes}</td>
+          <td><small style="color: var(--text-dim);">${l.timestamp}</small></td>
+        `;
+        tbodyLedger.appendChild(tr);
+      });
+
+      // 2. Client Campaigns
+      const tbodyClient = document.getElementById('tbody-client-campaigns');
+      tbodyClient.innerHTML = '';
+      store.campaigns.forEach(c => {
+        const tr = document.createElement('tr');
+        const spent = (c.total_budget - c.remaining_budget).toFixed(2);
+        tr.innerHTML = `
+          <td><strong>${c.title}</strong><br><small style="color: var(--text-dim);">${c.target_url}</small></td>
+          <td><strong>$${c.cost_per_click.toFixed(2)}</strong></td>
+          <td>$${spent} / $${c.total_budget.toFixed(2)}</td>
+          <td>${c.geo_target.join(', ')}</td>
+          <td>${c.community_niches.join(', ')}</td>
+          <td><span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${c.status.toUpperCase()}</span></td>
+          <td>
+            <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleCampaignStatus('${c.id}')">
+              ${c.status === 'active' ? 'Pause' : 'Resume'}
+            </button>
+          </td>
+        `;
+        tbodyClient.appendChild(tr);
+      });
+
+      // 3. Promoter Marketplace
+      const tbodyMarket = document.getElementById('tbody-marketplace');
+      tbodyMarket.innerHTML = '';
+      store.campaigns.forEach(c => {
+        const link = store.promoter_links.find(l => l.campaign_id === c.id);
+        const reward = (c.cost_per_click * 0.6).toFixed(2);
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${c.title}</strong></td>
+          <td><strong style="color: var(--accent-emerald);">+$${reward} / Click</strong></td>
+          <td>${c.community_niches.join(', ')}</td>
+          <td>$${c.remaining_budget.toFixed(2)}</td>
+          <td>
+            ${link ? `<code style="color: var(--accent-cyan); font-weight: bold;">https://nexuslink.io/r/${link.custom_slug}</code>` : '<span style="color: var(--text-dim);">Not joined yet</span>'}
+          </td>
+          <td>
+            ${link ? `<button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="copyLink('${link.custom_slug}')"><i class="fa-regular fa-copy"></i> Copy Link</button>` : 
+                     `<button class="btn btn-primary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="joinCampaign('${c.id}')"><i class="fa-solid fa-link"></i> Generate Link</button>`}
+          </td>
+        `;
+        tbodyMarket.appendChild(tr);
+      });
+
+      // 4. Tasks Table
+      const tbodyTasks = document.getElementById('tbody-tasks');
+      tbodyTasks.innerHTML = '';
+      store.tasks.forEach(t => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td><strong>${t.campaign_title}</strong></td>
+          <td>${t.notes}</td>
+          <td><a href="${t.screenshot}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;"><i class="fa-regular fa-image"></i> View Proof Screenshot</a></td>
+          <td><strong style="color: var(--accent-emerald);">+$${t.payout.toFixed(2)}</strong></td>
+          <td><span class="badge ${t.status === 'pending' ? 'badge-amber' : 'badge-emerald'}">${t.status.toUpperCase()}</span></td>
+        `;
+        tbodyTasks.appendChild(tr);
+      });
+    }
+
+    function handleWithdrawAction(id, action) {
+      const store = getStore();
+      const w = store.withdrawals.find(item => item.id === id);
+      if (w) {
+        w.status = action === 'authorize' ? 'authorized' : 'rejected';
+        if (action === 'authorize') {
+          store.ledger.unshift({
+            type: 'withdrawal',
+            amount: w.amount,
+            account: w.email,
+            notes: `Withdrawal to ${w.destination_wallet} on ${w.network} authorized`,
+            timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19)
+          });
+        }
+        saveStore(store);
+        renderAll();
+        showToast(action === 'authorize' ? 'Withdrawal authorized & processed!' : 'Withdrawal rejected & refunded.');
+      }
+    }
+
+    function toggleCampaignStatus(id) {
+      const store = getStore();
+      const c = store.campaigns.find(item => item.id === id);
+      if (c) {
+        c.status = c.status === 'active' ? 'paused' : 'active';
+        saveStore(store);
+        renderAll();
+        showToast(`Campaign ${c.status === 'active' ? 'resumed' : 'paused'}!`);
+      }
+    }
+
+    function joinCampaign(campId) {
+      const store = getStore();
+      const c = store.campaigns.find(item => item.id === campId);
+      const slug = `alex-${Math.random().toString(36).substring(2, 7)}`;
+      store.promoter_links.push({
+        id: `link-${Date.now()}`,
+        promoter_id: 'promoter-1',
+        campaign_id: campId,
+        custom_slug: slug,
+        total_clicks: 0
+      });
+      saveStore(store);
+      renderAll();
+      showToast(`Unique referral link generated: /r/${slug}`);
+    }
+
+    function copyLink(slug) {
+      const url = `https://nexuslink.network/r/${slug}`;
+      navigator.clipboard.writeText(url);
+      showToast(`Copied to clipboard: ${url}`);
+    }
+
+    function openCampaignModal() {
+      document.getElementById('modal-campaign').classList.add('open');
+    }
+    function closeCampaignModal() {
+      document.getElementById('modal-campaign').classList.remove('open');
+    }
+
+    function handleCreateCampaign(e) {
+      e.preventDefault();
+      const title = document.getElementById('camp-title').value.trim();
+      const url = document.getElementById('camp-url').value.trim();
+      const budget = parseFloat(document.getElementById('camp-budget').value);
+      const cpc = parseFloat(document.getElementById('camp-cpc').value);
+      const niches = document.getElementById('camp-niches').value.split(',').map(s => s.trim());
+
+      const store = getStore();
+      const campId = `camp-${Date.now()}`;
+      store.campaigns.unshift({
+        id: campId,
+        client_id: 'client-1',
+        title,
+        target_url: url,
+        total_budget: budget,
+        remaining_budget: budget,
+        cost_per_click: cpc,
+        geo_target: ['Global', 'US'],
+        community_niches: niches,
+        status: 'active',
+        created_at: new Date().toISOString().replace('T', ' ').slice(0, 19)
+      });
+      store.ledger.unshift({
+        type: 'deposit',
+        amount: budget,
+        account: 'growth@web3defi.io',
+        notes: `Escrow deposit for campaign: ${title}`,
+        timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19)
+      });
+      saveStore(store);
+      closeCampaignModal();
+      renderAll();
+      showToast('Campaign launched and funded via smart escrow!');
+    }
+
+    function openWithdrawModal() {
+      const store = getStore();
+      const amount = 143.10;
+      store.withdrawals.unshift({
+        id: `w-${Date.now()}`,
+        user_id: 'promoter-1',
+        email: 'alex.seeder@community.org',
+        amount: amount,
+        destination_wallet: '0x71C...B9e4',
+        network: 'Arbitrum / USDC',
+        status: 'pending'
+      });
+      saveStore(store);
+      renderAll();
+      showToast('Withdrawal of $143.10 submitted to admin queue.');
+    }
+
+    function openTestModal() {
+      document.getElementById('modal-test').classList.add('open');
+    }
+    function closeTestModal() {
+      document.getElementById('modal-test').classList.remove('open');
+    }
+
+    function applySimPreset() {
+      const p = document.getElementById('sim-preset').value;
+      if (p === 'clean') {
+        document.getElementById('sim-ip').value = '103.21.244.12';
+        document.getElementById('sim-ua').value = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36';
+      } else if (p === 'bot') {
+        document.getElementById('sim-ip').value = '198.51.100.22';
+        document.getElementById('sim-ua').value = 'Mozilla/5.0 (compatible; HeadlessChrome/118.0.0.0 Puppeteer)';
+      } else if (p === 'datacenter') {
+        document.getElementById('sim-ip').value = '54.210.88.19'; // AWS EC2
+        document.getElementById('sim-ua').value = 'Mozilla/5.0 (X11; Linux x86_64) Python-requests/2.31.0';
+      } else if (p === 'tor') {
+        document.getElementById('sim-ip').value = '185.220.101.5';
+        document.getElementById('sim-ua').value = 'Mozilla/5.0 (Windows NT 10.0; rv:109.0) Gecko/20100101 TorBrowser/13.0';
+      }
+    }
+
+    function runFraudTest() {
+      const ip = document.getElementById('sim-ip').value.trim();
+      const ua = document.getElementById('sim-ua').value.trim().toLowerCase();
+      
+      let valid = true;
+      let reason = 'Legitimate Human Consumer Verified';
+      let riskScore = 12;
+
+      if (ua.includes('headless') || ua.includes('puppeteer') || ua.includes('bot') || ua.includes('python')) {
+        valid = false;
+        reason = 'Automated Headless / Bot User-Agent signature intercepted';
+        riskScore = 95;
+      } else if (ip.startsWith('54.') || ip.startsWith('52.') || ip.startsWith('34.') || ip.startsWith('198.51.') || ip.startsWith('185.220.')) {
+        valid = false;
+        reason = 'Known Cloud Hosting Provider / Datacenter / Tor Subnet detected';
+        riskScore = 92;
+      }
+
+      const resBox = document.getElementById('sim-results');
+      resBox.style.display = 'block';
+      resBox.style.borderColor = valid ? 'var(--accent-emerald)' : 'var(--accent-rose)';
+      resBox.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
+          <i class="fa-solid ${valid ? 'fa-circle-check' : 'fa-triangle-exclamation'}" style="color: ${valid ? 'var(--accent-emerald)' : 'var(--accent-rose)'}; font-size: 1.25rem;"></i>
+          <h4 style="color: ${valid ? 'var(--accent-emerald)' : 'var(--accent-rose)'}; font-size: 1.1rem;">
+            ${valid ? 'PASS: Traffic Certified Legitimate' : 'FAIL: Bot Threat Intercepted & Blocked'}
+          </h4>
+        </div>
+        <p style="font-size: 0.88rem; color: #fff; margin-bottom: 0.5rem;"><strong>Risk Score:</strong> ${riskScore} / 100</p>
+        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">${reason}</p>
+        <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">
+          <strong>Action:</strong> ${valid ? 'Escrow unlocked (60% to Promoter / 40% Platform Revenue)' : 'Zero financial deduction & logged in Threat Registry'}
+        </p>
+      `;
+
+      if (!valid) {
+        const store = getStore();
+        store.threat_logs.unshift({
+          id: `t-${Date.now()}`,
+          ip_address: ip,
+          user_agent: ua,
+          slug: 'alex-defi-alpha',
+          risk_score: riskScore,
+          reason: reason,
+          created_at: new Date().toISOString().replace('T', ' ').slice(0, 19)
+        });
+        saveStore(store);
+        renderAll();
+      }
+    }
+
+    function exportLedgerCSV() {
+      alert("Exporting double-entry cryptographic audit ledger...");
+    }
+
+    function showToast(text) {
+      const toast = document.getElementById('toast');
+      document.getElementById('toast-text').innerText = text;
+      toast.classList.add('show');
+      setTimeout(() => toast.classList.remove('show'), 3000);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      renderAll();
+    });
+  </script>
+</body>
+</html>
