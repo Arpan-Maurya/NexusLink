@@ -16,25 +16,50 @@
 
   <style>
     :root {
-      --bg-base: #070a12;
-      --bg-surface: #0e1424;
-      --bg-card: rgba(15, 23, 42, 0.72);
-      --bg-card-hover: rgba(22, 34, 62, 0.85);
-      --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-highlight: rgba(99, 102, 241, 0.45);
-      --primary: #6366f1;
-      --primary-hover: #4f46e5;
-      --primary-glow: rgba(99, 102, 241, 0.35);
-      --accent-cyan: #06b6d4;
+      /* Default Light Theme (Crisp White and Deep High-Trust Blue) */
+      --bg-base: #f8fafc;
+      --bg-surface: #ffffff;
+      --bg-card: rgba(255, 255, 255, 0.96);
+      --bg-card-hover: #ffffff;
+      --border-subtle: #e2e8f0;
+      --border-highlight: rgba(37, 99, 235, 0.35);
+      --primary: #2563eb;
+      --primary-hover: #1d4ed8;
+      --primary-glow: rgba(37, 99, 235, 0.28);
+      --accent-cyan: #0284c7;
+      --accent-emerald: #059669;
+      --accent-amber: #d97706;
+      --accent-rose: #e11d48;
+      --text-main: #0f172a;
+      --text-muted: #475569;
+      --text-dim: #64748b;
+      --card-shadow: 0 4px 20px -2px rgba(15, 23, 42, 0.08), 0 2px 6px -1px rgba(15, 23, 42, 0.04);
+      --nav-bg: rgba(255, 255, 255, 0.94);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
+    }
+
+    [data-theme="dark"] {
+      /* Dark Theme (Rich Dark Blue Base & Vivid Blue Highlights) */
+      --bg-base: #070e1d;
+      --bg-surface: #0c182f;
+      --bg-card: rgba(14, 28, 54, 0.82);
+      --bg-card-hover: rgba(20, 39, 74, 0.88);
+      --border-subtle: rgba(255, 255, 255, 0.09);
+      --border-highlight: rgba(59, 130, 246, 0.45);
+      --primary: #3b82f6;
+      --primary-hover: #2563eb;
+      --primary-glow: rgba(59, 130, 246, 0.35);
+      --accent-cyan: #38bdf8;
       --accent-emerald: #10b981;
       --accent-amber: #f59e0b;
       --accent-rose: #f43f5e;
       --text-main: #f8fafc;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --card-shadow: 0 10px 30px rgba(0, 0, 0, 0.45);
+      --nav-bg: rgba(8, 17, 34, 0.92);
     }
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -46,6 +71,7 @@
       display: flex;
       flex-direction: column;
       overflow-x: hidden;
+      transition: background-color 0.25s ease, color 0.25s ease;
     }
 
     /* Ambient dynamic glow */
@@ -54,8 +80,13 @@
       top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
       z-index: 0;
-      background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
-                  radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+      background: radial-gradient(circle at 10% 15%, rgba(37, 99, 235, 0.07) 0%, transparent 50%),
+                  radial-gradient(circle at 90% 85%, rgba(2, 132, 199, 0.06) 0%, transparent 55%),
+                  radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.03) 0%, transparent 60%);
+    }
+    [data-theme="dark"] .ambient-glow {
+      background: radial-gradient(circle at 10% 15%, rgba(59, 130, 246, 0.14) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 85%, rgba(56, 189, 248, 0.10) 0%, transparent 50%),
                   radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
     }
 
@@ -66,11 +97,12 @@
       -webkit-backdrop-filter: blur(16px);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      box-shadow: var(--card-shadow);
       transition: all 0.25s ease;
     }
     .glass-card:hover {
-      border-color: rgba(99, 102, 241, 0.3);
+      border-color: var(--primary);
+      box-shadow: 0 8px 30px rgba(37, 99, 235, 0.14);
     }
 
     /* Buttons */
@@ -88,22 +120,33 @@
       text-decoration: none;
     }
     .btn-primary {
-      background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
-      color: #fff;
+      background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
+      color: #ffffff !important;
       box-shadow: 0 4px 14px var(--primary-glow);
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
+      box-shadow: 0 6px 20px var(--primary-glow);
     }
     .btn-secondary {
-      background: rgba(255, 255, 255, 0.05);
+      background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
     }
     .btn-secondary:hover {
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(37, 99, 235, 0.08);
+      border-color: var(--primary);
+      color: var(--primary);
       transform: translateY(-2px);
+    }
+    .btn-outline-primary {
+      background: transparent;
+      border: 1.5px solid var(--primary);
+      color: var(--primary);
+    }
+    .btn-outline-primary:hover {
+      background: var(--primary);
+      color: #ffffff !important;
     }
     .btn-success {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
@@ -391,14 +434,14 @@
     .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
     .badge-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
     .badge-rose { background: rgba(244, 63, 94, 0.15); color: #f43f5e; }
-    .badge-indigo { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; }
+    .badge-indigo { background: rgba(37, 99, 235, 0.12); color: var(--primary); border: 1px solid rgba(37, 99, 235, 0.25); }
 
     /* Modals */
     .modal-overlay {
       position: fixed;
       inset: 0;
       z-index: 2000;
-      background: rgba(0, 0, 0, 0.85);
+      background: rgba(0, 0, 0, 0.7);
       backdrop-filter: blur(8px);
       display: none;
       align-items: center;
@@ -413,7 +456,7 @@
       border: 1px solid var(--border-highlight);
       border-radius: var(--radius-lg);
       padding: 2rem;
-      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
       position: relative;
     }
     .form-group {
@@ -428,11 +471,11 @@
     }
     .form-input {
       width: 100%;
-      background: rgba(255, 255, 255, 0.04);
+      background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
       padding: 0.75rem 1rem;
-      color: #fff;
+      color: var(--text-main);
       font-size: 0.9rem;
       outline: none;
       transition: all 0.2s;
@@ -448,21 +491,216 @@
       bottom: 2rem;
       right: 2rem;
       z-index: 3000;
-      background: rgba(15, 23, 42, 0.95);
+      background: var(--bg-surface);
       border: 1px solid var(--accent-emerald);
       padding: 1rem 1.5rem;
       border-radius: var(--radius-md);
-      box-shadow: 0 10px 30px rgba(0,0,0,0.6);
+      box-shadow: var(--card-shadow);
       display: none;
       align-items: center;
       gap: 0.75rem;
-      color: #fff;
+      color: var(--text-main);
       font-size: 0.9rem;
     }
     .toast.show { display: flex; animation: slideIn 0.3s ease; }
     @keyframes slideIn {
       from { transform: translateY(15px); opacity: 0; }
       to { transform: translateY(0); opacity: 1; }
+    }
+
+    /* Theme Toggle Switch */
+    .theme-toggle-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.45rem 0.85rem;
+      border-radius: 20px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      color: var(--text-main);
+      cursor: pointer;
+      font-size: 0.8rem;
+      font-weight: 600;
+      transition: all 0.2s ease;
+    }
+    .theme-toggle-btn:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .theme-toggle-btn i {
+      font-size: 0.9rem;
+      color: var(--accent-amber);
+    }
+
+    /* Active User Chip */
+    .user-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.45rem;
+      padding: 0.35rem 0.75rem;
+      border-radius: 20px;
+      background: rgba(37, 99, 235, 0.08);
+      border: 1px solid rgba(37, 99, 235, 0.2);
+      font-size: 0.76rem;
+      font-weight: 600;
+      color: var(--primary);
+    }
+
+    /* Landing Page Aesthetics */
+    .landing-hero {
+      text-align: center;
+      padding: 3rem 1rem 2.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    .landing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.4rem 1rem;
+      border-radius: 30px;
+      background: rgba(37, 99, 235, 0.09);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+      color: var(--primary);
+      font-size: 0.8rem;
+      font-weight: 700;
+      margin-bottom: 1.25rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .landing-hero h1 {
+      font-size: 2.85rem;
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -0.03em;
+      margin-bottom: 1.25rem;
+      color: var(--text-main);
+    }
+    .landing-hero h1 span {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .landing-hero p {
+      font-size: 1.1rem;
+      line-height: 1.6;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 760px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .landing-actions {
+      display: flex;
+      justify-content: center;
+      gap: 1rem;
+      flex-wrap: wrap;
+      margin-bottom: 2rem;
+    }
+    .landing-grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    .landing-feature-card {
+      padding: 2rem;
+      border-radius: var(--radius-md);
+      transition: all 0.25s ease;
+    }
+    .landing-feature-card:hover {
+      transform: translateY(-4px);
+    }
+    .feature-icon-box {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 1.25rem;
+    }
+    .feature-icon-blue { background: rgba(37, 99, 235, 0.12); color: var(--primary); }
+    .feature-icon-cyan { background: rgba(2, 132, 199, 0.12); color: var(--accent-cyan); }
+    .feature-icon-emerald { background: rgba(5, 150, 105, 0.12); color: var(--accent-emerald); }
+    .feature-icon-amber { background: rgba(217, 119, 6, 0.12); color: var(--accent-amber); }
+
+    .usp-pill-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 1rem;
+    }
+    .usp-pill {
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      padding: 0.45rem 0.9rem;
+      border-radius: 20px;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-main);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+    .usp-pill i { color: var(--accent-emerald); }
+
+    .split-pie-bar {
+      height: 14px;
+      border-radius: 7px;
+      display: flex;
+      overflow: hidden;
+      margin: 1rem 0;
+      background: var(--border-subtle);
+    }
+    .split-promoter { width: 60%; background: var(--accent-emerald); }
+    .split-platform { width: 40%; background: var(--primary); }
+
+    .landing-section-title {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      margin-bottom: 0.5rem;
+      color: var(--text-main);
+      text-align: center;
+    }
+    .landing-section-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-bottom: 2rem;
+      max-width: 650px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+    .demo-creds-banner {
+      background: rgba(37, 99, 235, 0.06);
+      border: 1px dashed var(--border-highlight);
+      border-radius: var(--radius-md);
+      padding: 1rem 1.25rem;
+      margin-top: 1.5rem;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .demo-creds-banner strong { color: var(--primary); }
+    .demo-badge-btn {
+      cursor: pointer;
+      padding: 0.25rem 0.6rem;
+      border-radius: 6px;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      font-size: 0.78rem;
+      font-family: 'JetBrains Mono', monospace;
+      margin: 0.2rem;
+      display: inline-block;
+      transition: all 0.15s;
+      color: var(--text-main);
+    }
+    .demo-badge-btn:hover {
+      background: var(--primary);
+      color: #fff;
     }
   </style>
 </head>
@@ -473,7 +711,7 @@
   <!-- Top Navigation Header -->
   <header class="top-nav">
     <div class="nav-inner">
-      <div class="brand" onclick="navigateTab('overview')">
+      <div class="brand" onclick="navigateTab('landing')">
         <div class="brand-icon">
           <i class="fa-solid fa-cube"></i>
         </div>
@@ -485,30 +723,42 @@
 
       <!-- Main Clean Navigation Tabs -->
       <nav class="nav-menu">
-        <button class="nav-tab-btn active" id="tab-overview" onclick="navigateTab('overview')">
-          <i class="fa-solid fa-globe"></i> 3D Overview
+        <button class="nav-tab-btn active" id="tab-landing" onclick="navigateTab('landing')">
+          <i class="fa-solid fa-house"></i> Home
         </button>
-        <button class="nav-tab-btn" id="tab-antifraud" onclick="navigateTab('antifraud')">
-          <i class="fa-solid fa-shield-halved"></i> Anti-Fraud Engine
-        </button>
-        <button class="nav-tab-btn" id="tab-campaigns" onclick="navigateTab('campaigns')">
-          <i class="fa-solid fa-bullhorn"></i> Campaigns Vault
+        <button class="nav-tab-btn" id="tab-brand" onclick="navigateTab('brand')">
+          <i class="fa-solid fa-building"></i> Brand Portal
         </button>
         <button class="nav-tab-btn" id="tab-promoter" onclick="navigateTab('promoter')">
           <i class="fa-solid fa-users-viewfinder"></i> Promoter Portal
         </button>
-        <button class="nav-tab-btn" id="tab-ledger" onclick="navigateTab('ledger')">
-          <i class="fa-solid fa-receipt"></i> Financial Ledger
+        <button class="nav-tab-btn" id="tab-admin" onclick="navigateTab('admin')">
+          <i class="fa-solid fa-shield-halved"></i> Admin Portal
+        </button>
+        <button class="nav-tab-btn" id="tab-overview" onclick="navigateTab('overview')">
+          <i class="fa-solid fa-globe"></i> 3D Network
         </button>
       </nav>
 
-      <!-- Status Indicator & Actions -->
-      <div style="display: flex; align-items: center; gap: 0.75rem;">
-        <div class="status-pill" id="backend-status-pill">
-          <div class="status-dot"></div>
-          <span id="backend-status-text">Backend Active</span>
+      <!-- Status Indicator, Theme Toggle, Auth, Simulator -->
+      <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+        <!-- Theme Switcher Button -->
+        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch Light/Dark Mode">
+          <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
+          <span id="theme-toggle-text">Dark Mode</span>
+        </button>
+
+        <!-- Current User Role Chip -->
+        <div class="user-pill" id="current-user-pill">
+          <i class="fa-solid fa-user-shield"></i>
+          <span id="current-user-role-label">Guest Visitor</span>
         </div>
-        <button class="btn btn-primary" onclick="openTestModal()">
+
+        <button class="btn btn-secondary" id="auth-nav-btn" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('signin')">
+          <i class="fa-solid fa-right-to-bracket"></i> Sign In
+        </button>
+
+        <button class="btn btn-primary" style="padding: 0.45rem 0.95rem; font-size: 0.8rem;" onclick="openTestModal()">
           <i class="fa-solid fa-radar"></i> Run Simulator
         </button>
       </div>
@@ -519,9 +769,184 @@
   <main class="app-main">
 
     <!-- ===================================================================== -->
+    <!-- 0. HIGH-CONVERTING LANDING PAGE (About Us, Why Us, USPs, Fund Flow)   -->
+    <!-- ===================================================================== -->
+    <section class="app-view active" id="view-landing">
+      <div class="landing-hero">
+        <div class="landing-badge">
+          <i class="fa-solid fa-shield-check"></i> Decentralized Community Affiliate Network
+        </div>
+        <h1>
+          Autonomous Affiliate Arbitrage &amp; <span>Zero-Fraud Traffic</span>
+        </h1>
+        <p>
+          NexusLink connects Web3 brands with verified community seeders across Telegram, Discord, WhatsApp, and Reddit with cryptographic smart-escrow settlements and sub-millisecond bot interception.
+        </p>
+        
+        <div class="landing-actions">
+          <button class="btn btn-primary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'client')">
+            <i class="fa-solid fa-rocket"></i> Onboard as Brand
+          </button>
+          <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'promoter')">
+            <i class="fa-solid fa-users"></i> Onboard as Promoter
+          </button>
+          <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="navigateTab('overview')">
+            <i class="fa-solid fa-cubes"></i> Explore 3D Mesh
+          </button>
+        </div>
+
+        <!-- Demonstration Notice Banner -->
+        <div class="demo-creds-banner">
+          <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i>
+          <strong>Instant Demo Access:</strong> Switch directly between roles using test credentials:
+          <span class="demo-badge-btn" onclick="quickLogin('admin')">Admin: admin@nexuslink.network</span>
+          <span class="demo-badge-btn" onclick="quickLogin('client')">Brand: growth@web3defi.io</span>
+          <span class="demo-badge-btn" onclick="quickLogin('promoter')">Promoter: alex.seeder@community.org</span>
+        </div>
+      </div>
+
+      <!-- Quick Highlights Grid -->
+      <div class="landing-grid-3">
+        <!-- Revenue Stream & Fund Utilization -->
+        <div class="glass-card landing-feature-card">
+          <div class="feature-icon-box feature-icon-emerald">
+            <i class="fa-solid fa-coins"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">Revenue Model &amp; Fund Utilization</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+            Every verified human click triggers an automated, mathematically immutable 60/40 settlement split from the client's escrow balance:
+          </p>
+          <div class="split-pie-bar">
+            <div class="split-promoter" title="60% to Promoter"></div>
+            <div class="split-platform" title="40% to Platform Treasury"></div>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.75rem;">
+            <span style="color: var(--accent-emerald);"><i class="fa-solid fa-circle-dot"></i> 60% Promoter Reward</span>
+            <span style="color: var(--primary);"><i class="fa-solid fa-circle-dot"></i> 40% Platform Revenue</span>
+          </div>
+          <p style="color: var(--text-dim); font-size: 0.8rem;">
+            Funds are utilized for escrow security, real-time ASN threat intelligence feeds, and instant withdrawals in INR (₹).
+          </p>
+        </div>
+
+        <!-- Anti-Fraud Engine USP -->
+        <div class="glass-card landing-feature-card">
+          <div class="feature-icon-box feature-icon-blue">
+            <i class="fa-solid fa-shield-virus"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">Proprietary Anti-Fraud Engine</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+            Sub-2ms heuristic inspection pipeline quashing fraudulent traffic before any funds unlock:
+          </p>
+          <ul style="list-style: none; margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.4rem;">
+            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>AWS / Cloud Datacenter Subnet Blocking</strong></li>
+            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>Headless Browser &amp; Bot Signature Interception</strong></li>
+            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>Tor Exit Node &amp; Anonymous Proxy Quarantining</strong></li>
+            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>Strict Rate Limiting (2 clicks / IP / 60 min)</strong></li>
+          </ul>
+        </div>
+
+        <!-- USPs & Value Proposition -->
+        <div class="glass-card landing-feature-card">
+          <div class="feature-icon-box feature-icon-cyan">
+            <i class="fa-solid fa-award"></i>
+          </div>
+          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">Key Value Propositions (USPs)</h3>
+          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
+            Why web3 brands and growth seeders choose NexusLink over traditional affiliate networks:
+          </p>
+          <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
+            <div class="usp-pill"><i class="fa-solid fa-bolt"></i> Atomic Escrow Settlements</div>
+            <div class="usp-pill"><i class="fa-solid fa-magnifying-glass-dollar"></i> Zero-Fraud Guarantee for Advertisers</div>
+            <div class="usp-pill"><i class="fa-solid fa-indian-rupee-sign"></i> Transparent INR (₹) Accounting</div>
+            <div class="usp-pill"><i class="fa-solid fa-share-nodes"></i> Native Telegram, WhatsApp &amp; Discord Seeding</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- About Us & Why Us Section -->
+      <div class="glass-card" style="padding: 2.5rem; margin-bottom: 3.5rem;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center;">
+          <div>
+            <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; letter-spacing: -0.02em;">
+              About NexusLink
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; margin-bottom: 1rem;">
+              NexusLink was founded to eliminate the multi-billion rupee affiliate click-fraud epidemic. By combining deterministic IP/ASN intelligence, browser heuristic profiling, and programmatic escrow vaults, we offer an open, auditable advertising clearinghouse for high-growth communities.
+            </p>
+            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.7;">
+              Advertisers only pay for genuine human engagement, while verified promoters enjoy automated, guaranteed payouts without platform withholding risks.
+            </p>
+          </div>
+          <div>
+            <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; letter-spacing: -0.02em;">
+              Why Choose Us?
+            </h2>
+            <div style="display: flex; flex-direction: column; gap: 1rem;">
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(37, 99, 235, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.1rem; flex-shrink: 0;">
+                  <i class="fa-solid fa-lock"></i>
+                </div>
+                <div>
+                  <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">Escrow-Backed Integrity</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Campaign budgets are locked in dedicated vaults; funds cannot be misappropriated or withheld arbitrarily.</p>
+                </div>
+              </div>
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(5, 150, 105, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-emerald); font-size: 1.1rem; flex-shrink: 0;">
+                  <i class="fa-solid fa-user-check"></i>
+                </div>
+                <div>
+                  <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">We Are Onboarding Promoters &amp; Brands</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Currently accepting new community leaders, Telegram group administrators, Discord mods, and growth brands into our active cohort.</p>
+                </div>
+              </div>
+              <div style="display: flex; gap: 1rem; align-items: flex-start;">
+                <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(2, 132, 199, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); font-size: 1.1rem; flex-shrink: 0;">
+                  <i class="fa-solid fa-file-invoice"></i>
+                </div>
+                <div>
+                  <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">Complete Financial Transparency</h4>
+                  <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Immutable double-entry ledger visible to all ecosystem participants, exported on-demand in CSV format.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Role Action Cards -->
+      <h3 class="landing-section-title">Access Dedicated Portals</h3>
+      <p class="landing-section-subtitle">Jump straight into tailored workflows built for brands, seeders, and platform administrators.</p>
+
+      <div class="landing-grid-3" style="margin-bottom: 2rem;">
+        <div class="glass-card" style="padding: 1.75rem; text-align: center;">
+          <div style="font-size: 2.2rem; color: var(--primary); margin-bottom: 0.75rem;"><i class="fa-solid fa-building"></i></div>
+          <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-main);">Brand / Advertiser Portal</h4>
+          <p style="color: var(--text-muted); font-size: 0.84rem; margin-bottom: 1.25rem;">Deploy campaigns, fund escrow in ₹, configure community niches, and view real-time conversions.</p>
+          <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="navigateTab('brand')">Enter Brand Portal</button>
+        </div>
+
+        <div class="glass-card" style="padding: 1.75rem; text-align: center;">
+          <div style="font-size: 2.2rem; color: var(--accent-emerald); margin-bottom: 0.75rem;"><i class="fa-solid fa-users-viewfinder"></i></div>
+          <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-main);">Promoter / Seeder Portal</h4>
+          <p style="color: var(--text-muted); font-size: 0.84rem; margin-bottom: 1.25rem;">Browse active campaigns, generate unique tracking slugs, submit proof of seeding, and withdraw in ₹.</p>
+          <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="navigateTab('promoter')">Enter Promoter Portal</button>
+        </div>
+
+        <div class="glass-card" style="padding: 1.75rem; text-align: center;">
+          <div style="font-size: 2.2rem; color: var(--accent-rose); margin-bottom: 0.75rem;"><i class="fa-solid fa-shield-halved"></i></div>
+          <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-main);">Admin Governance Portal</h4>
+          <p style="color: var(--text-muted); font-size: 0.84rem; margin-bottom: 1.25rem;">Live anti-fraud threat feed, withdrawal authorizations, double-entry financial ledger, and platform spread audit.</p>
+          <button class="btn btn-secondary" style="width: 100%; justify-content: center;" onclick="navigateTab('admin')">Enter Admin Portal</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===================================================================== -->
     <!-- 1. 3D NETWORK OVERVIEW VIEW -->
     <!-- ===================================================================== -->
-    <section class="app-view active" id="view-overview">
+    <section class="app-view" id="view-overview">
       
       <!-- Interactive Three.js 3D Globe & Node Canvas -->
       <div class="canvas-3d-wrap">
@@ -681,17 +1106,22 @@
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 3. CAMPAIGNS VAULT VIEW -->
+    <!-- 2. BRAND / CLIENT CAMPAIGN PORTAL VIEW -->
     <!-- ===================================================================== -->
-    <section class="app-view" id="view-campaigns">
+    <section class="app-view" id="view-brand">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-size: 1.6rem; font-weight: 800;">Client &amp; Brand Campaign Vault</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Fund smart-escrow contracts, set geographic targeting, and review verified community clicks.</p>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Fund smart-escrow contracts in ₹, set geographic targeting, and review verified community clicks.</p>
         </div>
-        <button class="btn btn-primary" onclick="openCampaignModal()">
-          <i class="fa-solid fa-plus"></i> Create New Campaign
-        </button>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-secondary" onclick="quickLogin('client')">
+            <i class="fa-solid fa-user-check"></i> Brand Demo Login
+          </button>
+          <button class="btn btn-primary" onclick="openCampaignModal()">
+            <i class="fa-solid fa-plus"></i> Create New Campaign
+          </button>
+        </div>
       </div>
 
       <div class="glass-card" style="padding: 1.5rem;">
@@ -729,15 +1159,15 @@
           <p style="color: var(--text-muted); font-size: 0.88rem;">Earn 60% of CPC rewards on every verified human community referral.</p>
         </div>
         <button class="btn btn-primary" onclick="openWithdrawModal()">
-          <i class="fa-solid fa-wallet"></i> Request Payout ($143.10)
+          <i class="fa-solid fa-wallet"></i> Request Payout (₹11,877.30)
         </button>
       </div>
 
       <div class="metrics-grid">
         <div class="glass-card metric-card emerald">
           <div class="metric-label">Claimable Wallet Balance</div>
-          <div class="metric-value" id="promoter-balance">$143.10</div>
-          <div class="metric-sub">Withdrawable via Arbitrum / Polygon USDC</div>
+          <div class="metric-value" id="promoter-balance">₹11,877.30</div>
+          <div class="metric-sub">Instant withdrawal in INR (₹) / Web3 Vault</div>
         </div>
         <div class="glass-card metric-card cyan">
           <div class="metric-label">Total Generated Clicks</div>
@@ -800,17 +1230,22 @@
     </section>
 
     <!-- ===================================================================== -->
-    <!-- 5. FINANCIAL LEDGER VIEW -->
+    <!-- 5. ADMIN GOVERNANCE PORTAL VIEW -->
     <!-- ===================================================================== -->
-    <section class="app-view" id="view-ledger">
+    <section class="app-view" id="view-admin">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
-          <h2 style="font-size: 1.6rem; font-weight: 800;">Cryptographic Financial Ledger &amp; Payouts</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Double-entry immutable balance journal and promoter withdrawal authorization queue.</p>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Administrator Governance &amp; Security Console</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Double-entry immutable balance journal, anti-fraud risk telemetry, and promoter withdrawal authorization queue.</p>
         </div>
-        <button class="btn btn-secondary" onclick="exportLedgerCSV()">
-          <i class="fa-solid fa-download"></i> Export Audit CSV
-        </button>
+        <div style="display: flex; gap: 0.75rem;">
+          <button class="btn btn-secondary" onclick="quickLogin('admin')">
+            <i class="fa-solid fa-user-shield"></i> Admin Demo Login
+          </button>
+          <button class="btn btn-secondary" onclick="exportLedgerCSV()">
+            <i class="fa-solid fa-download"></i> Export Audit CSV
+          </button>
+        </div>
       </div>
 
       <!-- Pending Withdrawals Table -->
@@ -840,14 +1275,14 @@
       <!-- Ledger Entries -->
       <div class="glass-card" style="padding: 1.5rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-book-journal-whills" style="color: var(--primary);"></i> Double-Entry Journal Records
+          <i class="fa-solid fa-book-journal-whills" style="color: var(--primary);"></i> Double-Entry Journal Records (₹)
         </h3>
         <div class="data-table-wrap">
           <table class="data-table">
             <thead>
               <tr>
                 <th>Transaction Type</th>
-                <th>Amount</th>
+                <th>Amount (₹)</th>
                 <th>Associated Account</th>
                 <th>Notes</th>
                 <th>Timestamp</th>
@@ -866,6 +1301,71 @@
   <!-- ===================================================================== -->
   <!-- MODALS -->
   <!-- ===================================================================== -->
+
+  <!-- Unified Authentication Modal (Sign In / Sign Up) -->
+  <div class="modal-overlay" id="modal-auth">
+    <div class="modal-box">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
+        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;" id="auth-modal-title">
+          <i class="fa-solid fa-user-shield" style="color: var(--primary);"></i> Account Portal
+        </h3>
+        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.3rem;" onclick="closeAuthModal()">&times;</button>
+      </div>
+
+      <!-- Auth Mode Tabs -->
+      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: var(--bg-surface); padding: 0.3rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+        <button type="button" class="btn" id="btn-tab-signin" style="flex: 1; justify-content: center; font-size: 0.85rem;" onclick="switchAuthTab('signin')">Sign In</button>
+        <button type="button" class="btn btn-secondary" id="btn-tab-signup" style="flex: 1; justify-content: center; font-size: 0.85rem;" onclick="switchAuthTab('signup')">Create Account</button>
+      </div>
+
+      <!-- Demo Credentials Quick Selector -->
+      <div style="background: rgba(37, 99, 235, 0.08); border: 1px solid var(--border-highlight); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.8rem;">
+        <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.35rem;">
+          <i class="fa-solid fa-bolt"></i> Quick Demo Logins:
+        </div>
+        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
+          <button type="button" class="demo-badge-btn" onclick="fillAuthForm('admin@nexuslink.network', 'admin123', 'admin')">Admin</button>
+          <button type="button" class="demo-badge-btn" onclick="fillAuthForm('growth@web3defi.io', 'client123', 'client')">Brand (Client)</button>
+          <button type="button" class="demo-badge-btn" onclick="fillAuthForm('alex.seeder@community.org', 'promoter123', 'promoter')">Promoter (Seeder)</button>
+        </div>
+      </div>
+
+      <form id="auth-form" onsubmit="handleAuthSubmit(event)">
+        <div class="form-group" id="group-auth-name" style="display: none;">
+          <label>Full Name / Organization</label>
+          <input type="text" id="auth-name" class="form-input" placeholder="e.g. Elena Growth" />
+        </div>
+
+        <div class="form-group">
+          <label>Email Address</label>
+          <input type="email" id="auth-email" class="form-input" placeholder="name@domain.com" required />
+        </div>
+
+        <div class="form-group">
+          <label>Password</label>
+          <input type="password" id="auth-password" class="form-input" placeholder="••••••••" required />
+        </div>
+
+        <div class="form-group" id="group-auth-role">
+          <label>Select Portal Role</label>
+          <select class="form-input" id="auth-role">
+            <option value="client">Brand / Advertiser Portal</option>
+            <option value="promoter">Promoter / Community Seeder Portal</option>
+            <option value="admin">Platform Administrator Portal</option>
+          </select>
+        </div>
+
+        <div class="form-group" id="group-auth-niches" style="display: none;">
+          <label>Target Seeding Communities</label>
+          <input type="text" id="auth-niches" class="form-input" placeholder="WhatsApp, Telegram, Discord, Reddit" value="Telegram, WhatsApp" />
+        </div>
+
+        <button type="submit" class="btn btn-primary" id="auth-submit-btn" style="width: 100%; justify-content: center; margin-top: 1rem; padding: 0.75rem;">
+          Sign In
+        </button>
+      </form>
+    </div>
+  </div>
 
   <!-- Anti-Fraud Test Simulator Modal -->
   <div class="modal-overlay" id="modal-test">
@@ -932,12 +1432,12 @@
         </div>
         <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
           <div class="form-group">
-            <label>Total Escrow Budget ($)</label>
-            <input type="number" id="camp-budget" class="form-input" min="10" step="5" value="500" required />
+            <label>Total Escrow Budget (₹)</label>
+            <input type="number" id="camp-budget" class="form-input" min="1000" step="500" value="41500" required />
           </div>
           <div class="form-group">
-            <label>Cost-Per-Click Rate ($)</label>
-            <input type="number" id="camp-cpc" class="form-input" min="0.05" max="5" step="0.05" value="0.50" required />
+            <label>Cost-Per-Click Rate (₹)</label>
+            <input type="number" id="camp-cpc" class="form-input" min="5" max="500" step="1" value="41.50" required />
           </div>
         </div>
         <div class="form-group">
@@ -959,12 +1459,155 @@
 
   <!-- Application Logic & Three.js 3D Engine -->
   <script>
-    // Data store with fallback for standalone GitHub Pages
+    // Currency Formatter Helper (INR)
+    function formatINR(amount) {
+      const num = Number(amount) || 0;
+      return '₹' + num.toLocaleString('en-IN', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    }
+
+    // Active User State
+    let currentUser = {
+      email: 'guest@nexuslink.network',
+      role: 'guest',
+      name: 'Guest Visitor'
+    };
+
+    // Theme Management (Light by default, Dark toggle)
+    function initTheme() {
+      const savedTheme = localStorage.getItem('nexuslink_theme') || 'light';
+      setTheme(savedTheme, false);
+    }
+
+    function toggleTheme() {
+      const current = document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'light';
+      const target = current === 'dark' ? 'light' : 'dark';
+      setTheme(target, true);
+    }
+
+    function setTheme(theme, showNotif = true) {
+      if (theme === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        const icon = document.getElementById('theme-toggle-icon');
+        const text = document.getElementById('theme-toggle-text');
+        if (icon) icon.className = 'fa-solid fa-sun';
+        if (text) text.innerText = 'Light Mode';
+        localStorage.setItem('nexuslink_theme', 'dark');
+      } else {
+        document.documentElement.removeAttribute('data-theme');
+        const icon = document.getElementById('theme-toggle-icon');
+        const text = document.getElementById('theme-toggle-text');
+        if (icon) icon.className = 'fa-solid fa-moon';
+        if (text) text.innerText = 'Dark Mode';
+        localStorage.setItem('nexuslink_theme', 'light');
+      }
+      if (showNotif) {
+        showToast('Switched to ' + (theme === 'dark' ? 'Dark' : 'Light') + ' theme');
+      }
+    }
+
+    // Auth Handlers
+    let currentAuthMode = 'signin';
+
+    function openAuthModal(mode = 'signin', defaultRole = 'client') {
+      currentAuthMode = mode;
+      const roleSelect = document.getElementById('auth-role');
+      if (roleSelect) roleSelect.value = defaultRole;
+      switchAuthTab(mode);
+      document.getElementById('modal-auth').classList.add('open');
+    }
+
+    function closeAuthModal() {
+      document.getElementById('modal-auth').classList.remove('open');
+    }
+
+    function switchAuthTab(mode) {
+      currentAuthMode = mode;
+      const btnIn = document.getElementById('btn-tab-signin');
+      const btnUp = document.getElementById('btn-tab-signup');
+      const nameGroup = document.getElementById('group-auth-name');
+      const nichesGroup = document.getElementById('group-auth-niches');
+      const submitBtn = document.getElementById('auth-submit-btn');
+      const title = document.getElementById('auth-modal-title');
+
+      if (mode === 'signin') {
+        if (btnIn) btnIn.className = 'btn btn-primary';
+        if (btnUp) btnUp.className = 'btn btn-secondary';
+        if (nameGroup) nameGroup.style.display = 'none';
+        if (nichesGroup) nichesGroup.style.display = 'none';
+        if (submitBtn) submitBtn.innerText = 'Sign In';
+        if (title) title.innerHTML = '<i class="fa-solid fa-right-to-bracket" style="color: var(--primary);"></i> Sign In to Portal';
+      } else {
+        if (btnIn) btnIn.className = 'btn btn-secondary';
+        if (btnUp) btnUp.className = 'btn btn-primary';
+        if (nameGroup) nameGroup.style.display = 'block';
+        if (nichesGroup) nichesGroup.style.display = 'block';
+        if (submitBtn) submitBtn.innerText = 'Create Account & Access Portal';
+        if (title) title.innerHTML = '<i class="fa-solid fa-user-plus" style="color: var(--primary);"></i> Onboard New Account';
+      }
+    }
+
+    function fillAuthForm(email, pass, role) {
+      document.getElementById('auth-email').value = email;
+      document.getElementById('auth-password').value = pass;
+      document.getElementById('auth-role').value = role;
+      switchAuthTab('signin');
+    }
+
+    function quickLogin(role) {
+      if (role === 'admin') {
+        fillAuthForm('admin@nexuslink.network', 'admin123', 'admin');
+      } else if (role === 'client') {
+        fillAuthForm('growth@web3defi.io', 'client123', 'client');
+      } else if (role === 'promoter') {
+        fillAuthForm('alex.seeder@community.org', 'promoter123', 'promoter');
+      }
+      handleAuthSubmit(new Event('submit'));
+    }
+
+    function handleAuthSubmit(e) {
+      if (e && e.preventDefault) e.preventDefault();
+      const email = document.getElementById('auth-email').value.trim() || 'demo@nexuslink.network';
+      const role = document.getElementById('auth-role').value;
+      const name = document.getElementById('auth-name').value.trim() || email.split('@')[0];
+
+      currentUser = { email, role, name };
+      updateUserUI();
+      closeAuthModal();
+
+      if (role === 'admin') {
+        navigateTab('admin');
+      } else if (role === 'client') {
+        navigateTab('brand');
+      } else if (role === 'promoter') {
+        navigateTab('promoter');
+      }
+
+      showToast('Signed in successfully as ' + role.toUpperCase() + ' (' + email + ')');
+    }
+
+    function updateUserUI() {
+      const chip = document.getElementById('current-user-role-label');
+      const authBtn = document.getElementById('auth-nav-btn');
+      if (chip) chip.innerText = currentUser.role.toUpperCase() + ': ' + currentUser.email.split('@')[0];
+      if (authBtn) {
+        authBtn.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out';
+        authBtn.onclick = () => {
+          currentUser = { email: 'guest@nexuslink.network', role: 'guest', name: 'Guest' };
+          chip.innerText = 'Guest Visitor';
+          authBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
+          authBtn.onclick = () => openAuthModal('signin');
+          navigateTab('landing');
+          showToast('Signed out successfully');
+        };
+      }
+    }
+
+    // Data store with fallback for standalone GitHub Pages (INR Currency)
     const DEFAULT_SEED = {
       users: [
-        { id: "admin-1", email: "admin@nexuslink.network", role: "admin", wallet_balance: 15420.50 },
-        { id: "client-1", email: "growth@web3defi.io", role: "client", wallet_balance: 850.00 },
-        { id: "promoter-1", email: "alex.seeder@community.org", role: "promoter", wallet_balance: 143.10 }
+        { id: "admin-1", email: "admin@nexuslink.network", role: "admin", wallet_balance: 1280000.00 },
+        { id: "client-1", email: "growth@web3defi.io", role: "client", wallet_balance: 70550.00 },
+        { id: "promoter-1", email: "alex.seeder@community.org", role: "promoter", wallet_balance: 11877.30 }
       ],
       campaigns: [
         {
@@ -972,9 +1615,9 @@
           client_id: "client-1",
           title: "NexusDeFi Decentralized Staking Hub Launch",
           target_url: "https://example.com/nexus-defi-staking",
-          total_budget: 1000.0,
-          remaining_budget: 784.0,
-          cost_per_click: 0.50,
+          total_budget: 83000.0,
+          remaining_budget: 65072.0,
+          cost_per_click: 41.50,
           geo_target: ["US", "UK", "DE", "SG"],
           community_niches: ["Discord", "Telegram", "Reddit"],
           status: "active",
@@ -985,9 +1628,9 @@
           client_id: "client-1",
           title: "CyberShield Zero-Knowledge VPN Early Access",
           target_url: "https://example.com/cybershield-vpn-beta",
-          total_budget: 500.0,
-          remaining_budget: 310.2,
-          cost_per_click: 0.40,
+          total_budget: 41500.0,
+          remaining_budget: 25746.6,
+          cost_per_click: 33.20,
           geo_target: ["Global", "CA", "AU", "JP"],
           community_niches: ["WhatsApp", "Reddit"],
           status: "active",
@@ -998,9 +1641,9 @@
           client_id: "client-1",
           title: "AlphaGame Play-to-Earn Season 4 Whitelist",
           target_url: "https://example.com/alphagame-season4",
-          total_budget: 250.0,
-          remaining_budget: 12.0,
-          cost_per_click: 0.60,
+          total_budget: 20750.0,
+          remaining_budget: 996.0,
+          cost_per_click: 49.80,
           geo_target: ["BR", "PH", "ID", "IN"],
           community_niches: ["Discord", "Telegram"],
           status: "paused",
@@ -1012,7 +1655,7 @@
         { id: "link-2", promoter_id: "promoter-1", campaign_id: "camp-2", custom_slug: "alex-vpn-secure", total_clicks: 112 }
       ],
       withdrawals: [
-        { id: "w-1", user_id: "promoter-1", email: "alex.seeder@community.org", amount: 100.00, destination_wallet: "0x71C...B9e4", network: "Polygon / USDT", status: "pending" }
+        { id: "w-1", user_id: "promoter-1", email: "alex.seeder@community.org", amount: 8300.00, destination_wallet: "0x71C...B9e4", network: "Polygon / USDT", status: "pending" }
       ],
       threat_logs: [
         { id: "t-1", ip_address: "198.51.100.42", user_agent: "DatacenterBot/1.0", slug: "alex-defi-alpha", risk_score: 92, reason: "Known Datacenter IP Subnet (AS16509 AWS)", created_at: "2026-10-10 18:52:58" },
@@ -1020,13 +1663,13 @@
         { id: "t-3", ip_address: "54.210.88.19", user_agent: "Python-requests/2.31.0", slug: "alex-defi-alpha", risk_score: 95, reason: "Automated scraper via AWS Cloud Datacenter", created_at: "2026-10-11 02:15:20" }
       ],
       ledger: [
-        { type: "deposit", amount: 1000.00, account: "growth@web3defi.io", notes: "Initial escrow deposit for DeFi Campaign", timestamp: "2026-10-10 18:52:58" },
-        { type: "deposit", amount: 250.00, account: "growth@web3defi.io", notes: "Escrow top-up for AlphaGame Season 4", timestamp: "2026-10-10 19:10:00" },
-        { type: "platform_revenue", amount: 86.20, account: "admin@nexuslink.network", notes: "System spread fee accrued", timestamp: "2026-10-10 18:52:58" },
-        { type: "payout", amount: 129.30, account: "alex.seeder@community.org", notes: "Promoter click earnings aggregated", timestamp: "2026-10-10 18:52:58" }
+        { type: "deposit", amount: 83000.00, account: "growth@web3defi.io", notes: "Initial escrow deposit for DeFi Campaign", timestamp: "2026-10-10 18:52:58" },
+        { type: "deposit", amount: 20750.00, account: "growth@web3defi.io", notes: "Escrow top-up for AlphaGame Season 4", timestamp: "2026-10-10 19:10:00" },
+        { type: "platform_revenue", amount: 7154.60, account: "admin@nexuslink.network", notes: "System spread fee accrued", timestamp: "2026-10-10 18:52:58" },
+        { type: "payout", amount: 10731.90, account: "alex.seeder@community.org", notes: "Promoter click earnings aggregated", timestamp: "2026-10-10 18:52:58" }
       ],
       tasks: [
-        { id: "task-1", campaign_title: "NexusDeFi Staking Hub Launch", notes: "Pinned announcement in 42k Telegram Web3 Alpha Channel for 24h.", screenshot: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80", payout: 25.00, status: "pending" }
+        { id: "task-1", campaign_title: "NexusDeFi Staking Hub Launch", notes: "Pinned announcement in 42k Telegram Web3 Alpha Channel for 24h.", screenshot: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?auto=format&fit=crop&w=600&q=80", payout: 2075.00, status: "pending" }
       ]
     };
 
@@ -1079,7 +1722,7 @@
       // Core wireframe sphere
       const sphereGeo = new THREE.SphereGeometry(7, 24, 24);
       const sphereMat = new THREE.MeshBasicMaterial({
-        color: 0x4f46e5,
+        color: 0x2563eb,
         wireframe: true,
         transparent: true,
         opacity: 0.18
@@ -1090,7 +1733,7 @@
       // Inner glowing core
       const innerGeo = new THREE.SphereGeometry(3.5, 16, 16);
       const innerMat = new THREE.MeshBasicMaterial({
-        color: 0x06b6d4,
+        color: 0x0284c7,
         wireframe: true,
         transparent: true,
         opacity: 0.25
@@ -1102,7 +1745,7 @@
       nodesGroup = new THREE.Group();
       const nodeCount = 38;
       const nodePositions = [];
-      const colors = [0x6366f1, 0x06b6d4, 0x10b981, 0xf43f5e];
+      const colors = [0x2563eb, 0x0284c7, 0x059669, 0xe11d48];
 
       for (let i = 0; i < nodeCount; i++) {
         const phi = Math.acos(-1 + (2 * i) / nodeCount);
@@ -1127,7 +1770,7 @@
 
       // Inter-node connection lines
       const lineMat = new THREE.LineBasicMaterial({
-        color: 0x6366f1,
+        color: 0x0284c7,
         transparent: true,
         opacity: 0.22
       });
@@ -1218,9 +1861,9 @@
       const totalThreats = store.threat_logs.length;
 
       const depEl = document.getElementById('ov-deposits');
-      if (depEl) depEl.innerText = `$${totalDeposits.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      if (depEl) depEl.innerText = formatINR(totalDeposits);
       const revEl = document.getElementById('ov-revenue');
-      if (revEl) revEl.innerText = `$${totalRevenue.toFixed(2)}`;
+      if (revEl) revEl.innerText = formatINR(totalRevenue);
       const clkEl = document.getElementById('ov-clicks');
       if (clkEl) clkEl.innerText = totalClicks;
       const thrEl = document.getElementById('ov-threats');
@@ -1228,7 +1871,33 @@
       const afBlk = document.getElementById('af-blocked');
       if (afBlk) afBlk.innerText = totalThreats;
 
-      // 1. Overview Recent Threat snippet
+      // Brand Portal Metrics
+      const bEscrow = document.getElementById('brand-total-escrow');
+      if (bEscrow) bEscrow.innerText = formatINR(totalDeposits);
+      const bClicks = document.getElementById('brand-total-clicks');
+      if (bClicks) bClicks.innerText = totalClicks;
+      const bActive = document.getElementById('brand-active-camps');
+      if (bActive) bActive.innerText = store.campaigns.filter(c => c.status === 'active').length;
+      const bFraud = document.getElementById('brand-fraud-saved');
+      if (bFraud) bFraud.innerText = totalThreats;
+
+      // Admin Portal Metrics
+      const aRev = document.getElementById('admin-revenue');
+      if (aRev) aRev.innerText = formatINR(totalRevenue);
+      const aThr = document.getElementById('admin-threats');
+      if (aThr) aThr.innerText = totalThreats;
+      const aPen = document.getElementById('admin-pending-payouts');
+      if (aPen) aPen.innerText = store.withdrawals.filter(w => w.status === 'pending').length;
+
+      // Promoter Portal Metrics
+      const pBal = document.getElementById('promoter-balance');
+      if (pBal) pBal.innerText = formatINR(11877.30);
+      const pClicks = document.getElementById('promoter-clicks');
+      if (pClicks) pClicks.innerText = totalClicks;
+      const pSlugs = document.getElementById('promoter-slugs-count');
+      if (pSlugs) pSlugs.innerText = store.promoter_links.length;
+
+      // 1. Overview Recent Threat snippet (Demo Data)
       const ovThreats = document.getElementById('ov-tbody-threats');
       if (ovThreats) {
         ovThreats.innerHTML = '';
@@ -1237,13 +1906,13 @@
           tr.innerHTML = `
             <td><code>${t.ip_address}</code></td>
             <td style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.reason}</td>
-            <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score}</span></td>
+            <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score} (Demo)</span></td>
           `;
           ovThreats.appendChild(tr);
         });
       }
 
-      // 2. Overview Recent Campaigns snippet
+      // 2. Overview Recent Campaigns snippet (Demo Data)
       const ovCamps = document.getElementById('ov-tbody-campaigns');
       if (ovCamps) {
         ovCamps.innerHTML = '';
@@ -1251,8 +1920,8 @@
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td><strong>${c.title}</strong></td>
-            <td><strong>$${c.cost_per_click.toFixed(2)}</strong></td>
-            <td><strong style="color: var(--accent-emerald);">$${c.remaining_budget.toFixed(2)}</strong></td>
+            <td><strong>${formatINR(c.cost_per_click)}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">${formatINR(c.remaining_budget)}</strong></td>
           `;
           ovCamps.appendChild(tr);
         });
@@ -1276,28 +1945,36 @@
         });
       }
 
-      // 4. Client Campaigns Vault
+      // 4. Client & Brand Campaigns Vault
+      const renderCampaignRow = (c) => {
+        const tr = document.createElement('tr');
+        const spent = (c.total_budget - c.remaining_budget);
+        tr.innerHTML = `
+          <td><strong>${c.title}</strong><br><small style="color: var(--text-dim);">${c.target_url}</small></td>
+          <td><strong>${formatINR(c.cost_per_click)}</strong></td>
+          <td>${formatINR(spent)} / ${formatINR(c.total_budget)}</td>
+          <td>${c.geo_target.join(', ')}</td>
+          <td>${c.community_niches.join(', ')}</td>
+          <td><span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${c.status.toUpperCase()}</span></td>
+          <td>
+            <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleCampaignStatus('${c.id}')">
+              ${c.status === 'active' ? 'Pause' : 'Resume'}
+            </button>
+          </td>
+        `;
+        return tr;
+      };
+
+      const tbodyBrand = document.getElementById('tbody-brand-campaigns');
+      if (tbodyBrand) {
+        tbodyBrand.innerHTML = '';
+        store.campaigns.forEach(c => tbodyBrand.appendChild(renderCampaignRow(c)));
+      }
+
       const tbodyClient = document.getElementById('tbody-client-campaigns');
       if (tbodyClient) {
         tbodyClient.innerHTML = '';
-        store.campaigns.forEach(c => {
-          const tr = document.createElement('tr');
-          const spent = (c.total_budget - c.remaining_budget).toFixed(2);
-          tr.innerHTML = `
-            <td><strong>${c.title}</strong><br><small style="color: var(--text-dim);">${c.target_url}</small></td>
-            <td><strong>$${c.cost_per_click.toFixed(2)}</strong></td>
-            <td>$${spent} / $${c.total_budget.toFixed(2)}</td>
-            <td>${c.geo_target.join(', ')}</td>
-            <td>${c.community_niches.join(', ')}</td>
-            <td><span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${c.status.toUpperCase()}</span></td>
-            <td>
-              <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleCampaignStatus('${c.id}')">
-                ${c.status === 'active' ? 'Pause' : 'Resume'}
-              </button>
-            </td>
-          `;
-          tbodyClient.appendChild(tr);
-        });
+        store.campaigns.forEach(c => tbodyClient.appendChild(renderCampaignRow(c)));
       }
 
       // 5. Promoter Marketplace
@@ -1306,13 +1983,13 @@
         tbodyMarket.innerHTML = '';
         store.campaigns.forEach(c => {
           const link = store.promoter_links.find(l => l.campaign_id === c.id);
-          const reward = (c.cost_per_click * 0.6).toFixed(2);
+          const reward = (c.cost_per_click * 0.6);
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td><strong>${c.title}</strong></td>
-            <td><strong style="color: var(--accent-emerald);">+$${reward} / Click</strong></td>
+            <td><strong style="color: var(--accent-emerald);">+${formatINR(reward)} / Click</strong></td>
             <td>${c.community_niches.join(', ')}</td>
-            <td>$${c.remaining_budget.toFixed(2)}</td>
+            <td>${formatINR(c.remaining_budget)}</td>
             <td>
               ${link ? `<code style="color: var(--accent-cyan); font-weight: bold;">/r/${link.custom_slug}</code>` : '<span style="color: var(--text-dim);">Not joined</span>'}
             </td>
@@ -1335,7 +2012,7 @@
             <td><strong>${t.campaign_title}</strong></td>
             <td>${t.notes}</td>
             <td><a href="${t.screenshot}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;"><i class="fa-regular fa-image"></i> View Proof</a></td>
-            <td><strong style="color: var(--accent-emerald);">+$${t.payout.toFixed(2)}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">+${formatINR(t.payout)}</strong></td>
             <td><span class="badge ${t.status === 'pending' ? 'badge-amber' : 'badge-emerald'}">${t.status.toUpperCase()}</span></td>
           `;
           tbodyTasks.appendChild(tr);
@@ -1350,7 +2027,7 @@
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td><strong>${w.email}</strong></td>
-            <td><strong style="color: var(--accent-emerald);">$${w.amount.toFixed(2)}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">${formatINR(w.amount)}</strong></td>
             <td><code>${w.destination_wallet}</code></td>
             <td>${w.network}</td>
             <td><span class="badge ${w.status === 'pending' ? 'badge-amber' : w.status === 'authorized' ? 'badge-emerald' : 'badge-rose'}">${w.status.toUpperCase()}</span></td>
@@ -1373,7 +2050,7 @@
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td><span class="badge badge-indigo">${l.type.toUpperCase()}</span></td>
-            <td><strong style="color: var(--text-main);">$${l.amount.toFixed(2)}</strong></td>
+            <td><strong style="color: var(--text-main);">${formatINR(l.amount)}</strong></td>
             <td>${l.account}</td>
             <td>${l.notes}</td>
             <td><small style="color: var(--text-dim);">${l.timestamp}</small></td>
@@ -1492,14 +2169,14 @@
         id: `w-${Date.now()}`,
         user_id: 'promoter-1',
         email: 'alex.seeder@community.org',
-        amount: 143.10,
+        amount: 11877.30,
         destination_wallet: '0x71C...B9e4',
-        network: 'Arbitrum / USDC',
+        network: 'Polygon / INR-USDT',
         status: 'pending'
       });
       saveStore(store);
       renderAll();
-      showToast('Payout request of $143.10 submitted to admin ledger!');
+      showToast('Payout request of ₹11,877.30 submitted to admin ledger!');
     }
 
     function applySimPreset() {
@@ -1630,6 +2307,8 @@
     }
 
     document.addEventListener('DOMContentLoaded', () => {
+      initTheme();
+      updateUserUI();
       init3DNetwork();
       renderAll();
       checkBackendHealth();
