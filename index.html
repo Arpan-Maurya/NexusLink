@@ -3,27 +3,28 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NexusLink | Decentralized Community Affiliate Network &amp; Anti-Fraud Engine</title>
+  <title>NexusLink | Decentralized Affiliate Network &amp; Anti-Fraud Engine</title>
   
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
   
-  <!-- FontAwesome & Chart.js -->
+  <!-- FontAwesome & Three.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
 
   <style>
     :root {
-      --bg-base: #090d16;
-      --bg-surface: #111726;
-      --bg-card: rgba(17, 24, 39, 0.75);
-      --bg-glass: rgba(15, 23, 42, 0.65);
+      --bg-base: #070a12;
+      --bg-surface: #0e1424;
+      --bg-card: rgba(15, 23, 42, 0.72);
+      --bg-card-hover: rgba(22, 34, 62, 0.85);
       --border-subtle: rgba(255, 255, 255, 0.08);
-      --border-highlight: rgba(99, 102, 241, 0.4);
+      --border-highlight: rgba(99, 102, 241, 0.45);
       --primary: #6366f1;
-      --primary-glow: rgba(99, 102, 241, 0.3);
+      --primary-hover: #4f46e5;
+      --primary-glow: rgba(99, 102, 241, 0.35);
       --accent-cyan: #06b6d4;
       --accent-emerald: #10b981;
       --accent-amber: #f59e0b;
@@ -47,17 +48,18 @@
       overflow-x: hidden;
     }
 
-    /* Ambient Background Glow */
+    /* Ambient dynamic glow */
     .ambient-glow {
       position: fixed;
       top: 0; left: 0; width: 100%; height: 100%;
       pointer-events: none;
       z-index: 0;
-      background: radial-gradient(circle at 15% 15%, rgba(99, 102, 241, 0.12) 0%, transparent 40%),
-                  radial-gradient(circle at 85% 85%, rgba(6, 182, 212, 0.1) 0%, transparent 45%);
+      background: radial-gradient(circle at 10% 20%, rgba(99, 102, 241, 0.15) 0%, transparent 45%),
+                  radial-gradient(circle at 90% 80%, rgba(6, 182, 212, 0.12) 0%, transparent 50%),
+                  radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
     }
 
-    /* Glass Panels */
+    /* Glass Cards */
     .glass-card {
       background: var(--bg-card);
       backdrop-filter: blur(16px);
@@ -65,6 +67,10 @@
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-md);
       box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      transition: all 0.25s ease;
+    }
+    .glass-card:hover {
+      border-color: rgba(99, 102, 241, 0.3);
     }
 
     /* Buttons */
@@ -72,13 +78,14 @@
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      padding: 0.65rem 1.25rem;
+      padding: 0.6rem 1.15rem;
       border-radius: var(--radius-sm);
       font-weight: 600;
-      font-size: 0.9rem;
+      font-size: 0.88rem;
       cursor: pointer;
       border: none;
       transition: all 0.2s ease;
+      text-decoration: none;
     }
     .btn-primary {
       background: linear-gradient(135deg, #6366f1 0%, #4f46e5 100%);
@@ -87,7 +94,7 @@
     }
     .btn-primary:hover {
       transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.45);
+      box-shadow: 0 6px 20px rgba(99, 102, 241, 0.5);
     }
     .btn-secondary {
       background: rgba(255, 255, 255, 0.05);
@@ -107,65 +114,72 @@
       color: #fff;
     }
 
-    /* Header Nav */
+    /* Top Navigation Bar */
     header.top-nav {
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(10, 15, 26, 0.85);
-      backdrop-filter: blur(16px);
+      background: rgba(9, 13, 24, 0.88);
+      backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border-subtle);
     }
     .nav-inner {
-      max-width: 1400px;
+      max-width: 1440px;
       margin: 0 auto;
       padding: 0.85rem 1.5rem;
       display: flex;
       align-items: center;
       justify-content: space-between;
+      gap: 1rem;
+      flex-wrap: wrap;
     }
     .brand {
       display: flex;
       align-items: center;
-      gap: 0.75rem;
+      gap: 0.85rem;
       cursor: pointer;
     }
     .brand-icon {
-      width: 40px; height: 40px;
-      border-radius: 10px;
+      width: 42px;
+      height: 42px;
+      border-radius: 12px;
       background: linear-gradient(135deg, var(--primary), var(--accent-cyan));
-      display: flex; align-items: center; justify-content: center;
-      font-size: 1.25rem; color: #fff;
-      box-shadow: 0 0 15px var(--primary-glow);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      color: #fff;
+      box-shadow: 0 0 18px var(--primary-glow);
     }
     .brand-text h1 {
       font-size: 1.25rem;
       font-weight: 800;
       letter-spacing: -0.02em;
+      line-height: 1.1;
     }
     .brand-text span {
-      font-size: 0.68rem;
+      font-size: 0.7rem;
       color: var(--accent-cyan);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.08em;
     }
 
-    /* Role Switcher Toolbar */
-    .role-switcher {
+    /* Navigation Menu */
+    .nav-menu {
       display: flex;
       align-items: center;
       background: rgba(255, 255, 255, 0.04);
       padding: 0.3rem;
       border-radius: 12px;
       border: 1px solid var(--border-subtle);
-      gap: 0.35rem;
+      gap: 0.25rem;
     }
-    .role-btn {
-      padding: 0.45rem 1rem;
+    .nav-tab-btn {
+      padding: 0.5rem 0.95rem;
       border-radius: 8px;
       font-size: 0.82rem;
-      font-weight: 700;
+      font-weight: 600;
       color: var(--text-muted);
       cursor: pointer;
       border: none;
@@ -173,33 +187,130 @@
       transition: all 0.2s;
       display: flex;
       align-items: center;
-      gap: 0.4rem;
+      gap: 0.45rem;
+      white-space: nowrap;
     }
-    .role-btn.active {
+    .nav-tab-btn:hover {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.05);
+    }
+    .nav-tab-btn.active {
       background: var(--primary);
       color: #fff;
       box-shadow: 0 2px 10px var(--primary-glow);
     }
 
-    /* Main Workspace */
+    /* Server Status Badge */
+    .status-pill {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      padding: 0.35rem 0.85rem;
+      border-radius: 20px;
+      background: rgba(16, 185, 129, 0.12);
+      border: 1px solid rgba(16, 185, 129, 0.3);
+      font-size: 0.75rem;
+      color: var(--accent-emerald);
+      font-weight: 600;
+    }
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent-emerald);
+      box-shadow: 0 0 8px var(--accent-emerald);
+      animation: pulseDot 2s infinite ease-in-out;
+    }
+    @keyframes pulseDot {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: 0.5; transform: scale(0.85); }
+    }
+
+    /* Main Container */
     .app-main {
       flex: 1;
       position: relative;
       z-index: 1;
-      max-width: 1400px;
+      max-width: 1440px;
       width: 100%;
       margin: 0 auto;
-      padding: 2rem 1.5rem 5rem;
+      padding: 1.75rem 1.5rem 4rem;
     }
 
-    /* Role Views */
-    .role-view { display: none; }
-    .role-view.active { display: block; }
+    /* Section Views */
+    .app-view {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    .app-view.active {
+      display: block;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* 3D Canvas Container */
+    .canvas-3d-wrap {
+      position: relative;
+      width: 100%;
+      height: 380px;
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      margin-bottom: 2rem;
+      border: 1px solid rgba(99, 102, 241, 0.3);
+      box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
+      background: radial-gradient(circle at center, #111a33 0%, #070a12 100%);
+    }
+    #three-viewport {
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+    .canvas-overlay-content {
+      position: absolute;
+      top: 1.5rem;
+      left: 1.75rem;
+      pointer-events: none;
+      z-index: 10;
+    }
+    .canvas-overlay-content h2 {
+      font-size: 1.85rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+    }
+    .canvas-overlay-content p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      margin-top: 0.3rem;
+      max-width: 600px;
+      text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+    }
+    .canvas-controls-bar {
+      position: absolute;
+      bottom: 1.25rem;
+      right: 1.5rem;
+      display: flex;
+      gap: 0.5rem;
+      z-index: 10;
+    }
+    .canvas-badge {
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid var(--border-subtle);
+      padding: 0.4rem 0.85rem;
+      border-radius: 8px;
+      font-size: 0.75rem;
+      color: var(--accent-cyan);
+      font-family: 'JetBrains Mono', monospace;
+      backdrop-filter: blur(8px);
+    }
 
     /* Metrics Grid */
     .metrics-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
@@ -227,13 +338,18 @@
       margin-bottom: 0.4rem;
     }
     .metric-value {
-      font-size: 1.9rem;
+      font-size: 2.1rem;
       font-weight: 800;
       color: #fff;
       font-feature-settings: 'tnum';
     }
+    .metric-sub {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 0.35rem;
+    }
 
-    /* Data Tables */
+    /* Tables */
     .data-table-wrap {
       overflow-x: auto;
     }
@@ -267,15 +383,39 @@
       gap: 0.35rem;
       padding: 0.25rem 0.65rem;
       border-radius: 20px;
-      font-size: 0.75rem;
+      font-size: 0.72rem;
       font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
     }
     .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
     .badge-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
     .badge-rose { background: rgba(244, 63, 94, 0.15); color: #f43f5e; }
     .badge-indigo { background: rgba(99, 102, 241, 0.15); color: #a5b4fc; }
 
-    /* Form Inputs */
+    /* Modals */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 2000;
+      background: rgba(0, 0, 0, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+    .modal-overlay.open { display: flex; }
+    .modal-box {
+      max-width: 600px;
+      width: 100%;
+      background: var(--bg-surface);
+      border: 1px solid var(--border-highlight);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8);
+      position: relative;
+    }
     .form-group {
       margin-bottom: 1.25rem;
     }
@@ -291,7 +431,7 @@
       background: rgba(255, 255, 255, 0.04);
       border: 1px solid var(--border-subtle);
       border-radius: var(--radius-sm);
-      padding: 0.7rem 1rem;
+      padding: 0.75rem 1rem;
       color: #fff;
       font-size: 0.9rem;
       outline: none;
@@ -302,33 +442,11 @@
       box-shadow: 0 0 0 3px var(--primary-glow);
     }
 
-    /* Modals */
-    .modal-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 2000;
-      background: rgba(0, 0, 0, 0.8);
-      backdrop-filter: blur(8px);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-    }
-    .modal-overlay.open { display: flex; }
-    .modal-box {
-      max-width: 600px;
-      width: 100%;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-highlight);
-      border-radius: var(--radius-lg);
-      padding: 2rem;
-      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.8);
-    }
-
     /* Toast */
     .toast {
       position: fixed;
-      bottom: 2rem; right: 2rem;
+      bottom: 2rem;
+      right: 2rem;
       z-index: 3000;
       background: rgba(15, 23, 42, 0.95);
       border: 1px solid var(--accent-emerald);
@@ -341,106 +459,203 @@
       color: #fff;
       font-size: 0.9rem;
     }
-    .toast.show { display: flex; }
+    .toast.show { display: flex; animation: slideIn 0.3s ease; }
+    @keyframes slideIn {
+      from { transform: translateY(15px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
   </style>
 </head>
 <body>
 
   <div class="ambient-glow"></div>
 
-  <!-- Top Navigation Bar -->
+  <!-- Top Navigation Header -->
   <header class="top-nav">
     <div class="nav-inner">
-      <div class="brand" onclick="switchRole('admin')">
+      <div class="brand" onclick="navigateTab('overview')">
         <div class="brand-icon">
-          <i class="fa-solid fa-network-wired"></i>
+          <i class="fa-solid fa-cube"></i>
         </div>
         <div class="brand-text">
           <h1>NexusLink</h1>
-          <span>Decentralized Community Affiliate Protocol</span>
+          <span>Decentralized Affiliate &amp; Anti-Fraud Engine</span>
         </div>
       </div>
 
-      <!-- Live Role Switcher -->
-      <div class="role-switcher">
-        <button class="role-btn active" id="btn-role-admin" onclick="switchRole('admin')">
-          <i class="fa-solid fa-shield-halved"></i> Admin
+      <!-- Main Clean Navigation Tabs -->
+      <nav class="nav-menu">
+        <button class="nav-tab-btn active" id="tab-overview" onclick="navigateTab('overview')">
+          <i class="fa-solid fa-globe"></i> 3D Overview
         </button>
-        <button class="role-btn" id="btn-role-client" onclick="switchRole('client')">
-          <i class="fa-solid fa-building"></i> Client / Brand
+        <button class="nav-tab-btn" id="tab-antifraud" onclick="navigateTab('antifraud')">
+          <i class="fa-solid fa-shield-halved"></i> Anti-Fraud Engine
         </button>
-        <button class="role-btn" id="btn-role-promoter" onclick="switchRole('promoter')">
-          <i class="fa-solid fa-bullhorn"></i> Promoter ("Seeder")
+        <button class="nav-tab-btn" id="tab-campaigns" onclick="navigateTab('campaigns')">
+          <i class="fa-solid fa-bullhorn"></i> Campaigns Vault
         </button>
-        <button class="role-btn" id="btn-role-test" onclick="openTestModal()">
-          <i class="fa-solid fa-flask-vial"></i> Test Anti-Fraud
+        <button class="nav-tab-btn" id="tab-promoter" onclick="navigateTab('promoter')">
+          <i class="fa-solid fa-users-viewfinder"></i> Promoter Portal
+        </button>
+        <button class="nav-tab-btn" id="tab-ledger" onclick="navigateTab('ledger')">
+          <i class="fa-solid fa-receipt"></i> Financial Ledger
+        </button>
+      </nav>
+
+      <!-- Status Indicator & Actions -->
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <div class="status-pill" id="backend-status-pill">
+          <div class="status-dot"></div>
+          <span id="backend-status-text">Backend Active</span>
+        </div>
+        <button class="btn btn-primary" onclick="openTestModal()">
+          <i class="fa-solid fa-radar"></i> Run Simulator
         </button>
       </div>
     </div>
   </header>
 
+  <!-- Main Container -->
   <main class="app-main">
 
-    <!-- ================================================================= -->
-    <!-- 1. ADMINISTRATOR DASHBOARD VIEW -->
-    <!-- ================================================================= -->
-    <div class="role-view active" id="view-admin">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
-        <div>
-          <h2 style="font-size: 1.6rem; font-weight: 800;">Global Financial Ledger &amp; Security Protocol</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Real-time smart escrow monitoring, bot inspection telemetry, and payout authorization</p>
+    <!-- ===================================================================== -->
+    <!-- 1. 3D NETWORK OVERVIEW VIEW -->
+    <!-- ===================================================================== -->
+    <section class="app-view active" id="view-overview">
+      
+      <!-- Interactive Three.js 3D Globe & Node Canvas -->
+      <div class="canvas-3d-wrap">
+        <canvas id="three-viewport"></canvas>
+        <div class="canvas-overlay-content">
+          <h2>Decentralized Affiliate Mesh &amp; Security Protocol</h2>
+          <p>Real-time WebGL node graph tracking verified clicks, active brand campaigns, and anti-fraud threat quarantines.</p>
         </div>
-        <div style="display: flex; gap: 0.75rem;">
-          <button class="btn btn-secondary" onclick="exportLedgerCSV()"><i class="fa-solid fa-download"></i> Export Audit</button>
-          <button class="btn btn-primary" onclick="openTestModal()"><i class="fa-solid fa-radar"></i> Run Bot Simulator</button>
+        <div class="canvas-controls-bar">
+          <div class="canvas-badge"><i class="fa-solid fa-circle-nodes"></i> Mesh Nodes: 36</div>
+          <div class="canvas-badge"><i class="fa-solid fa-rotate"></i> Auto-Rotate: Active</div>
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="reset3DCamera()">
+            <i class="fa-solid fa-arrows-rotate"></i> Reset Angle
+          </button>
         </div>
       </div>
 
-      <!-- Metrics Grid -->
+      <!-- Overview Metrics Grid -->
       <div class="metrics-grid">
         <div class="glass-card metric-card">
           <div class="metric-label">Escrow Deposits</div>
-          <div class="metric-value" id="adm-deposits">$1,250.00</div>
+          <div class="metric-value" id="ov-deposits">$1,250.00</div>
+          <div class="metric-sub">Smart contract funded balance</div>
         </div>
         <div class="glass-card metric-card cyan">
           <div class="metric-label">Total Verified Clicks</div>
-          <div class="metric-value" id="adm-clicks">544</div>
+          <div class="metric-value" id="ov-clicks">544</div>
+          <div class="metric-sub">Certified legitimate human visits</div>
         </div>
         <div class="glass-card metric-card emerald">
           <div class="metric-label">Platform Net Revenue</div>
-          <div class="metric-value" id="adm-revenue">$86.20</div>
+          <div class="metric-value" id="ov-revenue">$86.20</div>
+          <div class="metric-sub">40% protocol commission pool</div>
         </div>
         <div class="glass-card metric-card rose">
-          <div class="metric-label">Threats Quarantined</div>
-          <div class="metric-value" id="adm-threats">3</div>
+          <div class="metric-label">Threats Intercepted</div>
+          <div class="metric-value" id="ov-threats">3</div>
+          <div class="metric-sub">Bots &amp; datacenter IPs quarantined</div>
         </div>
       </div>
 
-      <!-- Pending Withdrawal Authorizations -->
-      <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
-        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-money-bill-transfer" style="color: var(--accent-amber);"></i> Pending Payout Authorizations
-        </h3>
-        <div class="data-table-wrap">
-          <table class="data-table" id="table-withdrawals">
-            <thead>
-              <tr>
-                <th>Promoter Account</th>
-                <th>Requested Payout</th>
-                <th>Destination Wallet</th>
-                <th>Network</th>
-                <th>Status</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-withdrawals">
-              <!-- Rendered via JS -->
-            </tbody>
-          </table>
+      <!-- Quick Summary Cards -->
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+        
+        <!-- Live Anti-Fraud Feed Snippet -->
+        <div class="glass-card" style="padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-shield-virus" style="color: var(--accent-rose);"></i> Recent Threat Interceptions
+            </h3>
+            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="navigateTab('antifraud')">
+              View All <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>IP Address</th>
+                  <th>Reason</th>
+                  <th>Risk</th>
+                </tr>
+              </thead>
+              <tbody id="ov-tbody-threats">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <!-- Active Campaigns Quick List -->
+        <div class="glass-card" style="padding: 1.5rem;">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+            <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
+              <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i> Top Active Campaigns
+            </h3>
+            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="navigateTab('campaigns')">
+              Manage <i class="fa-solid fa-arrow-right"></i>
+            </button>
+          </div>
+          <div class="data-table-wrap">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Campaign Title</th>
+                  <th>CPC</th>
+                  <th>Budget Left</th>
+                </tr>
+              </thead>
+              <tbody id="ov-tbody-campaigns">
+                <!-- Injected via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 2. ANTI-FRAUD ENGINE VIEW -->
+    <!-- ===================================================================== -->
+    <section class="app-view" id="view-antifraud">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Real-Time Anti-Fraud &amp; Bot Inspection Engine</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Multi-layered heuristic algorithm intercepting headless browsers, datacenter subnets, and proxies before payouts execute.</p>
+        </div>
+        <button class="btn btn-primary" onclick="openTestModal()">
+          <i class="fa-solid fa-flask-vial"></i> Test Traffic Headers
+        </button>
+      </div>
+
+      <!-- Anti-Fraud Stats -->
+      <div class="metrics-grid">
+        <div class="glass-card metric-card rose">
+          <div class="metric-label">Quarantined Hits</div>
+          <div class="metric-value" id="af-blocked">3</div>
+          <div class="metric-sub">Zero financial deduction</div>
+        </div>
+        <div class="glass-card metric-card cyan">
+          <div class="metric-label">Verified Human Ratio</div>
+          <div class="metric-value">99.4%</div>
+          <div class="metric-sub">Passed browser &amp; ASN check</div>
+        </div>
+        <div class="glass-card metric-card">
+          <div class="metric-label">Inspection Latency</div>
+          <div class="metric-value">1.8 ms</div>
+          <div class="metric-sub">Direct in-memory middleware</div>
         </div>
       </div>
 
-      <!-- Anti-Fraud Threat Log -->
+      <!-- Threat Logs Table -->
       <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
           <i class="fa-solid fa-shield-virus" style="color: var(--accent-rose);"></i> Live Bot / Datacenter Threat Interception Logs
@@ -463,65 +678,25 @@
           </table>
         </div>
       </div>
+    </section>
 
-      <!-- Double-Entry Financial Ledger -->
-      <div class="glass-card" style="padding: 1.5rem;">
-        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-book-journal-whills" style="color: var(--primary);"></i> Double-Entry Financial Ledger
-        </h3>
-        <div class="data-table-wrap">
-          <table class="data-table">
-            <thead>
-              <tr>
-                <th>Transaction Type</th>
-                <th>Amount</th>
-                <th>Associated Account</th>
-                <th>Notes</th>
-                <th>Timestamp</th>
-              </tr>
-            </thead>
-            <tbody id="tbody-ledger">
-              <!-- Rendered via JS -->
-            </tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-
-    <!-- ================================================================= -->
-    <!-- 2. CLIENT / BRAND DASHBOARD VIEW -->
-    <!-- ================================================================= -->
-    <div class="role-view" id="view-client">
+    <!-- ===================================================================== -->
+    <!-- 3. CAMPAIGNS VAULT VIEW -->
+    <!-- ===================================================================== -->
+    <section class="app-view" id="view-campaigns">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-size: 1.6rem; font-weight: 800;">Client &amp; Brand Campaign Vault</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Fund smart-escrow contracts, set geographic targeting, and review verified community clicks</p>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Fund smart-escrow contracts, set geographic targeting, and review verified community clicks.</p>
         </div>
         <button class="btn btn-primary" onclick="openCampaignModal()">
           <i class="fa-solid fa-plus"></i> Create New Campaign
         </button>
       </div>
 
-      <!-- Client Metrics -->
-      <div class="metrics-grid">
-        <div class="glass-card metric-card">
-          <div class="metric-label">Client Escrow Vault Balance</div>
-          <div class="metric-value">$850.00</div>
-        </div>
-        <div class="glass-card metric-card cyan">
-          <div class="metric-label">Active Campaigns</div>
-          <div class="metric-value" id="client-campaign-count">2</div>
-        </div>
-        <div class="glass-card metric-card emerald">
-          <div class="metric-label">Total Verified Referral Visits</div>
-          <div class="metric-value" id="client-total-clicks">544</div>
-        </div>
-      </div>
-
-      <!-- Active Client Campaigns -->
       <div class="glass-card" style="padding: 1.5rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i> Active Client Campaigns
+          <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i> Active Brand Campaigns
         </h3>
         <div class="data-table-wrap">
           <table class="data-table">
@@ -542,44 +717,44 @@
           </table>
         </div>
       </div>
-    </div>
+    </section>
 
-    <!-- ================================================================= -->
-    <!-- 3. PROMOTER DASHBOARD ("SEEDERS") VIEW -->
-    <!-- ================================================================= -->
-    <div class="role-view" id="view-promoter">
+    <!-- ===================================================================== -->
+    <!-- 4. PROMOTER PORTAL VIEW -->
+    <!-- ===================================================================== -->
+    <section class="app-view" id="view-promoter">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-size: 1.6rem; font-weight: 800;">Promoter &amp; Community Seeder Portal</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Earn 60% of CPC rewards on every verified human community click</p>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Earn 60% of CPC rewards on every verified human community referral.</p>
         </div>
-        <div style="display: flex; gap: 0.75rem;">
-          <button class="btn btn-primary" onclick="openWithdrawModal()">
-            <i class="fa-solid fa-wallet"></i> Request Payout ($143.10)
-          </button>
-        </div>
+        <button class="btn btn-primary" onclick="openWithdrawModal()">
+          <i class="fa-solid fa-wallet"></i> Request Payout ($143.10)
+        </button>
       </div>
 
-      <!-- Promoter Metrics -->
       <div class="metrics-grid">
         <div class="glass-card metric-card emerald">
           <div class="metric-label">Claimable Wallet Balance</div>
           <div class="metric-value" id="promoter-balance">$143.10</div>
+          <div class="metric-sub">Withdrawable via Arbitrum / Polygon USDC</div>
         </div>
         <div class="glass-card metric-card cyan">
           <div class="metric-label">Total Generated Clicks</div>
           <div class="metric-value" id="promoter-clicks">544</div>
+          <div class="metric-sub">Certified valid clicks</div>
         </div>
         <div class="glass-card metric-card">
           <div class="metric-label">Active Slugs Joined</div>
           <div class="metric-value" id="promoter-slugs-count">2</div>
+          <div class="metric-sub">Tracking links generated</div>
         </div>
       </div>
 
       <!-- Marketplace -->
       <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-shop" style="color: var(--primary);"></i> Community Seeding Marketplace (Available Campaigns)
+          <i class="fa-solid fa-shop" style="color: var(--primary);"></i> Available Seeding Campaigns
         </h3>
         <div class="data-table-wrap">
           <table class="data-table">
@@ -600,10 +775,10 @@
         </div>
       </div>
 
-      <!-- Proof of Seed Postings -->
+      <!-- Proof of Seeding Tasks -->
       <div class="glass-card" style="padding: 1.5rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-camera" style="color: var(--accent-cyan);"></i> Proof of Seeding Submissions (Screenshot Tasks)
+          <i class="fa-solid fa-camera" style="color: var(--accent-cyan);"></i> Proof of Seeding Submissions
         </h3>
         <div class="data-table-wrap">
           <table class="data-table">
@@ -611,7 +786,7 @@
               <tr>
                 <th>Campaign</th>
                 <th>Proof Notes</th>
-                <th>Screenshot Evidence</th>
+                <th>Evidence</th>
                 <th>Reward</th>
                 <th>Review Status</th>
               </tr>
@@ -622,11 +797,77 @@
           </table>
         </div>
       </div>
-    </div>
+    </section>
+
+    <!-- ===================================================================== -->
+    <!-- 5. FINANCIAL LEDGER VIEW -->
+    <!-- ===================================================================== -->
+    <section class="app-view" id="view-ledger">
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+        <div>
+          <h2 style="font-size: 1.6rem; font-weight: 800;">Cryptographic Financial Ledger &amp; Payouts</h2>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Double-entry immutable balance journal and promoter withdrawal authorization queue.</p>
+        </div>
+        <button class="btn btn-secondary" onclick="exportLedgerCSV()">
+          <i class="fa-solid fa-download"></i> Export Audit CSV
+        </button>
+      </div>
+
+      <!-- Pending Withdrawals Table -->
+      <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-money-bill-transfer" style="color: var(--accent-amber);"></i> Pending Payout Authorizations
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Promoter Account</th>
+                <th>Requested Payout</th>
+                <th>Destination Wallet</th>
+                <th>Network</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-withdrawals">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- Ledger Entries -->
+      <div class="glass-card" style="padding: 1.5rem;">
+        <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
+          <i class="fa-solid fa-book-journal-whills" style="color: var(--primary);"></i> Double-Entry Journal Records
+        </h3>
+        <div class="data-table-wrap">
+          <table class="data-table">
+            <thead>
+              <tr>
+                <th>Transaction Type</th>
+                <th>Amount</th>
+                <th>Associated Account</th>
+                <th>Notes</th>
+                <th>Timestamp</th>
+              </tr>
+            </thead>
+            <tbody id="tbody-ledger">
+              <!-- Rendered via JS -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
 
   </main>
 
-  <!-- Anti-Fraud Simulation Modal -->
+  <!-- ===================================================================== -->
+  <!-- MODALS -->
+  <!-- ===================================================================== -->
+
+  <!-- Anti-Fraud Test Simulator Modal -->
   <div class="modal-overlay" id="modal-test">
     <div class="modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
@@ -636,21 +877,21 @@
         <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;" onclick="closeTestModal()">&times;</button>
       </div>
       <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
-        Simulate an incoming click against the automated inspection algorithm (Checks IP datacenter prefix, bot user-agents, proxy headers, and rate limits).
+        Simulate an incoming HTTP referral click against the inspection algorithm (Evaluates Datacenter IP, Bot User-Agents, Proxies, and Rate Limits).
       </p>
 
       <div class="form-group">
         <label>Simulation Preset</label>
         <select class="form-input" id="sim-preset" onchange="applySimPreset()">
-          <option value="clean">Clean Human Visitor (Chrome / Residential IP)</option>
-          <option value="bot">Headless Bot (Puppeteer / Python-Requests)</option>
-          <option value="datacenter">Datacenter Cloud IP (AWS EC2 / DigitalOcean)</option>
-          <option value="tor">VPN / Tor Anonymizer Header</option>
+          <option value="clean">Clean Human Consumer (Residential IP / Chrome)</option>
+          <option value="bot">Puppeteer Automated Headless Browser</option>
+          <option value="datacenter">AWS EC2 Datacenter Scraper (Python-requests)</option>
+          <option value="tor">Tor Anonymizing Exit Node</option>
         </select>
       </div>
 
       <div class="form-group">
-        <label>Visitor IP Address</label>
+        <label>Connecting IP Address</label>
         <input type="text" id="sim-ip" class="form-input" value="103.21.244.12" />
       </div>
 
@@ -661,12 +902,12 @@
 
       <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
         <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="runFraudTest()">
-          Evaluate Through Anti-Fraud Engine
+          Evaluate Against Engine
         </button>
       </div>
 
       <!-- Results Box -->
-      <div id="sim-results" style="display: none; margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px; background: rgba(0,0,0,0.4); border: 1px solid var(--border-subtle);">
+      <div id="sim-results" style="display: none; margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle);">
         <!-- Injected via JS -->
       </div>
     </div>
@@ -716,8 +957,9 @@
     <span id="toast-text">Operation completed</span>
   </div>
 
+  <!-- Application Logic & Three.js 3D Engine -->
   <script>
-    // In-memory seed database with localStorage persistence
+    // Data store with fallback for standalone GitHub Pages
     const DEFAULT_SEED = {
       users: [
         { id: "admin-1", email: "admin@nexuslink.network", role: "admin", wallet_balance: 15420.50 },
@@ -774,10 +1016,12 @@
       ],
       threat_logs: [
         { id: "t-1", ip_address: "198.51.100.42", user_agent: "DatacenterBot/1.0", slug: "alex-defi-alpha", risk_score: 92, reason: "Known Datacenter IP Subnet (AS16509 AWS)", created_at: "2026-10-10 18:52:58" },
-        { id: "t-2", ip_address: "203.0.113.88", user_agent: "HeadlessChrome/118.0.0.0", slug: "alex-vpn-secure", risk_score: 88, reason: "Commercial VPN / Tor Exit Node Signature", created_at: "2026-10-10 18:52:58" }
+        { id: "t-2", ip_address: "203.0.113.88", user_agent: "HeadlessChrome/118.0.0.0", slug: "alex-vpn-secure", risk_score: 88, reason: "Commercial VPN / Tor Exit Node Signature", created_at: "2026-10-10 18:52:58" },
+        { id: "t-3", ip_address: "54.210.88.19", user_agent: "Python-requests/2.31.0", slug: "alex-defi-alpha", risk_score: 95, reason: "Automated scraper via AWS Cloud Datacenter", created_at: "2026-10-11 02:15:20" }
       ],
       ledger: [
         { type: "deposit", amount: 1000.00, account: "growth@web3defi.io", notes: "Initial escrow deposit for DeFi Campaign", timestamp: "2026-10-10 18:52:58" },
+        { type: "deposit", amount: 250.00, account: "growth@web3defi.io", notes: "Escrow top-up for AlphaGame Season 4", timestamp: "2026-10-10 19:10:00" },
         { type: "platform_revenue", amount: 86.20, account: "admin@nexuslink.network", notes: "System spread fee accrued", timestamp: "2026-10-10 18:52:58" },
         { type: "payout", amount: 129.30, account: "alex.seeder@community.org", notes: "Promoter click earnings aggregated", timestamp: "2026-10-10 18:52:58" }
       ],
@@ -795,153 +1039,351 @@
       localStorage.setItem('nexuslink_store', JSON.stringify(store));
     }
 
-    function switchRole(role) {
-      document.querySelectorAll('.role-btn').forEach(b => b.classList.remove('active'));
-      document.querySelectorAll('.role-view').forEach(v => v.classList.remove('active'));
+    // Navigation Switcher
+    function navigateTab(tabName) {
+      document.querySelectorAll('.nav-tab-btn').forEach(b => b.classList.remove('active'));
+      document.querySelectorAll('.app-view').forEach(v => v.classList.remove('active'));
 
-      const btn = document.getElementById(`btn-role-${role}`);
+      const btn = document.getElementById(`tab-${tabName}`);
       if (btn) btn.classList.add('active');
 
-      const view = document.getElementById(`view-${role}`);
+      const view = document.getElementById(`view-${tabName}`);
       if (view) view.classList.add('active');
 
       renderAll();
     }
 
+    // Three.js 3D Network Engine
+    let scene, camera, renderer, globeGroup, nodesGroup, linksGroup;
+    let isDragging = false;
+    let prevMousePos = { x: 0, y: 0 };
+
+    function init3DNetwork() {
+      const canvas = document.getElementById('three-viewport');
+      if (!canvas) return;
+
+      const width = canvas.parentElement.clientWidth;
+      const height = canvas.parentElement.clientHeight;
+
+      scene = new THREE.Scene();
+      camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+      camera.position.set(0, 5, 26);
+
+      renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+      renderer.setSize(width, height);
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      globeGroup = new THREE.Group();
+      scene.add(globeGroup);
+
+      // Core wireframe sphere
+      const sphereGeo = new THREE.SphereGeometry(7, 24, 24);
+      const sphereMat = new THREE.MeshBasicMaterial({
+        color: 0x4f46e5,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.18
+      });
+      const sphereMesh = new THREE.Mesh(sphereGeo, sphereMat);
+      globeGroup.add(sphereMesh);
+
+      // Inner glowing core
+      const innerGeo = new THREE.SphereGeometry(3.5, 16, 16);
+      const innerMat = new THREE.MeshBasicMaterial({
+        color: 0x06b6d4,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.25
+      });
+      const innerMesh = new THREE.Mesh(innerGeo, innerMat);
+      globeGroup.add(innerMesh);
+
+      // Add Orbiting Nodes
+      nodesGroup = new THREE.Group();
+      const nodeCount = 38;
+      const nodePositions = [];
+      const colors = [0x6366f1, 0x06b6d4, 0x10b981, 0xf43f5e];
+
+      for (let i = 0; i < nodeCount; i++) {
+        const phi = Math.acos(-1 + (2 * i) / nodeCount);
+        const theta = Math.sqrt(nodeCount * Math.PI) * phi;
+        const radius = 7.2;
+
+        const x = radius * Math.cos(theta) * Math.sin(phi);
+        const y = radius * Math.sin(theta) * Math.sin(phi);
+        const z = radius * Math.cos(phi);
+
+        nodePositions.push(new THREE.Vector3(x, y, z));
+
+        const nodeGeo = new THREE.SphereGeometry(0.24, 12, 12);
+        const nodeMat = new THREE.MeshBasicMaterial({
+          color: colors[i % colors.length],
+        });
+        const nodeMesh = new THREE.Mesh(nodeGeo, nodeMat);
+        nodeMesh.position.set(x, y, z);
+        nodesGroup.add(nodeMesh);
+      }
+      globeGroup.add(nodesGroup);
+
+      // Inter-node connection lines
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0x6366f1,
+        transparent: true,
+        opacity: 0.22
+      });
+      const lineGeo = new THREE.BufferGeometry();
+      const linePoints = [];
+
+      for (let i = 0; i < nodePositions.length; i++) {
+        for (let j = i + 1; j < nodePositions.length; j++) {
+          if (nodePositions[i].distanceTo(nodePositions[j]) < 4.2) {
+            linePoints.push(nodePositions[i].x, nodePositions[i].y, nodePositions[i].z);
+            linePoints.push(nodePositions[j].x, nodePositions[j].y, nodePositions[j].z);
+          }
+        }
+      }
+      lineGeo.setAttribute('position', new THREE.Float32BufferAttribute(linePoints, 3));
+      const lineMesh = new THREE.LineSegments(lineGeo, lineMat);
+      globeGroup.add(lineMesh);
+
+      // Outer particle ring
+      const ringGeo = new THREE.BufferGeometry();
+      const ringCount = 180;
+      const ringPoints = [];
+      for (let i = 0; i < ringCount; i++) {
+        const angle = (i / ringCount) * Math.PI * 2;
+        const r = 9.8 + (Math.random() - 0.5) * 1.5;
+        ringPoints.push(Math.cos(angle) * r, (Math.random() - 0.5) * 1.2, Math.sin(angle) * r);
+      }
+      ringGeo.setAttribute('position', new THREE.Float32BufferAttribute(ringPoints, 3));
+      const ringMat = new THREE.PointsMaterial({ color: 0x06b6d4, size: 0.12, transparent: true, opacity: 0.6 });
+      const ringParticles = new THREE.Points(ringGeo, ringMat);
+      globeGroup.add(ringParticles);
+
+      // Drag to rotate interactions
+      canvas.addEventListener('mousedown', (e) => {
+        isDragging = true;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+      });
+      window.addEventListener('mouseup', () => { isDragging = false; });
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        const dx = e.clientX - prevMousePos.x;
+        const dy = e.clientY - prevMousePos.y;
+        globeGroup.rotation.y += dx * 0.005;
+        globeGroup.rotation.x += dy * 0.005;
+        prevMousePos = { x: e.clientX, y: e.clientY };
+      });
+
+      // Handle Resize
+      window.addEventListener('resize', () => {
+        if (!canvas.parentElement) return;
+        const newW = canvas.parentElement.clientWidth;
+        const newH = canvas.parentElement.clientHeight;
+        camera.aspect = newW / newH;
+        camera.updateProjectionMatrix();
+        renderer.setSize(newW, newH);
+      });
+
+      // Animation Loop
+      function animate() {
+        requestAnimationFrame(animate);
+        if (!isDragging) {
+          globeGroup.rotation.y += 0.003;
+          globeGroup.rotation.x += 0.0008;
+        }
+        renderer.render(scene, camera);
+      }
+      animate();
+    }
+
+    function reset3DCamera() {
+      if (globeGroup) {
+        globeGroup.rotation.set(0, 0, 0);
+      }
+      if (camera) {
+        camera.position.set(0, 5, 26);
+      }
+      showToast('3D Network Camera reset');
+    }
+
+    // Render Data into All Tables
     function renderAll() {
       const store = getStore();
 
-      // 1. Admin Views
-      const tbodyWithdrawals = document.getElementById('tbody-withdrawals');
-      tbodyWithdrawals.innerHTML = '';
-      store.withdrawals.forEach(w => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${w.email}</strong></td>
-          <td><strong style="color: var(--accent-emerald);">$${w.amount.toFixed(2)}</strong></td>
-          <td><code>${w.destination_wallet}</code></td>
-          <td>${w.network}</td>
-          <td><span class="badge ${w.status === 'pending' ? 'badge-amber' : w.status === 'authorized' ? 'badge-emerald' : 'badge-rose'}">${w.status.toUpperCase()}</span></td>
-          <td>
-            ${w.status === 'pending' ? `
-              <button class="btn btn-success" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="handleWithdrawAction('${w.id}', 'authorize')"><i class="fa-solid fa-check"></i> Authorize</button>
-              <button class="btn btn-danger" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="handleWithdrawAction('${w.id}', 'reject')"><i class="fa-solid fa-xmark"></i> Reject</button>
-            ` : '<span style="color:var(--text-dim);">Resolved</span>'}
-          </td>
-        `;
-        tbodyWithdrawals.appendChild(tr);
-      });
+      // Top Overview Metrics
+      const totalDeposits = store.ledger.filter(l => l.type === 'deposit').reduce((acc, c) => acc + c.amount, 0);
+      const totalRevenue = store.ledger.filter(l => l.type === 'platform_revenue').reduce((acc, c) => acc + c.amount, 0);
+      const totalClicks = store.promoter_links.reduce((acc, l) => acc + l.total_clicks, 0);
+      const totalThreats = store.threat_logs.length;
 
+      const depEl = document.getElementById('ov-deposits');
+      if (depEl) depEl.innerText = `$${totalDeposits.toLocaleString('en-US', { minimumFractionDigits: 2 })}`;
+      const revEl = document.getElementById('ov-revenue');
+      if (revEl) revEl.innerText = `$${totalRevenue.toFixed(2)}`;
+      const clkEl = document.getElementById('ov-clicks');
+      if (clkEl) clkEl.innerText = totalClicks;
+      const thrEl = document.getElementById('ov-threats');
+      if (thrEl) thrEl.innerText = totalThreats;
+      const afBlk = document.getElementById('af-blocked');
+      if (afBlk) afBlk.innerText = totalThreats;
+
+      // 1. Overview Recent Threat snippet
+      const ovThreats = document.getElementById('ov-tbody-threats');
+      if (ovThreats) {
+        ovThreats.innerHTML = '';
+        store.threat_logs.slice(0, 3).forEach(t => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><code>${t.ip_address}</code></td>
+            <td style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.reason}</td>
+            <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score}</span></td>
+          `;
+          ovThreats.appendChild(tr);
+        });
+      }
+
+      // 2. Overview Recent Campaigns snippet
+      const ovCamps = document.getElementById('ov-tbody-campaigns');
+      if (ovCamps) {
+        ovCamps.innerHTML = '';
+        store.campaigns.slice(0, 3).forEach(c => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${c.title}</strong></td>
+            <td><strong>$${c.cost_per_click.toFixed(2)}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">$${c.remaining_budget.toFixed(2)}</strong></td>
+          `;
+          ovCamps.appendChild(tr);
+        });
+      }
+
+      // 3. Full Anti-Fraud Threats Table
       const tbodyThreats = document.getElementById('tbody-threats');
-      tbodyThreats.innerHTML = '';
-      store.threat_logs.forEach(t => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><code>${t.ip_address}</code></td>
-          <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.user_agent}</td>
-          <td><code>/r/${t.slug}</code></td>
-          <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score} / 100</span></td>
-          <td>${t.reason}</td>
-          <td><small style="color: var(--text-dim);">${t.created_at}</small></td>
-        `;
-        tbodyThreats.appendChild(tr);
-      });
+      if (tbodyThreats) {
+        tbodyThreats.innerHTML = '';
+        store.threat_logs.forEach(t => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><code>${t.ip_address}</code></td>
+            <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.user_agent}</td>
+            <td><code>/r/${t.slug}</code></td>
+            <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score} / 100</span></td>
+            <td>${t.reason}</td>
+            <td><small style="color: var(--text-dim);">${t.created_at}</small></td>
+          `;
+          tbodyThreats.appendChild(tr);
+        });
+      }
 
-      const tbodyLedger = document.getElementById('tbody-ledger');
-      tbodyLedger.innerHTML = '';
-      store.ledger.forEach(l => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><span class="badge badge-indigo">${l.type.toUpperCase()}</span></td>
-          <td><strong style="color: var(--text-main);">$${l.amount.toFixed(2)}</strong></td>
-          <td>${l.account}</td>
-          <td>${l.notes}</td>
-          <td><small style="color: var(--text-dim);">${l.timestamp}</small></td>
-        `;
-        tbodyLedger.appendChild(tr);
-      });
-
-      // 2. Client Campaigns
+      // 4. Client Campaigns Vault
       const tbodyClient = document.getElementById('tbody-client-campaigns');
-      tbodyClient.innerHTML = '';
-      store.campaigns.forEach(c => {
-        const tr = document.createElement('tr');
-        const spent = (c.total_budget - c.remaining_budget).toFixed(2);
-        tr.innerHTML = `
-          <td><strong>${c.title}</strong><br><small style="color: var(--text-dim);">${c.target_url}</small></td>
-          <td><strong>$${c.cost_per_click.toFixed(2)}</strong></td>
-          <td>$${spent} / $${c.total_budget.toFixed(2)}</td>
-          <td>${c.geo_target.join(', ')}</td>
-          <td>${c.community_niches.join(', ')}</td>
-          <td><span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${c.status.toUpperCase()}</span></td>
-          <td>
-            <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleCampaignStatus('${c.id}')">
-              ${c.status === 'active' ? 'Pause' : 'Resume'}
-            </button>
-          </td>
-        `;
-        tbodyClient.appendChild(tr);
-      });
+      if (tbodyClient) {
+        tbodyClient.innerHTML = '';
+        store.campaigns.forEach(c => {
+          const tr = document.createElement('tr');
+          const spent = (c.total_budget - c.remaining_budget).toFixed(2);
+          tr.innerHTML = `
+            <td><strong>${c.title}</strong><br><small style="color: var(--text-dim);">${c.target_url}</small></td>
+            <td><strong>$${c.cost_per_click.toFixed(2)}</strong></td>
+            <td>$${spent} / $${c.total_budget.toFixed(2)}</td>
+            <td>${c.geo_target.join(', ')}</td>
+            <td>${c.community_niches.join(', ')}</td>
+            <td><span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${c.status.toUpperCase()}</span></td>
+            <td>
+              <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleCampaignStatus('${c.id}')">
+                ${c.status === 'active' ? 'Pause' : 'Resume'}
+              </button>
+            </td>
+          `;
+          tbodyClient.appendChild(tr);
+        });
+      }
 
-      // 3. Promoter Marketplace
+      // 5. Promoter Marketplace
       const tbodyMarket = document.getElementById('tbody-marketplace');
-      tbodyMarket.innerHTML = '';
-      store.campaigns.forEach(c => {
-        const link = store.promoter_links.find(l => l.campaign_id === c.id);
-        const reward = (c.cost_per_click * 0.6).toFixed(2);
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${c.title}</strong></td>
-          <td><strong style="color: var(--accent-emerald);">+$${reward} / Click</strong></td>
-          <td>${c.community_niches.join(', ')}</td>
-          <td>$${c.remaining_budget.toFixed(2)}</td>
-          <td>
-            ${link ? `<code style="color: var(--accent-cyan); font-weight: bold;">https://nexuslink.io/r/${link.custom_slug}</code>` : '<span style="color: var(--text-dim);">Not joined yet</span>'}
-          </td>
-          <td>
-            ${link ? `<button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="copyLink('${link.custom_slug}')"><i class="fa-regular fa-copy"></i> Copy Link</button>` : 
-                     `<button class="btn btn-primary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="joinCampaign('${c.id}')"><i class="fa-solid fa-link"></i> Generate Link</button>`}
-          </td>
-        `;
-        tbodyMarket.appendChild(tr);
-      });
+      if (tbodyMarket) {
+        tbodyMarket.innerHTML = '';
+        store.campaigns.forEach(c => {
+          const link = store.promoter_links.find(l => l.campaign_id === c.id);
+          const reward = (c.cost_per_click * 0.6).toFixed(2);
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${c.title}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">+$${reward} / Click</strong></td>
+            <td>${c.community_niches.join(', ')}</td>
+            <td>$${c.remaining_budget.toFixed(2)}</td>
+            <td>
+              ${link ? `<code style="color: var(--accent-cyan); font-weight: bold;">/r/${link.custom_slug}</code>` : '<span style="color: var(--text-dim);">Not joined</span>'}
+            </td>
+            <td>
+              ${link ? `<button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="copyLink('${link.custom_slug}')"><i class="fa-regular fa-copy"></i> Copy Link</button>` : 
+                       `<button class="btn btn-primary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="joinCampaign('${c.id}')"><i class="fa-solid fa-link"></i> Generate Link</button>`}
+            </td>
+          `;
+          tbodyMarket.appendChild(tr);
+        });
+      }
 
-      // 4. Tasks Table
+      // 6. Tasks Table
       const tbodyTasks = document.getElementById('tbody-tasks');
-      tbodyTasks.innerHTML = '';
-      store.tasks.forEach(t => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td><strong>${t.campaign_title}</strong></td>
-          <td>${t.notes}</td>
-          <td><a href="${t.screenshot}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;"><i class="fa-regular fa-image"></i> View Proof Screenshot</a></td>
-          <td><strong style="color: var(--accent-emerald);">+$${t.payout.toFixed(2)}</strong></td>
-          <td><span class="badge ${t.status === 'pending' ? 'badge-amber' : 'badge-emerald'}">${t.status.toUpperCase()}</span></td>
-        `;
-        tbodyTasks.appendChild(tr);
-      });
-    }
+      if (tbodyTasks) {
+        tbodyTasks.innerHTML = '';
+        store.tasks.forEach(t => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${t.campaign_title}</strong></td>
+            <td>${t.notes}</td>
+            <td><a href="${t.screenshot}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;"><i class="fa-regular fa-image"></i> View Proof</a></td>
+            <td><strong style="color: var(--accent-emerald);">+$${t.payout.toFixed(2)}</strong></td>
+            <td><span class="badge ${t.status === 'pending' ? 'badge-amber' : 'badge-emerald'}">${t.status.toUpperCase()}</span></td>
+          `;
+          tbodyTasks.appendChild(tr);
+        });
+      }
 
-    function handleWithdrawAction(id, action) {
-      const store = getStore();
-      const w = store.withdrawals.find(item => item.id === id);
-      if (w) {
-        w.status = action === 'authorize' ? 'authorized' : 'rejected';
-        if (action === 'authorize') {
-          store.ledger.unshift({
-            type: 'withdrawal',
-            amount: w.amount,
-            account: w.email,
-            notes: `Withdrawal to ${w.destination_wallet} on ${w.network} authorized`,
-            timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19)
-          });
-        }
-        saveStore(store);
-        renderAll();
-        showToast(action === 'authorize' ? 'Withdrawal authorized & processed!' : 'Withdrawal rejected & refunded.');
+      // 7. Withdrawals Queue
+      const tbodyWithdrawals = document.getElementById('tbody-withdrawals');
+      if (tbodyWithdrawals) {
+        tbodyWithdrawals.innerHTML = '';
+        store.withdrawals.forEach(w => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><strong>${w.email}</strong></td>
+            <td><strong style="color: var(--accent-emerald);">$${w.amount.toFixed(2)}</strong></td>
+            <td><code>${w.destination_wallet}</code></td>
+            <td>${w.network}</td>
+            <td><span class="badge ${w.status === 'pending' ? 'badge-amber' : w.status === 'authorized' ? 'badge-emerald' : 'badge-rose'}">${w.status.toUpperCase()}</span></td>
+            <td>
+              ${w.status === 'pending' ? `
+                <button class="btn btn-success" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="handleWithdrawAction('${w.id}', 'authorize')"><i class="fa-solid fa-check"></i> Authorize</button>
+                <button class="btn btn-danger" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="handleWithdrawAction('${w.id}', 'reject')"><i class="fa-solid fa-xmark"></i> Reject</button>
+              ` : '<span style="color:var(--text-dim);">Resolved</span>'}
+            </td>
+          `;
+          tbodyWithdrawals.appendChild(tr);
+        });
+      }
+
+      // 8. Financial Ledger
+      const tbodyLedger = document.getElementById('tbody-ledger');
+      if (tbodyLedger) {
+        tbodyLedger.innerHTML = '';
+        store.ledger.forEach(l => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td><span class="badge badge-indigo">${l.type.toUpperCase()}</span></td>
+            <td><strong style="color: var(--text-main);">$${l.amount.toFixed(2)}</strong></td>
+            <td>${l.account}</td>
+            <td>${l.notes}</td>
+            <td><small style="color: var(--text-dim);">${l.timestamp}</small></td>
+          `;
+          tbodyLedger.appendChild(tr);
+        });
       }
     }
 
+    // Campaign Actions
     function toggleCampaignStatus(id) {
       const store = getStore();
       const c = store.campaigns.find(item => item.id === id);
@@ -955,7 +1397,6 @@
 
     function joinCampaign(campId) {
       const store = getStore();
-      const c = store.campaigns.find(item => item.id === campId);
       const slug = `alex-${Math.random().toString(36).substring(2, 7)}`;
       store.promoter_links.push({
         id: `link-${Date.now()}`,
@@ -966,20 +1407,34 @@
       });
       saveStore(store);
       renderAll();
-      showToast(`Unique referral link generated: /r/${slug}`);
+      showToast(`Tracking link generated: /r/${slug}`);
     }
 
     function copyLink(slug) {
-      const url = `https://nexuslink.network/r/${slug}`;
+      const origin = window.location.origin;
+      const url = `${origin}/r/${slug}`;
       navigator.clipboard.writeText(url);
-      showToast(`Copied to clipboard: ${url}`);
+      showToast(`Copied tracking link: ${url}`);
     }
 
-    function openCampaignModal() {
-      document.getElementById('modal-campaign').classList.add('open');
-    }
-    function closeCampaignModal() {
-      document.getElementById('modal-campaign').classList.remove('open');
+    function handleWithdrawAction(id, action) {
+      const store = getStore();
+      const w = store.withdrawals.find(item => item.id === id);
+      if (w) {
+        w.status = action === 'authorize' ? 'authorized' : 'rejected';
+        if (action === 'authorize') {
+          store.ledger.unshift({
+            type: 'withdrawal',
+            amount: w.amount,
+            account: w.email,
+            notes: `Payout to ${w.destination_wallet} on ${w.network} authorized`,
+            timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19)
+          });
+        }
+        saveStore(store);
+        renderAll();
+        showToast(action === 'authorize' ? 'Payout authorized & recorded in ledger!' : 'Payout rejected.');
+      }
     }
 
     function handleCreateCampaign(e) {
@@ -1018,28 +1473,33 @@
       showToast('Campaign launched and funded via smart escrow!');
     }
 
+    // Modal Handlers
+    function openTestModal() {
+      document.getElementById('modal-test').classList.add('open');
+    }
+    function closeTestModal() {
+      document.getElementById('modal-test').classList.remove('open');
+    }
+    function openCampaignModal() {
+      document.getElementById('modal-campaign').classList.add('open');
+    }
+    function closeCampaignModal() {
+      document.getElementById('modal-campaign').classList.remove('open');
+    }
     function openWithdrawModal() {
       const store = getStore();
-      const amount = 143.10;
       store.withdrawals.unshift({
         id: `w-${Date.now()}`,
         user_id: 'promoter-1',
         email: 'alex.seeder@community.org',
-        amount: amount,
+        amount: 143.10,
         destination_wallet: '0x71C...B9e4',
         network: 'Arbitrum / USDC',
         status: 'pending'
       });
       saveStore(store);
       renderAll();
-      showToast('Withdrawal of $143.10 submitted to admin queue.');
-    }
-
-    function openTestModal() {
-      document.getElementById('modal-test').classList.add('open');
-    }
-    function closeTestModal() {
-      document.getElementById('modal-test').classList.remove('open');
+      showToast('Payout request of $143.10 submitted to admin ledger!');
     }
 
     function applySimPreset() {
@@ -1051,7 +1511,7 @@
         document.getElementById('sim-ip').value = '198.51.100.22';
         document.getElementById('sim-ua').value = 'Mozilla/5.0 (compatible; HeadlessChrome/118.0.0.0 Puppeteer)';
       } else if (p === 'datacenter') {
-        document.getElementById('sim-ip').value = '54.210.88.19'; // AWS EC2
+        document.getElementById('sim-ip').value = '54.210.88.19';
         document.getElementById('sim-ua').value = 'Mozilla/5.0 (X11; Linux x86_64) Python-requests/2.31.0';
       } else if (p === 'tor') {
         document.getElementById('sim-ip').value = '185.220.101.5';
@@ -1059,15 +1519,35 @@
       }
     }
 
-    function runFraudTest() {
+    async function runFraudTest() {
       const ip = document.getElementById('sim-ip').value.trim();
-      const ua = document.getElementById('sim-ua').value.trim().toLowerCase();
-      
+      const ua = document.getElementById('sim-ua').value.trim();
+      const resBox = document.getElementById('sim-results');
+
+      // Attempt live backend API call first
+      try {
+        const response = await fetch('/api/test-fraud-engine', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ test_ip: ip, test_user_agent: ua })
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          displayFraudResult(data.valid, data.reason, data.riskScore, ip, ua);
+          return;
+        }
+      } catch (err) {
+        // Backend not running on local port (e.g. standalone GitHub Pages), fallback to client evaluator
+      }
+
+      // Standalone Evaluator
+      const uaLower = ua.toLowerCase();
       let valid = true;
       let reason = 'Legitimate Human Consumer Verified';
       let riskScore = 12;
 
-      if (ua.includes('headless') || ua.includes('puppeteer') || ua.includes('bot') || ua.includes('python')) {
+      if (uaLower.includes('headless') || uaLower.includes('puppeteer') || uaLower.includes('bot') || uaLower.includes('python')) {
         valid = false;
         reason = 'Automated Headless / Bot User-Agent signature intercepted';
         riskScore = 95;
@@ -1077,6 +1557,10 @@
         riskScore = 92;
       }
 
+      displayFraudResult(valid, reason, riskScore, ip, ua);
+    }
+
+    function displayFraudResult(valid, reason, riskScore, ip, ua) {
       const resBox = document.getElementById('sim-results');
       resBox.style.display = 'block';
       resBox.style.borderColor = valid ? 'var(--accent-emerald)' : 'var(--accent-rose)';
@@ -1090,7 +1574,7 @@
         <p style="font-size: 0.88rem; color: #fff; margin-bottom: 0.5rem;"><strong>Risk Score:</strong> ${riskScore} / 100</p>
         <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">${reason}</p>
         <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">
-          <strong>Action:</strong> ${valid ? 'Escrow unlocked (60% to Promoter / 40% Platform Revenue)' : 'Zero financial deduction & logged in Threat Registry'}
+          <strong>Action:</strong> ${valid ? 'Smart Escrow unlocked (60% Promoter / 40% Platform)' : 'Zero deduction & registered in threat ledger'}
         </p>
       `;
 
@@ -1111,7 +1595,18 @@
     }
 
     function exportLedgerCSV() {
-      alert("Exporting double-entry cryptographic audit ledger...");
+      const store = getStore();
+      let csv = "Type,Amount,Account,Notes,Timestamp\n";
+      store.ledger.forEach(l => {
+        csv += `"${l.type}","${l.amount}","${l.account}","${l.notes}","${l.timestamp}"\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = `nexuslink_ledger_${Date.now()}.csv`;
+      a.click();
+      showToast('Exported double-entry audit CSV');
     }
 
     function showToast(text) {
@@ -1121,8 +1616,23 @@
       setTimeout(() => toast.classList.remove('show'), 3000);
     }
 
+    // Check Live Backend Health on Startup
+    async function checkBackendHealth() {
+      try {
+        const res = await fetch('/api/health');
+        if (res.ok) {
+          document.getElementById('backend-status-text').innerText = 'API Server Live';
+          document.getElementById('backend-status-pill').style.background = 'rgba(16, 185, 129, 0.15)';
+        }
+      } catch (e) {
+        document.getElementById('backend-status-text').innerText = 'Standalone Mode';
+      }
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      init3DNetwork();
       renderAll();
+      checkBackendHealth();
     });
   </script>
 </body>

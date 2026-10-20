@@ -12,6 +12,7 @@ const PORT = process.env.PORT || 3000;
 app.use(cors());
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
+app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
 
 // ============================================================================
@@ -668,9 +669,21 @@ app.post('/api/test-fraud-engine', async (req, res) => {
   }
 });
 
+// Health check API
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'healthy', version: '2.0.0', protocol: 'NexusLink Anti-Fraud Engine', timestamp: new Date().toISOString() });
+});
+
 // Fallback for all SPA routes
 app.use((req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+  const rootIndex = path.join(__dirname, 'index.html');
+  const pubIndex = path.join(__dirname, 'public', 'index.html');
+  const fs = require('fs');
+  if (fs.existsSync(rootIndex)) {
+    res.sendFile(rootIndex);
+  } else {
+    res.sendFile(pubIndex);
+  }
 });
 
 // Start Server
