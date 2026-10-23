@@ -38,7 +38,15 @@ async function inspectTrafficHeaders(req, campaignId) {
   // Extract real IP through reverse proxy headers or socket
   const forwarded = req.headers['x-forwarded-for'];
   const rawIp = forwarded ? forwarded.split(',')[0].trim() : (req.socket.remoteAddress || req.ip || '127.0.0.1');
-  const ip = rawIp.replace(/^.*:/, ''); // strip IPv6 prefix if mapped
+  let ip = rawIp;
+  if (ip === '::1' || ip === '::ffff:127.0.0.1') {
+    ip = '127.0.0.1';
+  } else if (ip.startsWith('::ffff:')) {
+    ip = ip.replace('::ffff:', '');
+  }
+  if (ip.includes(':') && !ip.includes('::') && ip.split(':').length === 2) {
+    ip = ip.split(':')[0];
+  }
 
   const userAgent = req.headers['user-agent'] || 'Unknown';
   const referrer = req.headers['referer'] || req.headers['referrer'] || '';
@@ -107,11 +115,10 @@ async function inspectTrafficHeaders(req, campaignId) {
   // Check 5: Rate Limiting & Duplicate Click Check
   // Limit tracking increments to a maximum of 2 clicks per unique IP address per campaign within a rolling 60-minute window.
   if (campaignId) {
-    const sixtyMinutesAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
     const clickHistory = await all(`
       SELECT id FROM click_logs 
-      WHERE ip_address = ? AND campaign_id = ? AND created_at >= ?
-    `, [ip, campaignId, sixtyMinutesAgo]);
+      WHERE ip_address = ? AND campaign_id = ? AND created_at >= datetime('now', '-60 minutes')
+    `, [ip, campaignId]);
 
     if (clickHistory && clickHistory.length >= 2) {
       return {

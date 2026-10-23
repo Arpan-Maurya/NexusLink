@@ -3,17 +3,79 @@ const cors = require('cors');
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 const bcrypt = require('bcryptjs');
-const { db, run, get, all, initDB } = require('./database');
+const jwt = require('jsonwebtoken');
+const { db, run, get, all, runTransaction, initDB } = require('./database');
 const { inspectTrafficHeaders } = require('./antiFraud');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
+const JWT_SECRET = process.env.JWT_SECRET || 'nexuslink_secure_atomic_arbitrage_secret_2026';
 
 app.use(cors());
 app.use(express.json({ limit: '20mb' }));
 app.use(express.urlencoded({ extended: true, limit: '20mb' }));
 app.use(express.static(__dirname));
 app.use(express.static(path.join(__dirname, 'public')));
+
+// ============================================================================
+// AUTHENTICATION HELPER & MIDDLEWARE
+// ============================================================================
+function generateToken(user) {
+  return jwt.sign(
+    {
+      id: user.id,
+      email: user.email,
+      role: user.role,
+      name: user.name || ''
+    },
+    JWT_SECRET,
+    { expiresIn: '7d' }
+  );
+}
+
+// Optional / Non-blocking authentication extractor
+function authenticate(req, res, next) {
+  const authHeader = req.headers['authorization'] || req.headers['x-access-token'];
+  let token = null;
+  if (authHeader && authHeader.startsWith('Bearer ')) {
+    token = authHeader.slice(7).trim();
+  } else if (authHeader) {
+    token = authHeader.trim();
+  } else if (req.query && req.query.token) {
+    token = req.query.token;
+  }
+
+  if (token) {
+    try {
+      const decoded = jwt.verify(token, JWT_SECRET);
+      req.user = decoded;
+    } catch (err) {
+      req.user = null;
+      req.tokenInvalid = true;
+    }
+  } else {
+    req.user = null;
+  }
+  next();
+}
+
+app.use(authenticate);
+
+// Role requirement guard
+function requireRole(roles = []) {
+  return (req, res, next) => {
+    if (!req.user) {
+      if (req.tokenInvalid) {
+        return res.status(401).json({ error: 'Invalid or expired authentication token. Please sign in.' });
+      }
+      return res.status(401).json({ error: 'Authentication required. Please sign in.' });
+    }
+    if (roles.length > 0 && !roles.includes(req.user.role)) {
+      return res.status(403).json({ error: `Access denied. Role '${req.user.role}' is not authorized for this resource.` });
+    }
+    next();
+  };
+}
 
 // ============================================================================
 // 1. ADVANCED REDIRECT ROUTING & ANTI-FRAUD CONTROLLER ENGINE
@@ -42,7 +104,6 @@ app.get('/r/:slug', async (req, res) => {
       `);
     }
 
-    // Default target URL fallback
     const targetUrl = link.target_url || 'https://google.com';
 
     // 2. Active middleware inspection
@@ -55,7 +116,7 @@ app.get('/r/:slug', async (req, res) => {
     if (!audit.valid || !isCampaignActive) {
       const threatReason = !audit.valid 
         ? audit.reason 
-        : `Campaign inactive or budget exhausted ($${Number(link.remaining_budget).toFixed(2)})`;
+        : `Campaign inactive or budget exhausted (₹${Number(link.remaining_budget).toFixed(2)})`;
       
       const threatScore = !audit.valid ? audit.riskScore : 45;
 
@@ -79,67 +140,69 @@ app.get('/r/:slug', async (req, res) => {
     }
 
     // 3. Traffic verified successfully:
-    // Execute atomic balance deduction & 60/40 split allocation
+    // Execute atomic balance deduction & 60/40 split allocation inside a database transaction
     const cpc = Number(link.cost_per_click);
     const promoterShare = Number((cpc * 0.60).toFixed(4));
     const platformShare = Number((cpc * 0.40).toFixed(4));
 
-    // A. Increment Promoter_Links.total_clicks by 1
-    await run(`
-      UPDATE promoter_links SET total_clicks = total_clicks + 1 WHERE id = ?
-    `, [link.id]);
+    await runTransaction(async () => {
+      // A. Increment Promoter_Links.total_clicks by 1
+      await run(`
+        UPDATE promoter_links SET total_clicks = total_clicks + 1 WHERE id = ?
+      `, [link.id]);
 
-    // B. Deduct cost_per_click from Campaigns.remaining_budget
-    await run(`
-      UPDATE campaigns 
-      SET remaining_budget = MAX(0, remaining_budget - ?),
-          status = CASE WHEN remaining_budget - ? <= 0 THEN 'exhausted' ELSE status END
-      WHERE id = ?
-    `, [cpc, cpc, link.campaign_id]);
+      // B. Deduct cost_per_click from Campaigns.remaining_budget
+      await run(`
+        UPDATE campaigns 
+        SET remaining_budget = MAX(0, remaining_budget - ?),
+            status = CASE WHEN remaining_budget - ? <= 0 THEN 'exhausted' ELSE status END
+        WHERE id = ?
+      `, [cpc, cpc, link.campaign_id]);
 
-    // C. Credit 60% of cost_per_click to Promoter's wallet_balance
-    await run(`
-      UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?
-    `, [promoterShare, link.promoter_id]);
+      // C. Credit 60% of cost_per_click to Promoter's wallet_balance
+      await run(`
+        UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?
+      `, [promoterShare, link.promoter_id]);
 
-    // D. Log into click_logs
-    const clickLogId = uuidv4();
-    await run(`
-      INSERT INTO click_logs (id, ip_address, campaign_id, promoter_link_id, cost_per_click, promoter_payout, platform_revenue, user_agent, referrer)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `, [
-      clickLogId,
-      audit.ip,
-      link.campaign_id,
-      link.id,
-      cpc,
-      promoterShare,
-      platformShare,
-      audit.userAgent,
-      audit.referrer
-    ]);
+      // D. Log into click_logs
+      const clickLogId = uuidv4();
+      await run(`
+        INSERT INTO click_logs (id, ip_address, campaign_id, promoter_link_id, cost_per_click, promoter_payout, platform_revenue, user_agent, referrer)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+      `, [
+        clickLogId,
+        audit.ip,
+        link.campaign_id,
+        link.id,
+        cpc,
+        promoterShare,
+        platformShare,
+        audit.userAgent,
+        audit.referrer
+      ]);
 
-    // E. Log Financial Ledger records (Promoter Payout & Platform Revenue)
-    await run(`
-      INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
-      VALUES (?, 'payout', ?, ?, ?, ?)
-    `, [
-      uuidv4(),
-      link.promoter_id,
-      link.campaign_id,
-      promoterShare,
-      `Valid referral click via slug: ${slug} (60% split)`
-    ]);
+      // E. Log Financial Ledger records (Promoter Payout & Platform Revenue)
+      await run(`
+        INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
+        VALUES (?, 'payout', ?, ?, ?, ?)
+      `, [
+        uuidv4(),
+        link.promoter_id,
+        link.campaign_id,
+        promoterShare,
+        `Valid referral click via slug: ${slug} (60% split)`
+      ]);
 
-    await run(`
-      INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
-      VALUES (?, 'platform_revenue', NULL, ?, ?, ?)
-    `, [
-      uuidv4(),
-      link.campaign_id,
-      platformShare,
-      `Platform commission fee (40% split) for click on ${slug}`
-    ]);
+      await run(`
+        INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
+        VALUES (?, 'platform_revenue', NULL, ?, ?, ?)
+      `, [
+        uuidv4(),
+        link.campaign_id,
+        platformShare,
+        `Platform commission fee (40% split) for click on ${slug}`
+      ]);
+    });
 
     // Immediately trigger HTTP 302 redirect sending browser visitor to target_url
     return res.redirect(302, targetUrl);
@@ -152,11 +215,15 @@ app.get('/r/:slug', async (req, res) => {
 });
 
 // ============================================================================
-// 2. AUTHENTICATION & SESSION SIMULATOR
+// 2. AUTHENTICATION & SESSION ENDPOINTS
 // ============================================================================
 app.post('/api/auth/login', async (req, res) => {
   const { email, password } = req.body;
   try {
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
     const user = await get(`SELECT * FROM users WHERE email = ?`, [email]);
     if (!user) {
       return res.status(401).json({ error: 'User not found with this email' });
@@ -168,47 +235,89 @@ app.post('/api/auth/login', async (req, res) => {
 
     const safeUser = { ...user };
     delete safeUser.password_hash;
-    res.json({ success: true, user: safeUser });
+    safeUser.community_types = JSON.parse(safeUser.community_types || '[]');
+
+    const token = generateToken(safeUser);
+    res.json({ success: true, token, user: safeUser });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Promoter Quick Registration
-app.post('/api/auth/register-promoter', async (req, res) => {
-  const { email, password, country, community_types, device_fingerprint } = req.body;
+// Unified Registration Endpoint (Brand / Client & Promoter)
+app.post('/api/auth/register', async (req, res) => {
+  const { email, password, role, name, country, community_types, device_fingerprint } = req.body;
   try {
+    if (!email || !password) {
+      return res.status(400).json({ error: 'Email and password are required' });
+    }
+
+    const targetRole = role === 'client' ? 'client' : 'promoter'; // Admin registration restricted
     const existing = await get(`SELECT id FROM users WHERE email = ?`, [email]);
     if (existing) {
       return res.status(400).json({ error: 'Email already registered' });
     }
+
     const salt = await bcrypt.genSalt(10);
-    const hash = await bcrypt.hash(password || 'password123', salt);
+    const hash = await bcrypt.hash(password, salt);
     const newId = uuidv4();
+    const displayName = name || email.split('@')[0];
+
+    const initialBalance = targetRole === 'client' ? 0.00 : 0.00;
+    const communities = Array.isArray(community_types) 
+      ? community_types 
+      : (community_types ? community_types.split(',').map(s => s.trim()) : ['Telegram', 'WhatsApp']);
 
     await run(`
-      INSERT INTO users (id, email, password_hash, role, wallet_balance, country, community_types, device_fingerprint)
-      VALUES (?, ?, ?, 'promoter', 0.00, ?, ?, ?)
+      INSERT INTO users (id, email, password_hash, role, name, wallet_balance, country, community_types, device_fingerprint)
+      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `, [
       newId,
       email,
       hash,
+      targetRole,
+      displayName,
+      initialBalance,
       country || 'Global',
-      JSON.stringify(community_types || ['Telegram']),
+      JSON.stringify(communities),
       device_fingerprint || 'fp_' + Math.random().toString(36).substring(7)
     ]);
 
-    const user = await get(`SELECT id, email, role, wallet_balance, country, community_types FROM users WHERE id = ?`, [newId]);
-    res.json({ success: true, user });
+    const user = await get(`SELECT id, email, role, name, wallet_balance, country, community_types, created_at FROM users WHERE id = ?`, [newId]);
+    user.community_types = JSON.parse(user.community_types || '[]');
+
+    const token = generateToken(user);
+    res.json({ success: true, token, user });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-// Current User fetch
-app.get('/api/users/:id', async (req, res) => {
+// Backward-compatible promoter quick registration
+app.post('/api/auth/register-promoter', async (req, res) => {
+  req.body.role = 'promoter';
+  return app._router.handle(req, res);
+});
+
+// Current User profile fetch (strictly derives identity from JWT)
+app.get('/api/auth/me', requireRole(['admin', 'client', 'promoter']), async (req, res) => {
   try {
-    const user = await get(`SELECT id, email, role, wallet_balance, country, community_types, created_at FROM users WHERE id = ?`, [req.params.id]);
+    const user = await get(`SELECT id, email, role, name, wallet_balance, country, community_types, created_at FROM users WHERE id = ?`, [req.user.id]);
+    if (!user) return res.status(404).json({ error: 'User not found' });
+    user.community_types = JSON.parse(user.community_types || '[]');
+    res.json({ user });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// User fetch by ID (Admins can view any user; other roles can only view their own record)
+app.get('/api/users/:id', requireRole(['admin', 'client', 'promoter']), async (req, res) => {
+  try {
+    if (req.user.role !== 'admin' && req.user.id !== req.params.id) {
+      return res.status(403).json({ error: 'Access denied to this user profile' });
+    }
+    const user = await get(`SELECT id, email, role, name, wallet_balance, country, community_types, created_at FROM users WHERE id = ?`, [req.params.id]);
     if (!user) return res.status(404).json({ error: 'User not found' });
     user.community_types = JSON.parse(user.community_types || '[]');
     res.json(user);
@@ -218,14 +327,51 @@ app.get('/api/users/:id', async (req, res) => {
 });
 
 // ============================================================================
-// 3. ADMINISTRATOR DASHBOARD APIS
+// 3. OVERVIEW & TELEMETRY APIS
 // ============================================================================
-app.get('/api/admin/metrics', async (req, res) => {
+app.get('/api/overview/metrics', async (req, res) => {
   try {
-    const totalDeposits = await get(`SELECT SUM(amount) as total FROM financial_ledger WHERE transaction_type = 'deposit'`);
-    const totalPayouts = await get(`SELECT SUM(amount) as total FROM financial_ledger WHERE transaction_type = 'payout'`);
-    const platformRevenue = await get(`SELECT SUM(amount) as total FROM financial_ledger WHERE transaction_type = 'platform_revenue'`);
-    const totalClicks = await get(`SELECT SUM(total_clicks) as total FROM promoter_links`);
+    const totalDeposits = await get(`SELECT COALESCE(SUM(amount), 0) as total FROM financial_ledger WHERE transaction_type = 'deposit'`);
+    const totalClicks = await get(`SELECT COALESCE(SUM(total_clicks), 0) as total FROM promoter_links`);
+    const platformRevenue = await get(`SELECT COALESCE(SUM(amount), 0) as total FROM financial_ledger WHERE transaction_type = 'platform_revenue'`);
+    const totalThreats = await get(`SELECT COUNT(id) as count FROM threat_logs`);
+
+    res.json({
+      totalDeposits: totalDeposits.total || 0,
+      totalClicks: totalClicks.total || 0,
+      platformRevenue: platformRevenue.total || 0,
+      totalThreats: totalThreats.count || 0
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+app.get('/api/campaigns/top', async (req, res) => {
+  const limit = parseInt(req.query.limit, 10) || 3;
+  try {
+    const campaigns = await all(`
+      SELECT id, title, cost_per_click, remaining_budget, total_budget, status
+      FROM campaigns
+      WHERE status = 'active'
+      ORDER BY total_budget DESC
+      LIMIT ?
+    `, [limit]);
+    res.json(campaigns);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================================
+// 4. ADMINISTRATOR GOVERNANCE & SECURITY APIS (Restricted to 'admin')
+// ============================================================================
+app.get('/api/admin/metrics', requireRole(['admin']), async (req, res) => {
+  try {
+    const totalDeposits = await get(`SELECT COALESCE(SUM(amount), 0) as total FROM financial_ledger WHERE transaction_type = 'deposit'`);
+    const totalPayouts = await get(`SELECT COALESCE(SUM(amount), 0) as total FROM financial_ledger WHERE transaction_type = 'payout'`);
+    const platformRevenue = await get(`SELECT COALESCE(SUM(amount), 0) as total FROM financial_ledger WHERE transaction_type = 'platform_revenue'`);
+    const totalClicks = await get(`SELECT COALESCE(SUM(total_clicks), 0) as total FROM promoter_links`);
     const totalThreats = await get(`SELECT COUNT(id) as count FROM threat_logs`);
     const pendingWithdrawalsCount = await get(`SELECT COUNT(id) as count FROM withdrawals WHERE status = 'pending'`);
     const pendingTasksCount = await get(`SELECT COUNT(id) as count FROM tasks WHERE status = 'pending'`);
@@ -244,7 +390,7 @@ app.get('/api/admin/metrics', async (req, res) => {
   }
 });
 
-app.get('/api/admin/ledger', async (req, res) => {
+app.get('/api/admin/ledger', requireRole(['admin']), async (req, res) => {
   try {
     const ledger = await all(`
       SELECT fl.*, u.email as account_email, c.title as campaign_title
@@ -253,27 +399,65 @@ app.get('/api/admin/ledger', async (req, res) => {
       LEFT JOIN campaigns c ON fl.campaign_id = c.id
       ORDER BY fl.timestamp DESC LIMIT 100
     `);
-    res.json(ledger);
+
+    const formatted = ledger.map(l => ({
+      id: l.id,
+      type: l.transaction_type,
+      amount: l.amount,
+      account: l.account_email || 'Nexus Treasury',
+      notes: l.notes || '',
+      timestamp: l.timestamp
+    }));
+
+    res.json(formatted);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.get('/api/admin/threats', async (req, res) => {
+app.get('/api/admin/ledger/export-csv', requireRole(['admin']), async (req, res) => {
+  try {
+    const ledger = await all(`
+      SELECT fl.*, u.email as account_email
+      FROM financial_ledger fl
+      LEFT JOIN users u ON fl.account_id = u.id
+      ORDER BY fl.timestamp DESC
+    `);
+
+    let csv = "Type,Amount,Account,Notes,Timestamp\n";
+    ledger.forEach(l => {
+      const type = l.transaction_type || '';
+      const amount = l.amount || 0;
+      const account = l.account_email || 'Nexus Treasury';
+      const notes = (l.notes || '').replace(/"/g, '""');
+      const timestamp = l.timestamp || '';
+      csv += `"${type}","${amount}","${account}","${notes}","${timestamp}"\n`;
+    });
+
+    res.setHeader('Content-Type', 'text/csv');
+    res.setHeader('Content-Disposition', `attachment; filename=nexuslink_ledger_${Date.now()}.csv`);
+    res.send(csv);
+  } catch (err) {
+    res.status(500).send('Failed to generate CSV');
+  }
+});
+
+app.get('/api/admin/threats', requireRole(['admin']), async (req, res) => {
+  const limit = parseInt(req.query.limit, 10) || 100;
   try {
     const threats = await all(`
       SELECT tl.*, c.title as campaign_title 
       FROM threat_logs tl
       LEFT JOIN campaigns c ON tl.campaign_id = c.id
-      ORDER BY tl.created_at DESC LIMIT 100
-    `);
+      ORDER BY tl.created_at DESC LIMIT ?
+    `, [limit]);
     res.json(threats);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
-app.get('/api/admin/withdrawals', async (req, res) => {
+app.get('/api/admin/withdrawals', requireRole(['admin']), async (req, res) => {
   try {
     const list = await all(`
       SELECT w.*, u.email, u.wallet_balance
@@ -287,48 +471,65 @@ app.get('/api/admin/withdrawals', async (req, res) => {
   }
 });
 
-app.post('/api/admin/withdrawals/:id/authorize', async (req, res) => {
-  const { action } = req.body; // 'authorize' or 'rejected'
+async function handleAdminWithdrawalResolution(req, res) {
+  const action = req.body.action || req.body.status;
+  const isAuth = action === 'authorize' || action === 'approved';
   try {
     const item = await get(`SELECT * FROM withdrawals WHERE id = ?`, [req.params.id]);
     if (!item) return res.status(404).json({ error: 'Withdrawal not found' });
-    if (item.status !== 'pending') return res.status(400).json({ error: 'Already resolved' });
+    if (item.status !== 'pending') return res.status(400).json({ error: `Withdrawal is already ${item.status}` });
 
-    if (action === 'authorize') {
-      await run(`UPDATE withdrawals SET status = 'authorized' WHERE id = ?`, [req.params.id]);
-      // Log to financial ledger
-      await run(`
-        INSERT INTO financial_ledger (id, transaction_type, account_id, amount, notes)
-        VALUES (?, 'withdrawal', ?, ?, ?)
-      `, [uuidv4(), item.user_id, item.amount, `Withdrawal to ${item.destination_wallet} on ${item.network} authorized`]);
-    } else {
-      await run(`UPDATE withdrawals SET status = 'rejected' WHERE id = ?`, [req.params.id]);
-      // Refund balance to user
-      await run(`UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?`, [item.amount, item.user_id]);
-    }
+    await runTransaction(async () => {
+      if (isAuth) {
+        await run(`UPDATE withdrawals SET status = 'authorized' WHERE id = ?`, [req.params.id]);
+        await run(`
+          INSERT INTO financial_ledger (id, transaction_type, account_id, amount, notes)
+          VALUES (?, 'withdrawal', ?, ?, ?)
+        `, [uuidv4(), item.user_id, item.amount, `Withdrawal to ${item.destination_wallet} on ${item.network} authorized`]);
+      } else {
+        await run(`UPDATE withdrawals SET status = 'rejected' WHERE id = ?`, [req.params.id]);
+        // Refund balance to user
+                await run(`UPDATE users SET wallet_balance = ROUND(wallet_balance + ?, 2) WHERE id = ?`, [item.amount, item.user_id]);
+      }
+    });
 
-    res.json({ success: true, status: action === 'authorize' ? 'authorized' : 'rejected' });
+    res.json({ success: true, status: isAuth ? 'authorized' : 'rejected' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}
 
-// Campaign approval or status toggle by admin
-app.post('/api/admin/campaigns/:id/status', async (req, res) => {
+app.post('/api/admin/withdrawals/:id/authorize', requireRole(['admin']), handleAdminWithdrawalResolution);
+app.post('/api/admin/withdrawals/:id', requireRole(['admin']), handleAdminWithdrawalResolution);
+
+// Admin campaign status toggle
+app.post('/api/admin/campaigns/:id/status', requireRole(['admin']), async (req, res) => {
   const { status } = req.body;
+  if (!['active', 'paused', 'exhausted'].includes(status)) {
+    return res.status(400).json({ error: "Invalid status: must be 'active', 'paused', or 'exhausted'" });
+  }
   try {
+    const campaign = await get(`SELECT id FROM campaigns WHERE id = ?`, [req.params.id]);
+    if (!campaign) return res.status(404).json({ error: 'Campaign not found' });
     await run(`UPDATE campaigns SET status = ? WHERE id = ?`, [status, req.params.id]);
-    res.json({ success: true });
+    res.json({ success: true, status });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // ============================================================================
-// 4. CLIENT / BRAND DASHBOARD APIS
+// 5. CLIENT / BRAND DASHBOARD APIS
 // ============================================================================
-app.get('/api/client/campaigns', async (req, res) => {
-  const clientId = req.query.client_id;
+app.get('/api/client/campaigns', requireRole(['admin','client']), async (req, res) => {
+  let clientId = null;
+  if (req.user && req.user.role === 'client') {
+    clientId = req.user.id;
+  } else if (req.user && req.user.role === 'admin' && req.query.client_id) {
+    clientId = req.query.client_id;
+  } else if (!req.user && req.query.client_id) {
+    clientId = req.query.client_id;
+  }
   try {
     let sql = `
       SELECT c.*, 
@@ -357,7 +558,7 @@ app.get('/api/client/campaigns', async (req, res) => {
   }
 });
 
-app.post('/api/client/campaigns', async (req, res) => {
+app.post('/api/client/campaigns', requireRole(['client', 'admin']), async (req, res) => {
   const {
     client_id,
     title,
@@ -373,36 +574,57 @@ app.post('/api/client/campaigns', async (req, res) => {
       return res.status(400).json({ error: 'Missing mandatory campaign fields' });
     }
 
-    const campaignId = uuidv4();
     const budget = Number(total_budget);
     const cpc = Number(cost_per_click);
 
-    await run(`
-      INSERT INTO campaigns (id, client_id, title, target_url, total_budget, remaining_budget, cost_per_click, geo_target, community_niches, status)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
-    `, [
-      campaignId,
-      client_id,
-      title,
-      target_url,
-      budget,
-      budget,
-      cpc,
-      JSON.stringify(geo_target || []),
-      JSON.stringify(community_niches || [])
-    ]);
+    if (isNaN(budget) || budget <= 0) {
+      return res.status(400).json({ error: 'Total budget must be a positive number' });
+    }
+    if (isNaN(cpc) || cpc <= 0) {
+      return res.status(400).json({ error: 'Cost per click must be a positive number' });
+    }
+    if (cpc > budget) {
+      return res.status(400).json({ error: 'Cost per click cannot exceed total budget' });
+    }
+    if (!target_url.startsWith('http://') && !target_url.startsWith('https://')) {
+      return res.status(400).json({ error: 'Target URL must be a valid HTTP or HTTPS URL' });
+    }
 
-    // Record Deposit in Financial Ledger
-    await run(`
-      INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
-      VALUES (?, 'deposit', ?, ?, ?, ?)
-    `, [
-      uuidv4(),
-      client_id,
-      campaignId,
-      budget,
-      `Escrow deposit for campaign: ${title}`
-    ]);
+    // Identity derivation: Clients strictly create under their own ID; Admins may specify client_id
+    const resolvedClientId = (req.user.role === 'admin' && client_id) ? client_id : req.user.id;
+
+    const campaignId = 'camp-' + Date.now();
+    const geo = Array.isArray(geo_target) ? geo_target : (geo_target ? geo_target.split(',').map(s => s.trim()) : ['Global', 'US']);
+    const niches = Array.isArray(community_niches) ? community_niches : (community_niches ? community_niches.split(',').map(s => s.trim()) : ['Telegram', 'Discord', 'Reddit']);
+
+    await runTransaction(async () => {
+      await run(`
+        INSERT INTO campaigns (id, client_id, title, target_url, total_budget, remaining_budget, cost_per_click, geo_target, community_niches, status)
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'active')
+      `, [
+        campaignId,
+        resolvedClientId,
+        title,
+        target_url,
+        budget,
+        budget,
+        cpc,
+        JSON.stringify(geo),
+        JSON.stringify(niches)
+      ]);
+
+      // Record Deposit in Financial Ledger
+      await run(`
+        INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
+        VALUES (?, 'deposit', ?, ?, ?, ?)
+      `, [
+        uuidv4(),
+        resolvedClientId,
+        campaignId,
+        budget,
+        `Escrow deposit for campaign: ${title}`
+      ]);
+    });
 
     const created = await get(`SELECT * FROM campaigns WHERE id = ?`, [campaignId]);
     created.geo_target = JSON.parse(created.geo_target || '[]');
@@ -414,12 +636,90 @@ app.post('/api/client/campaigns', async (req, res) => {
   }
 });
 
+// Client toggle own campaign status (with strict ownership check)
+app.post('/api/client/campaigns/:id/status', requireRole(['client', 'admin']), async (req, res) => {
+  const { status } = req.body;
+  try {
+    const campaign = await get(`SELECT * FROM campaigns WHERE id = ?`, [req.params.id]);
+    if (!campaign) {
+      return res.status(404).json({ error: 'Campaign not found' });
+    }
+
+    // Enforce ownership: Clients can only modify their own campaigns
+    if (req.user.role === 'client' && campaign.client_id !== req.user.id) {
+      return res.status(403).json({ error: 'Access denied. You do not own this campaign.' });
+    }
+
+    const validStatus = status === 'paused' ? 'paused' : 'active';
+    await run(`UPDATE campaigns SET status = ? WHERE id = ?`, [validStatus, req.params.id]);
+    res.json({ success: true, status: validStatus });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Client metrics summary
+app.get('/api/client/metrics', requireRole(['admin','client']), async (req, res) => {
+  const clientId = (req.user && req.user.role === 'client') 
+    ? req.user.id 
+    : ((req.user && req.user.role === 'admin' && req.query.client_id) ? req.query.client_id : (req.query.client_id || null));
+  try {
+    let sql = `
+      SELECT 
+        COALESCE(SUM(c.total_budget), 0) as total_escrow,
+        COALESCE(SUM(c.total_budget - c.remaining_budget), 0) as total_spent,
+        COUNT(CASE WHEN c.status = 'active' THEN 1 END) as active_campaigns
+      FROM campaigns c
+    `;
+    const params = [];
+    if (clientId) {
+      sql += ` WHERE c.client_id = ? `;
+      params.push(clientId);
+    }
+    const metrics = await get(sql, params);
+
+    const clicksSql = clientId ? `
+      SELECT COALESCE(SUM(pl.total_clicks), 0) as total_clicks 
+      FROM promoter_links pl 
+      JOIN campaigns c ON pl.campaign_id = c.id 
+      WHERE c.client_id = ?
+    ` : `SELECT COALESCE(SUM(total_clicks), 0) as total_clicks FROM promoter_links`;
+
+    const clicksRes = await get(clicksSql, clientId ? [clientId] : []);
+    
+    let fraudSaved = 0;
+    if (clientId) {
+      const threatRes = await get(`
+        SELECT COUNT(tl.id) as total_threats 
+        FROM threat_logs tl 
+        JOIN campaigns c ON tl.campaign_id = c.id 
+        WHERE c.client_id = ?
+      `, [clientId]);
+      fraudSaved = threatRes ? threatRes.total_threats : 0;
+    } else {
+      const threatRes = await get(`SELECT COUNT(id) as total_threats FROM threat_logs`);
+      fraudSaved = threatRes ? threatRes.total_threats : 0;
+    }
+
+    res.json({
+      totalEscrow: metrics.total_escrow || 0,
+      totalSpent: metrics.total_spent || 0,
+      activeCampaigns: metrics.active_campaigns || 0,
+      totalClicks: clicksRes.total_clicks || 0,
+      fraudSaved: fraudSaved
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 // ============================================================================
-// 5. PROMOTER DASHBOARD ("SEEDERS") APIS
+// 6. PROMOTER DASHBOARD ("SEEDERS") APIS
 // ============================================================================
-// Marketplace view: active campaigns matching geo or niches
-app.get('/api/promoter/marketplace', async (req, res) => {
-  const promoterId = req.query.promoter_id;
+app.get('/api/promoter/marketplace', requireRole(['promoter','admin']), async (req, res) => {
+  const promoterId = (req.user && req.user.role === 'promoter') 
+    ? req.user.id 
+    : (req.query.promoter_id || 'promoter-1');
   try {
     const campaigns = await all(`
       SELECT c.*, u.email as brand_email,
@@ -429,7 +729,7 @@ app.get('/api/promoter/marketplace', async (req, res) => {
       JOIN users u ON c.client_id = u.id
       WHERE c.status = 'active' AND c.remaining_budget >= c.cost_per_click
       ORDER BY c.created_at DESC
-    `, [promoterId || '', promoterId || '']);
+    `, [promoterId, promoterId]);
 
     const parsed = campaigns.map(c => ({
       ...c,
@@ -443,41 +743,61 @@ app.get('/api/promoter/marketplace', async (req, res) => {
   }
 });
 
-// One-click "Generate Referral Link" button
-app.post('/api/promoter/generate-link', async (req, res) => {
+async function handleGenerateLink(req, res) {
   const { promoter_id, campaign_id } = req.body;
+  const resolvedPromoterId = (req.user && req.user.role === 'promoter')
+    ? req.user.id
+    : ((req.user && req.user.role === 'admin' && promoter_id) ? promoter_id : (req.user ? req.user.id : (promoter_id || 'promoter-1')));
+
   try {
+    if (!campaign_id) {
+      return res.status(400).json({ error: 'campaign_id is required' });
+    }
+
+    const campaign = await get(`SELECT * FROM campaigns WHERE id = ?`, [campaign_id]);
+    if (!campaign) {
+      return res.status(404).json({ error: 'Campaign not found' });
+    }
+    if (campaign.status !== 'active') {
+      return res.status(400).json({ error: 'Cannot generate tracking link for an inactive campaign' });
+    }
+
     // Check if already generated
     const existing = await get(`
       SELECT * FROM promoter_links WHERE promoter_id = ? AND campaign_id = ?
-    `, [promoter_id, campaign_id]);
+    `, [resolvedPromoterId, campaign_id]);
 
     if (existing) {
       return res.json({ success: true, link: existing, isNew: false });
     }
 
-    // Generate unique slug
-    const promoter = await get(`SELECT email FROM users WHERE id = ?`, [promoter_id]);
-    const cleanPrefix = promoter ? promoter.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '').toLowerCase() : 'user';
+    // Generate unique clean slug
+    const promoter = await get(`SELECT email, name FROM users WHERE id = ?`, [resolvedPromoterId]);
+    const cleanPrefix = promoter && promoter.name 
+      ? promoter.name.split(' ')[0].replace(/[^a-zA-Z0-9]/g, '').toLowerCase()
+      : (promoter ? promoter.email.split('@')[0].replace(/[^a-zA-Z0-9]/g, '').toLowerCase() : 'user');
+    
     const randSuffix = Math.random().toString(36).substring(2, 7);
     const customSlug = `${cleanPrefix}-${randSuffix}`;
 
-    const linkId = uuidv4();
+    const linkId = 'link-' + Date.now();
     await run(`
       INSERT INTO promoter_links (id, promoter_id, campaign_id, custom_slug, total_clicks)
       VALUES (?, ?, ?, ?, 0)
-    `, [linkId, promoter_id, campaign_id, customSlug]);
+    `, [linkId, resolvedPromoterId, campaign_id, customSlug]);
 
     const created = await get(`SELECT * FROM promoter_links WHERE id = ?`, [linkId]);
     res.json({ success: true, link: created, isNew: true });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
-});
+}
 
-// Promoter's active referral links
-app.get('/api/promoter/my-links', async (req, res) => {
-  const promoterId = req.query.promoter_id;
+app.post('/api/promoter/generate-link', requireRole(['promoter', 'admin']), handleGenerateLink);
+app.post('/api/promoter/links', requireRole(['promoter', 'admin']), handleGenerateLink);
+
+app.get('/api/promoter/my-links', requireRole(['promoter', 'admin']), async (req, res) => {
+  const promoterId = (req.user.role === 'admin' && req.query.promoter_id) ? req.query.promoter_id : req.user.id;
   try {
     const links = await all(`
       SELECT pl.*, c.title as campaign_title, c.cost_per_click, c.target_url, c.status as campaign_status
@@ -498,25 +818,56 @@ app.get('/api/promoter/my-links', async (req, res) => {
   }
 });
 
-// Proof Submission Form (Task submission)
-app.post('/api/promoter/tasks', async (req, res) => {
-  const { promoter_id, campaign_id, screenshot_url, proof_notes, payout_amount } = req.body;
+// Promoter metrics summary
+app.get('/api/promoter/metrics', async (req, res) => {
+  const promoterId = (req.user && req.user.role === 'promoter') 
+    ? req.user.id 
+    : ((req.user && req.user.role === 'admin' && req.query.promoter_id) ? req.query.promoter_id : (req.query.promoter_id || 'promoter-1'));
   try {
-    if (!promoter_id || !campaign_id || !screenshot_url) {
-      return res.status(400).json({ error: 'Missing required proof fields' });
+    const user = await get(`SELECT wallet_balance FROM users WHERE id = ?`, [promoterId]);
+    const links = await all(`SELECT total_clicks FROM promoter_links WHERE promoter_id = ?`, [promoterId]);
+    
+    const balance = user ? user.wallet_balance : 0;
+    const clicks = links.reduce((acc, l) => acc + (l.total_clicks || 0), 0);
+    const slugsCount = links.length;
+
+    res.json({
+      walletBalance: balance,
+      totalClicks: clicks,
+      activeSlugs: slugsCount
+    });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// Proof Submission Form (Task submission)
+app.post('/api/promoter/tasks', requireRole(['promoter', 'admin']), async (req, res) => {
+  const { promoter_id, campaign_id, screenshot_url, proof_notes, payout_amount } = req.body;
+  const resolvedPromoterId = (req.user.role === 'admin' && promoter_id) ? promoter_id : req.user.id;
+
+  try {
+    if (!campaign_id || !screenshot_url) {
+      return res.status(400).json({ error: 'Missing required proof fields (campaign_id, screenshot_url)' });
     }
 
-    const taskId = uuidv4();
+    const campaign = await get(`SELECT id, remaining_budget FROM campaigns WHERE id = ?`, [campaign_id]);
+    if (!campaign) {
+      return res.status(404).json({ error: 'Campaign not found' });
+    }
+
+    const payout = Number(payout_amount) || 2075.00;
+    const taskId = 'task-' + Date.now();
     await run(`
       INSERT INTO tasks (id, promoter_id, campaign_id, screenshot_url, proof_notes, status, payout_amount)
       VALUES (?, ?, ?, ?, ?, 'pending', ?)
     `, [
       taskId,
-      promoter_id,
+      resolvedPromoterId,
       campaign_id,
       screenshot_url,
       proof_notes || '',
-      payout_amount || 15.00
+      payout
     ]);
 
     const task = await get(`SELECT * FROM tasks WHERE id = ?`, [taskId]);
@@ -527,7 +878,9 @@ app.post('/api/promoter/tasks', async (req, res) => {
 });
 
 app.get('/api/tasks', async (req, res) => {
-  const promoterId = req.query.promoter_id;
+  const promoterId = (req.user && req.user.role === 'promoter') 
+    ? req.user.id 
+    : (req.query.promoter_id || null);
   try {
     let sql = `
       SELECT t.*, c.title as campaign_title, u.email as promoter_email
@@ -543,44 +896,61 @@ app.get('/api/tasks', async (req, res) => {
     sql += ` ORDER BY t.created_at DESC `;
 
     const tasks = await all(sql, params);
-    res.json(tasks);
+    const formatted = tasks.map(t => ({
+      id: t.id,
+      campaign_title: t.campaign_title,
+      notes: t.proof_notes || '',
+      screenshot: t.screenshot_url,
+      payout: t.payout_amount,
+      status: t.status,
+      promoter_email: t.promoter_email,
+      created_at: t.created_at
+    }));
+
+    res.json(formatted);
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
 });
 
 // Admin Review Task Proof
-app.post('/api/admin/tasks/:id/review', async (req, res) => {
+app.post('/api/admin/tasks/:id/review', requireRole(['admin']), async (req, res) => {
   const { status } = req.body; // 'approved' or 'flagged'
+  if (!['approved', 'flagged'].includes(status)) {
+    return res.status(400).json({ error: "Status must be 'approved' or 'flagged'" });
+  }
   try {
     const task = await get(`SELECT * FROM tasks WHERE id = ?`, [req.params.id]);
     if (!task) return res.status(404).json({ error: 'Task proof not found' });
+    if (task.status !== 'pending') return res.status(400).json({ error: `Task proof is already ${task.status}` });
 
-    await run(`UPDATE tasks SET status = ? WHERE id = ?`, [status, req.params.id]);
+    await runTransaction(async () => {
+      await run(`UPDATE tasks SET status = ? WHERE id = ?`, [status, req.params.id]);
 
-    if (status === 'approved') {
-      // Credit bonus payout to promoter wallet
-      await run(`
-        UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?
-      `, [task.payout_amount, task.promoter_id]);
+      if (status === 'approved') {
+        // Credit bonus payout to promoter wallet
+        await run(`
+          UPDATE users SET wallet_balance = wallet_balance + ? WHERE id = ?
+        `, [task.payout_amount, task.promoter_id]);
 
-      // Deduct from campaign budget
-      await run(`
-        UPDATE campaigns SET remaining_budget = MAX(0, remaining_budget - ?) WHERE id = ?
-      `, [task.payout_amount, task.campaign_id]);
+        // Deduct from campaign budget
+        await run(`
+          UPDATE campaigns SET remaining_budget = MAX(0, remaining_budget - ?) WHERE id = ?
+        `, [task.payout_amount, task.campaign_id]);
 
-      // Log in Financial Ledger
-      await run(`
-        INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
-        VALUES (?, 'payout', ?, ?, ?, ?)
-      `, [
-        uuidv4(),
-        task.promoter_id,
-        task.campaign_id,
-        task.payout_amount,
-        `Approved Community Broadcast Task Proof reward`
-      ]);
-    }
+        // Log in Financial Ledger
+        await run(`
+          INSERT INTO financial_ledger (id, transaction_type, account_id, campaign_id, amount, notes)
+          VALUES (?, 'payout', ?, ?, ?, ?)
+        `, [
+          uuidv4(),
+          task.promoter_id,
+          task.campaign_id,
+          task.payout_amount,
+          `Approved Community Broadcast Task Proof reward`
+        ]);
+      }
+    });
 
     res.json({ success: true, status });
   } catch (err) {
@@ -588,43 +958,61 @@ app.post('/api/admin/tasks/:id/review', async (req, res) => {
   }
 });
 
-// Wallet Withdraw Request
-app.post('/api/promoter/withdraw', async (req, res) => {
+// Wallet Withdraw Request (Atomic balance verification & deduction)
+async function handleWithdrawalRequest(req, res) {
   const { user_id, amount, destination_wallet, network } = req.body;
+  // Non-admins CANNOT withdraw from other accounts
+  const resolvedUserId = (req.user.role === 'admin' && user_id) ? user_id : req.user.id;
+
   try {
     const withdrawAmt = Number(amount);
-    if (!withdrawAmt || withdrawAmt <= 0) {
-      return res.status(400).json({ error: 'Invalid withdrawal amount' });
+    if (!withdrawAmt || isNaN(withdrawAmt) || withdrawAmt <= 0) {
+      return res.status(400).json({ error: 'Invalid withdrawal amount: must be greater than zero' });
     }
 
-    const user = await get(`SELECT wallet_balance FROM users WHERE id = ?`, [user_id]);
-    if (!user || user.wallet_balance < withdrawAmt) {
-      return res.status(400).json({ error: 'Insufficient wallet balance' });
+    if (!destination_wallet || destination_wallet.trim().length < 4) {
+      return res.status(400).json({ error: 'Valid destination wallet address is required' });
     }
 
-    // Deduct pending balance immediately to avoid double spend
-    await run(`UPDATE users SET wallet_balance = wallet_balance - ? WHERE id = ?`, [withdrawAmt, user_id]);
+    const wid = 'w-' + Date.now();
+    let remainingBal = 0;
 
-    const wid = uuidv4();
-    await run(`
-      INSERT INTO withdrawals (id, user_id, amount, destination_wallet, network, status)
-      VALUES (?, ?, ?, ?, ?, 'pending')
-    `, [
-      wid,
-      user_id,
-      withdrawAmt,
-      destination_wallet || '0xWalletAddressHere',
-      network || 'Polygon / USDT'
-    ]);
+    await runTransaction(async () => {
+      const user = await get(`SELECT wallet_balance FROM users WHERE id = ?`, [resolvedUserId]);
+      if (!user) {
+        throw new Error('User account not found');
+      }
+      if (Number(user.wallet_balance) < withdrawAmt) {
+        throw new Error(`Insufficient wallet balance. Available: ₹${Number(user.wallet_balance).toFixed(2)}, Requested: ₹${withdrawAmt.toFixed(2)}`);
+      }
 
-    res.json({ success: true, withdrawalId: wid });
+      await run(`UPDATE users SET wallet_balance = wallet_balance - ? WHERE id = ?`, [withdrawAmt, resolvedUserId]);
+
+      await run(`
+        INSERT INTO withdrawals (id, user_id, amount, destination_wallet, network, status)
+        VALUES (?, ?, ?, ?, ?, 'pending')
+      `, [
+        wid,
+        resolvedUserId,
+        withdrawAmt,
+        destination_wallet.trim(),
+        network || 'Polygon / USDT'
+      ]);
+
+      remainingBal = Number((user.wallet_balance - withdrawAmt).toFixed(2));
+    });
+
+    res.json({ success: true, withdrawalId: wid, remainingBalance: remainingBal });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    res.status(400).json({ error: err.message });
   }
-});
+}
 
-app.get('/api/promoter/wallet-history', async (req, res) => {
-  const userId = req.query.user_id;
+app.post('/api/promoter/withdraw', requireRole(['promoter', 'client', 'admin']), handleWithdrawalRequest);
+app.post('/api/withdrawals', requireRole(['promoter', 'client', 'admin']), handleWithdrawalRequest);
+
+app.get('/api/promoter/wallet-history', requireRole(['promoter', 'client', 'admin']), async (req, res) => {
+  const userId = (req.user.role === 'admin' && req.query.user_id) ? req.query.user_id : req.user.id;
   try {
     const txs = await all(`
       SELECT fl.*, c.title as campaign_title
@@ -644,11 +1032,10 @@ app.get('/api/promoter/wallet-history', async (req, res) => {
   }
 });
 
-// Interactive Anti-Fraud Simulator Endpoint (Test any IP, UA, or header)
+// Interactive Anti-Fraud Simulator Endpoint
 app.post('/api/test-fraud-engine', async (req, res) => {
   const { test_ip, test_user_agent, test_referrer, slug } = req.body;
   try {
-    // Synthetic mock request
     const mockReq = {
       headers: {
         'x-forwarded-for': test_ip || '127.0.0.1',
@@ -671,7 +1058,12 @@ app.post('/api/test-fraud-engine', async (req, res) => {
 
 // Health check API
 app.get('/api/health', (req, res) => {
-  res.json({ status: 'healthy', version: '2.0.0', protocol: 'NexusLink Anti-Fraud Engine', timestamp: new Date().toISOString() });
+  res.json({ 
+    status: 'healthy', 
+    version: '2.0.0', 
+    protocol: 'NexusLink Anti-Fraud Engine', 
+    timestamp: new Date().toISOString() 
+  });
 });
 
 // Fallback for all SPA routes
