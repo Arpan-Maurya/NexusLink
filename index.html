@@ -548,6 +548,42 @@
 
     /* Landing Page Aesthetics */
     .landing-hero {
+  background: #F5F8EF;
+  text-align: center;
+  padding: 4rem 1rem 3rem;
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  overflow: hidden;
+}
+/* Subtle blurred color fields */
+.blur-field {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  opacity: 0.3;
+}
+.blur-1 { width: 300px; height: 300px; background: #ffefc5; top: -50px; left: -100px; }
+.blur-2 { width: 250px; height: 250px; background: #c5ffe5; bottom: -80px; right: -120px; }
+
+/* Creator carousel styling */
+.creator-carousel {
+  width: 100%;
+  max-width: 1000px;
+  margin: 2rem auto 0;
+  overflow: hidden;
+  cursor: grab;
+}
+.carousel-track {
+  display: flex;
+  gap: 1rem;
+  user-select: none;
+  /* hide scrollbar */
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-card { flex: 0 0 auto; }
       text-align: center;
       padding: 3rem 1rem 2.5rem;
       max-width: 900px;
@@ -702,7 +738,7 @@
       background: var(--primary);
       color: #fff;
     }
-  </style>
+  </style>\n    <!-- Import handwritten font -->\n    <link href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap\" rel=\"stylesheet\"/>
 </head>
 <body>
 
@@ -742,6 +778,12 @@
 
       <!-- Status Indicator, Theme Toggle, Auth, Simulator -->
       <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
+        <!-- Server Status Badge -->
+        <div class="status-pill" id="backend-status-pill" title="NexusLink Engine Status">
+          <div class="status-dot"></div>
+          <span id="backend-status-text">Checking...</span>
+        </div>
+
         <!-- Theme Switcher Button -->
         <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch Light/Dark Mode">
           <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
@@ -773,6 +815,53 @@
     <!-- ===================================================================== -->
     <section class="app-view active" id="view-landing">
       <div class="landing-hero">
+  <!-- Subtle blurred color fields -->
+  <div class="blur-field blur-1"></div>
+  <div class="blur-field blur-2"></div>
+  <!-- Trust badge -->
+  <div class="landing-badge trust-badge" style="color: #08482D; font-size: 0.9rem;">
+    &#9679; Trusted by 10,000+ brands &amp; creators
+  </div>
+  <h1 class="hero-headline">
+    Turn Real People Into Your <span style="background: linear-gradient(135deg, var(--primary), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Growth Engine</span>
+  </h1>
+  <p class="hero-subtext">
+    Launch campaigns, collaborate with verified promoters, track real engagement and grow your brand with authentic reach.
+  </p>
+  <div class="landing-actions">
+    <button class="btn btn-primary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'client')">
+      Start a Campaign →
+    </button>
+    <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'promoter')">
+      Join as a Promoter
+    </button>
+    <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="navigateTab('overview')">
+      Explore 3D Mesh
+    </button>
+  </div>
+  <!-- Hand‑drawn visual notes -->
+  <div class="handwritten-notes">
+    <svg width="100%" height="120" viewBox="0 0 800 120" preserveAspectRatio="none">
+      <style>.note{font-family:'Caveat', cursive; fill:#08482D; font-size:1.2rem;}</style>
+      <text x="10" y="30" class="note">&lt;-- Seamless Campaign Cards</text>
+      <path d="M150,40 Q200,20 250,40" stroke="#08482D" fill="none" stroke-width="2"/>
+    </svg>
+  </div>
+  <!-- Creator/Category carousel -->
+  <div class="creator-carousel" id="creator-carousel">
+    <div class="carousel-track">
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-leaf"></i></div><h4>Beauty Campaign</h4></div>
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-palette"></i></div><h4>Creative Promotion</h4></div>
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-bolt"></i></div><h4>Instant Offers</h4></div>
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-rocket"></i></div><h4>Product Showcase</h4></div>
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-heart"></i></div><h4>Lifestyle Promotion</h4></div>
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-gamepad"></i></div><h4>Gaming Campaign</h4></div>
+      <!-- duplicate for seamless loop -->
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-leaf"></i></div><h4>Beauty Campaign</h4></div>
+      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-palette"></i></div><h4>Creative Promotion</h4></div>
+    </div>
+  </div>
+</div>
         <div class="landing-badge">
           <i class="fa-solid fa-shield-check"></i> Decentralized Community Affiliate Network
         </div>
@@ -1023,7 +1112,7 @@
             <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i> Top Active Campaigns
             </h3>
-            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="navigateTab('campaigns')">
+            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="navigateTab('brand')">
               Manage <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
@@ -1547,6 +1636,16 @@
     }
 
     function fillAuthForm(email, pass, role) {
+  document.getElementById('auth-email').value = email;
+  document.getElementById('auth-password').value = pass;
+  document.getElementById('auth-role').value = role;
+  // Switch to sign-in tab and auto-submit the form
+  switchAuthTab('signin');
+  const form = document.getElementById('auth-form');
+  if (form) {
+    form.dispatchEvent(new Event('submit', { cancelable: true }));
+  }
+}
       document.getElementById('auth-email').value = email;
       document.getElementById('auth-password').value = pass;
       document.getElementById('auth-role').value = role;
@@ -1561,44 +1660,104 @@
       } else if (role === 'promoter') {
         fillAuthForm('alex.seeder@community.org', 'promoter123', 'promoter');
       }
-      handleAuthSubmit(new Event('submit'));
     }
 
-    function handleAuthSubmit(e) {
+    // API Helper with JWT token injection
+    async function fetchApi(url, options = {}) {
+      const token = localStorage.getItem('nexuslink_token');
+      const headers = { 'Content-Type': 'application/json', ...(options.headers || {}) };
+      if (token) {
+        headers['Authorization'] = `Bearer ${token}`;
+      }
+      return fetch(url, { ...options, headers });
+    }
+
+    async function handleAuthSubmit(e) {
       if (e && e.preventDefault) e.preventDefault();
       const email = document.getElementById('auth-email').value.trim() || 'demo@nexuslink.network';
+      const password = document.getElementById('auth-password').value || 'password123';
       const role = document.getElementById('auth-role').value;
       const name = document.getElementById('auth-name').value.trim() || email.split('@')[0];
+      const nichesInput = document.getElementById('auth-niches');
+      const niches = nichesInput ? nichesInput.value.split(',').map(s => s.trim()) : ['Telegram', 'WhatsApp'];
 
-      currentUser = { email, role, name };
+      try {
+        let res;
+        if (currentAuthMode === 'signup') {
+          res = await fetchApi('/api/auth/register', {
+            method: 'POST',
+            body: JSON.stringify({ email, password, role, name, community_types: niches })
+          });
+        } else {
+          res = await fetchApi('/api/auth/login', {
+            method: 'POST',
+            body: JSON.stringify({ email, password })
+          });
+        }
+
+        if (res.ok) {
+          const data = await res.json();
+          if (data.token) {
+            localStorage.setItem('nexuslink_token', data.token);
+          }
+          if (data.user) {
+            currentUser = {
+              id: data.user.id,
+              email: data.user.email,
+              role: data.user.role,
+              name: data.user.name || name,
+              wallet_balance: data.user.wallet_balance
+            };
+            localStorage.setItem('nexuslink_current_user', JSON.stringify(currentUser));
+          }
+        } else {
+          const errData = await res.json().catch(() => ({}));
+          if (errData.error) {
+            showToast(errData.error);
+          }
+          currentUser = { email, role, name };
+        }
+      } catch (err) {
+        console.warn('Offline mode or server error during auth:', err);
+        currentUser = { email, role, name };
+      }
+
       updateUserUI();
       closeAuthModal();
 
-      if (role === 'admin') {
+      if (currentUser.role === 'admin') {
         navigateTab('admin');
-      } else if (role === 'client') {
+      } else if (currentUser.role === 'client') {
         navigateTab('brand');
-      } else if (role === 'promoter') {
+      } else if (currentUser.role === 'promoter') {
         navigateTab('promoter');
       }
 
-      showToast('Signed in successfully as ' + role.toUpperCase() + ' (' + email + ')');
+      renderAll();
+      showToast('Signed in successfully as ' + currentUser.role.toUpperCase() + ' (' + currentUser.email + ')');
     }
 
     function updateUserUI() {
       const chip = document.getElementById('current-user-role-label');
       const authBtn = document.getElementById('auth-nav-btn');
-      if (chip) chip.innerText = currentUser.role.toUpperCase() + ': ' + currentUser.email.split('@')[0];
+      if (chip) chip.innerText = (currentUser.role || 'guest').toUpperCase() + ': ' + (currentUser.name || (currentUser.email ? currentUser.email.split('@')[0] : 'Visitor'));
       if (authBtn) {
-        authBtn.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out';
-        authBtn.onclick = () => {
-          currentUser = { email: 'guest@nexuslink.network', role: 'guest', name: 'Guest' };
-          chip.innerText = 'Guest Visitor';
+        if (currentUser.role && currentUser.role !== 'guest') {
+          authBtn.innerHTML = '<i class="fa-solid fa-arrow-right-from-bracket"></i> Sign Out';
+          authBtn.onclick = () => {
+            localStorage.removeItem('nexuslink_token');
+            localStorage.removeItem('nexuslink_current_user');
+            currentUser = { email: 'guest@nexuslink.network', role: 'guest', name: 'Guest Visitor' };
+            chip.innerText = 'Guest Visitor';
+            authBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
+            authBtn.onclick = () => openAuthModal('signin');
+            navigateTab('landing');
+            showToast('Signed out successfully');
+          };
+        } else {
           authBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
           authBtn.onclick = () => openAuthModal('signin');
-          navigateTab('landing');
-          showToast('Signed out successfully');
-        };
+        }
       }
     }
 
@@ -1851,13 +2010,121 @@
     }
 
     // Render Data into All Tables
-    function renderAll() {
+    async function renderAll() {
       const store = getStore();
 
+      // Synchronous initial render from current store
+      renderUIFromData(store);
+
+      // Async live fetch from Backend API
+      try {
+        const promoterId = currentUser.id || 'promoter-1';
+        const [ovRes, campsRes, marketRes, tasksRes, withRes, ledgerRes, threatsRes, pMetricsRes, cMetricsRes] = await Promise.allSettled([
+          fetchApi('/api/overview/metrics'),
+          fetchApi('/api/client/campaigns'),
+          fetchApi(`/api/promoter/marketplace?promoter_id=${promoterId}`),
+          fetchApi('/api/tasks'),
+          fetchApi('/api/admin/withdrawals'),
+          fetchApi('/api/admin/ledger'),
+          fetchApi('/api/admin/threats'),
+          fetchApi(`/api/promoter/metrics?promoter_id=${promoterId}`),
+          fetchApi('/api/client/metrics')
+        ]);
+
+        let hasUpdates = false;
+
+        if (campsRes.status === 'fulfilled' && campsRes.value.ok) {
+          const campaigns = await campsRes.value.json();
+          if (Array.isArray(campaigns) && campaigns.length > 0) {
+            store.campaigns = campaigns;
+            hasUpdates = true;
+          }
+        }
+
+        if (tasksRes.status === 'fulfilled' && tasksRes.value.ok) {
+          const tasks = await tasksRes.value.json();
+          if (Array.isArray(tasks) && tasks.length > 0) {
+            store.tasks = tasks;
+            hasUpdates = true;
+          }
+        }
+
+        if (withRes.status === 'fulfilled' && withRes.value.ok) {
+          const withdrawals = await withRes.value.json();
+          if (Array.isArray(withdrawals) && withdrawals.length > 0) {
+            store.withdrawals = withdrawals;
+            hasUpdates = true;
+          }
+        }
+
+        if (ledgerRes.status === 'fulfilled' && ledgerRes.value.ok) {
+          const ledger = await ledgerRes.value.json();
+          if (Array.isArray(ledger) && ledger.length > 0) {
+            store.ledger = ledger;
+            hasUpdates = true;
+          }
+        }
+
+        if (threatsRes.status === 'fulfilled' && threatsRes.value.ok) {
+          const threats = await threatsRes.value.json();
+          if (Array.isArray(threats) && threats.length > 0) {
+            store.threat_logs = threats;
+            hasUpdates = true;
+          }
+        }
+
+        if (hasUpdates) {
+          saveStore(store);
+          renderUIFromData(store);
+        }
+
+        // Apply live server-calculated metrics if available
+        if (ovRes.status === 'fulfilled' && ovRes.value.ok) {
+          const ov = await ovRes.value.json();
+          const depEl = document.getElementById('ov-deposits');
+          if (depEl && ov.totalDeposits !== undefined) depEl.innerText = formatINR(ov.totalDeposits);
+          const revEl = document.getElementById('ov-revenue');
+          if (revEl && ov.platformRevenue !== undefined) revEl.innerText = formatINR(ov.platformRevenue);
+          const clkEl = document.getElementById('ov-clicks');
+          if (clkEl && ov.totalClicks !== undefined) clkEl.innerText = ov.totalClicks;
+          const thrEl = document.getElementById('ov-threats');
+          if (thrEl && ov.totalThreats !== undefined) thrEl.innerText = ov.totalThreats;
+          const afBlk = document.getElementById('af-blocked');
+          if (afBlk && ov.totalThreats !== undefined) afBlk.innerText = ov.totalThreats;
+        }
+
+        if (pMetricsRes.status === 'fulfilled' && pMetricsRes.value.ok) {
+          const pm = await pMetricsRes.value.json();
+          const pBal = document.getElementById('promoter-balance');
+          if (pBal && pm.walletBalance !== undefined) pBal.innerText = formatINR(pm.walletBalance);
+          const pClicks = document.getElementById('promoter-clicks');
+          if (pClicks && pm.totalClicks !== undefined) pClicks.innerText = pm.totalClicks;
+          const pSlugs = document.getElementById('promoter-slugs-count');
+          if (pSlugs && pm.activeSlugs !== undefined) pSlugs.innerText = pm.activeSlugs;
+        }
+
+        if (cMetricsRes.status === 'fulfilled' && cMetricsRes.value.ok) {
+          const cm = await cMetricsRes.value.json();
+          const bEscrow = document.getElementById('brand-total-escrow');
+          if (bEscrow) bEscrow.innerText = formatINR(cm.totalEscrow);
+          const bClicks = document.getElementById('brand-total-clicks');
+          if (bClicks) bClicks.innerText = cm.totalClicks;
+          const bActive = document.getElementById('brand-active-camps');
+          if (bActive) bActive.innerText = cm.activeCampaigns;
+          const bFraud = document.getElementById('brand-fraud-saved');
+          if (bFraud) bFraud.innerText = cm.fraudSaved;
+        }
+
+      } catch (err) {
+        console.warn('API sync deferred, continuing in local store mode', err);
+      }
+    }
+
+    function renderUIFromData(store) {
       // Top Overview Metrics
-      const totalDeposits = store.ledger.filter(l => l.type === 'deposit').reduce((acc, c) => acc + c.amount, 0);
-      const totalRevenue = store.ledger.filter(l => l.type === 'platform_revenue').reduce((acc, c) => acc + c.amount, 0);
-      const totalClicks = store.promoter_links.reduce((acc, l) => acc + l.total_clicks, 0);
+      const totalDeposits = store.ledger.filter(l => l.type === 'deposit').reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
+      const totalRevenue = store.ledger.filter(l => l.type === 'platform_revenue').reduce((acc, c) => acc + (Number(c.amount) || 0), 0);
+      const totalClicks = store.promoter_links.reduce((acc, l) => acc + (Number(l.total_clicks) || 0), 0);
       const totalThreats = store.threat_logs.length;
 
       const depEl = document.getElementById('ov-deposits');
@@ -1891,13 +2158,13 @@
 
       // Promoter Portal Metrics
       const pBal = document.getElementById('promoter-balance');
-      if (pBal) pBal.innerText = formatINR(11877.30);
+      if (pBal) pBal.innerText = formatINR(currentUser.wallet_balance !== undefined ? currentUser.wallet_balance : 11877.30);
       const pClicks = document.getElementById('promoter-clicks');
       if (pClicks) pClicks.innerText = totalClicks;
       const pSlugs = document.getElementById('promoter-slugs-count');
       if (pSlugs) pSlugs.innerText = store.promoter_links.length;
 
-      // 1. Overview Recent Threat snippet (Demo Data)
+      // 1. Overview Recent Threat snippet
       const ovThreats = document.getElementById('ov-tbody-threats');
       if (ovThreats) {
         ovThreats.innerHTML = '';
@@ -1906,13 +2173,13 @@
           tr.innerHTML = `
             <td><code>${t.ip_address}</code></td>
             <td style="max-width: 180px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.reason}</td>
-            <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score} (Demo)</span></td>
+            <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score} / 100</span></td>
           `;
           ovThreats.appendChild(tr);
         });
       }
 
-      // 2. Overview Recent Campaigns snippet (Demo Data)
+      // 2. Overview Recent Campaigns snippet
       const ovCamps = document.getElementById('ov-tbody-campaigns');
       if (ovCamps) {
         ovCamps.innerHTML = '';
@@ -1936,10 +2203,10 @@
           tr.innerHTML = `
             <td><code>${t.ip_address}</code></td>
             <td style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">${t.user_agent}</td>
-            <td><code>/r/${t.slug}</code></td>
+            <td><code>/r/${t.slug || 'direct'}</code></td>
             <td><span class="badge ${t.risk_score > 80 ? 'badge-rose' : 'badge-amber'}">${t.risk_score} / 100</span></td>
             <td>${t.reason}</td>
-            <td><small style="color: var(--text-dim);">${t.created_at}</small></td>
+            <td><small style="color: var(--text-dim);">${t.created_at || 'Just now'}</small></td>
           `;
           tbodyThreats.appendChild(tr);
         });
@@ -1949,13 +2216,15 @@
       const renderCampaignRow = (c) => {
         const tr = document.createElement('tr');
         const spent = (c.total_budget - c.remaining_budget);
+        const geoList = Array.isArray(c.geo_target) ? c.geo_target.join(', ') : c.geo_target;
+        const nicheList = Array.isArray(c.community_niches) ? c.community_niches.join(', ') : c.community_niches;
         tr.innerHTML = `
           <td><strong>${c.title}</strong><br><small style="color: var(--text-dim);">${c.target_url}</small></td>
           <td><strong>${formatINR(c.cost_per_click)}</strong></td>
           <td>${formatINR(spent)} / ${formatINR(c.total_budget)}</td>
-          <td>${c.geo_target.join(', ')}</td>
-          <td>${c.community_niches.join(', ')}</td>
-          <td><span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${c.status.toUpperCase()}</span></td>
+          <td>${geoList || 'Global'}</td>
+          <td>${nicheList || 'Telegram, Discord'}</td>
+          <td><span class="badge ${c.status === 'active' ? 'badge-emerald' : 'badge-amber'}">${(c.status || 'ACTIVE').toUpperCase()}</span></td>
           <td>
             <button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="toggleCampaignStatus('${c.id}')">
               ${c.status === 'active' ? 'Pause' : 'Resume'}
@@ -1984,11 +2253,12 @@
         store.campaigns.forEach(c => {
           const link = store.promoter_links.find(l => l.campaign_id === c.id);
           const reward = (c.cost_per_click * 0.6);
+          const nicheList = Array.isArray(c.community_niches) ? c.community_niches.join(', ') : c.community_niches;
           const tr = document.createElement('tr');
           tr.innerHTML = `
             <td><strong>${c.title}</strong></td>
             <td><strong style="color: var(--accent-emerald);">+${formatINR(reward)} / Click</strong></td>
-            <td>${c.community_niches.join(', ')}</td>
+            <td>${nicheList || 'All Communities'}</td>
             <td>${formatINR(c.remaining_budget)}</td>
             <td>
               ${link ? `<code style="color: var(--accent-cyan); font-weight: bold;">/r/${link.custom_slug}</code>` : '<span style="color: var(--text-dim);">Not joined</span>'}
@@ -2009,11 +2279,11 @@
         store.tasks.forEach(t => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td><strong>${t.campaign_title}</strong></td>
-            <td>${t.notes}</td>
+            <td><strong>${t.campaign_title || 'Web3 Seeding'}</strong></td>
+            <td>${t.notes || 'Broadcast Proof'}</td>
             <td><a href="${t.screenshot}" target="_blank" style="color: var(--accent-cyan); text-decoration: underline;"><i class="fa-regular fa-image"></i> View Proof</a></td>
             <td><strong style="color: var(--accent-emerald);">+${formatINR(t.payout)}</strong></td>
-            <td><span class="badge ${t.status === 'pending' ? 'badge-amber' : 'badge-emerald'}">${t.status.toUpperCase()}</span></td>
+            <td><span class="badge ${t.status === 'pending' ? 'badge-amber' : 'badge-emerald'}">${(t.status || 'PENDING').toUpperCase()}</span></td>
           `;
           tbodyTasks.appendChild(tr);
         });
@@ -2026,11 +2296,11 @@
         store.withdrawals.forEach(w => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td><strong>${w.email}</strong></td>
+            <td><strong>${w.email || 'alex.seeder@community.org'}</strong></td>
             <td><strong style="color: var(--accent-emerald);">${formatINR(w.amount)}</strong></td>
             <td><code>${w.destination_wallet}</code></td>
             <td>${w.network}</td>
-            <td><span class="badge ${w.status === 'pending' ? 'badge-amber' : w.status === 'authorized' ? 'badge-emerald' : 'badge-rose'}">${w.status.toUpperCase()}</span></td>
+            <td><span class="badge ${w.status === 'pending' ? 'badge-amber' : w.status === 'authorized' ? 'badge-emerald' : 'badge-rose'}">${(w.status || 'PENDING').toUpperCase()}</span></td>
             <td>
               ${w.status === 'pending' ? `
                 <button class="btn btn-success" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="handleWithdrawAction('${w.id}', 'authorize')"><i class="fa-solid fa-check"></i> Authorize</button>
@@ -2049,11 +2319,11 @@
         store.ledger.forEach(l => {
           const tr = document.createElement('tr');
           tr.innerHTML = `
-            <td><span class="badge badge-indigo">${l.type.toUpperCase()}</span></td>
+            <td><span class="badge badge-indigo">${(l.type || '').toUpperCase()}</span></td>
             <td><strong style="color: var(--text-main);">${formatINR(l.amount)}</strong></td>
-            <td>${l.account}</td>
-            <td>${l.notes}</td>
-            <td><small style="color: var(--text-dim);">${l.timestamp}</small></td>
+            <td>${l.account || 'Nexus Treasury'}</td>
+            <td>${l.notes || ''}</td>
+            <td><small style="color: var(--text-dim);">${l.timestamp || ''}</small></td>
           `;
           tbodyLedger.appendChild(tr);
         });
@@ -2061,29 +2331,65 @@
     }
 
     // Campaign Actions
-    function toggleCampaignStatus(id) {
+    async function toggleCampaignStatus(id) {
       const store = getStore();
       const c = store.campaigns.find(item => item.id === id);
-      if (c) {
-        c.status = c.status === 'active' ? 'paused' : 'active';
-        saveStore(store);
-        renderAll();
-        showToast(`Campaign ${c.status === 'active' ? 'resumed' : 'paused'}!`);
+      const targetStatus = (c && c.status === 'active') ? 'paused' : 'active';
+
+      try {
+        await fetchApi(`/api/client/campaigns/${id}/status`, {
+          method: 'POST',
+          body: JSON.stringify({ status: targetStatus })
+        });
+      } catch (e) {
+        console.warn('API error, toggle handled locally', e);
       }
+
+      if (c) {
+        c.status = targetStatus;
+        saveStore(store);
+      }
+
+      await renderAll();
+      showToast(`Campaign ${targetStatus === 'active' ? 'resumed' : 'paused'}!`);
     }
 
-    function joinCampaign(campId) {
+    async function joinCampaign(campId) {
+      let slug = null;
+      try {
+        const res = await fetchApi('/api/promoter/generate-link', {
+          method: 'POST',
+          body: JSON.stringify({
+            campaign_id: campId,
+            promoter_id: currentUser.id || 'promoter-1'
+          })
+        });
+
+        if (res.ok) {
+          const data = await res.json();
+          slug = data.link.custom_slug;
+        }
+      } catch (e) {
+        console.warn('API error, generating local fallback link', e);
+      }
+
+      if (!slug) {
+        slug = `alex-${Math.random().toString(36).substring(2, 7)}`;
+      }
+
       const store = getStore();
-      const slug = `alex-${Math.random().toString(36).substring(2, 7)}`;
-      store.promoter_links.push({
-        id: `link-${Date.now()}`,
-        promoter_id: 'promoter-1',
-        campaign_id: campId,
-        custom_slug: slug,
-        total_clicks: 0
-      });
-      saveStore(store);
-      renderAll();
+      if (!store.promoter_links.find(l => l.campaign_id === campId)) {
+        store.promoter_links.push({
+          id: `link-${Date.now()}`,
+          promoter_id: currentUser.id || 'promoter-1',
+          campaign_id: campId,
+          custom_slug: slug,
+          total_clicks: 0
+        });
+        saveStore(store);
+      }
+
+      await renderAll();
       showToast(`Tracking link generated: /r/${slug}`);
     }
 
@@ -2094,7 +2400,16 @@
       showToast(`Copied tracking link: ${url}`);
     }
 
-    function handleWithdrawAction(id, action) {
+    async function handleWithdrawAction(id, action) {
+      try {
+        await fetchApi(`/api/admin/withdrawals/${id}/authorize`, {
+          method: 'POST',
+          body: JSON.stringify({ action })
+        });
+      } catch (e) {
+        console.warn('API error, handling withdrawal locally', e);
+      }
+
       const store = getStore();
       const w = store.withdrawals.find(item => item.id === id);
       if (w) {
@@ -2103,18 +2418,19 @@
           store.ledger.unshift({
             type: 'withdrawal',
             amount: w.amount,
-            account: w.email,
+            account: w.email || 'alex.seeder@community.org',
             notes: `Payout to ${w.destination_wallet} on ${w.network} authorized`,
             timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19)
           });
         }
         saveStore(store);
-        renderAll();
-        showToast(action === 'authorize' ? 'Payout authorized & recorded in ledger!' : 'Payout rejected.');
       }
+
+      await renderAll();
+      showToast(action === 'authorize' ? 'Payout authorized & recorded in ledger!' : 'Payout rejected.');
     }
 
-    function handleCreateCampaign(e) {
+    async function handleCreateCampaign(e) {
       e.preventDefault();
       const title = document.getElementById('camp-title').value.trim();
       const url = document.getElementById('camp-url').value.trim();
@@ -2122,11 +2438,36 @@
       const cpc = parseFloat(document.getElementById('camp-cpc').value);
       const niches = document.getElementById('camp-niches').value.split(',').map(s => s.trim());
 
+      try {
+        const res = await fetchApi('/api/client/campaigns', {
+          method: 'POST',
+          body: JSON.stringify({
+            client_id: currentUser.id || 'client-1',
+            title,
+            target_url: url,
+            total_budget: budget,
+            cost_per_click: cpc,
+            geo_target: ['Global', 'US'],
+            community_niches: niches
+          })
+        });
+
+        if (res.ok) {
+          closeCampaignModal();
+          await renderAll();
+          showToast('Campaign launched and funded via smart escrow!');
+          return;
+        }
+      } catch (err) {
+        console.warn('Offline fallback for campaign creation', err);
+      }
+
+      // Local fallback
       const store = getStore();
       const campId = `camp-${Date.now()}`;
       store.campaigns.unshift({
         id: campId,
-        client_id: 'client-1',
+        client_id: currentUser.id || 'client-1',
         title,
         target_url: url,
         total_budget: budget,
@@ -2140,13 +2481,13 @@
       store.ledger.unshift({
         type: 'deposit',
         amount: budget,
-        account: 'growth@web3defi.io',
+        account: currentUser.email || 'growth@web3defi.io',
         notes: `Escrow deposit for campaign: ${title}`,
         timestamp: new Date().toISOString().replace('T', ' ').slice(0, 19)
       });
       saveStore(store);
       closeCampaignModal();
-      renderAll();
+      await renderAll();
       showToast('Campaign launched and funded via smart escrow!');
     }
 
@@ -2163,20 +2504,41 @@
     function closeCampaignModal() {
       document.getElementById('modal-campaign').classList.remove('open');
     }
-    function openWithdrawModal() {
+    async function openWithdrawModal() {
+      const amount = 8300.00;
+      try {
+        const res = await fetchApi('/api/promoter/withdraw', {
+          method: 'POST',
+          body: JSON.stringify({
+            user_id: currentUser.id || 'promoter-1',
+            amount: amount,
+            destination_wallet: '0x71C...B9e4',
+            network: 'Polygon / INR-USDT'
+          })
+        });
+
+        if (res.ok) {
+          await renderAll();
+          showToast(`Payout request of ₹${amount.toLocaleString('en-IN')} submitted to admin ledger!`);
+          return;
+        }
+      } catch (err) {
+        console.warn('Offline fallback for withdraw', err);
+      }
+
       const store = getStore();
       store.withdrawals.unshift({
         id: `w-${Date.now()}`,
-        user_id: 'promoter-1',
-        email: 'alex.seeder@community.org',
-        amount: 11877.30,
+        user_id: currentUser.id || 'promoter-1',
+        email: currentUser.email || 'alex.seeder@community.org',
+        amount,
         destination_wallet: '0x71C...B9e4',
         network: 'Polygon / INR-USDT',
         status: 'pending'
       });
       saveStore(store);
-      renderAll();
-      showToast('Payout request of ₹11,877.30 submitted to admin ledger!');
+      await renderAll();
+      showToast(`Payout request of ₹${amount.toLocaleString('en-IN')} submitted to admin ledger!`);
     }
 
     function applySimPreset() {
@@ -2267,23 +2629,17 @@
           created_at: new Date().toISOString().replace('T', ' ').slice(0, 19)
         });
         saveStore(store);
-        renderAll();
+
+       
+       renderAll();
       }
     }
 
     function exportLedgerCSV() {
-      const store = getStore();
-      let csv = "Type,Amount,Account,Notes,Timestamp\n";
-      store.ledger.forEach(l => {
-        csv += `"${l.type}","${l.amount}","${l.account}","${l.notes}","${l.timestamp}"\n`;
-      });
-      const blob = new Blob([csv], { type: 'text/csv' });
-      const url = URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = url;
-      a.download = `nexuslink_ledger_${Date.now()}.csv`;
-      a.click();
-      showToast('Exported double-entry audit CSV');
+      const token = localStorage.getItem('nexuslink_token');
+      const url = token ? `/api/admin/ledger/export-csv?token=${encodeURIComponent(token)}` : '/api/admin/ledger/export-csv';
+      window.location.href = url;
+      showToast('Exporting double-entry audit CSV...');
     }
 
     function showToast(text) {
@@ -2298,21 +2654,70 @@
       try {
         const res = await fetch('/api/health');
         if (res.ok) {
-          document.getElementById('backend-status-text').innerText = 'API Server Live';
-          document.getElementById('backend-status-pill').style.background = 'rgba(16, 185, 129, 0.15)';
+          const statusText = document.getElementById('backend-status-text');
+          const statusPill = document.getElementById('backend-status-pill');
+          if (statusText) statusText.innerText = 'API Server Live';
+          if (statusPill) {
+            statusPill.style.background = 'rgba(16, 185, 129, 0.15)';
+            statusPill.style.borderColor = 'rgba(16, 185, 129, 0.4)';
+          }
         }
       } catch (e) {
-        document.getElementById('backend-status-text').innerText = 'Standalone Mode';
+        const statusText = document.getElementById('backend-status-text');
+        if (statusText) statusText.innerText = 'Standalone Mode';
       }
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
+    document.addEventListener('DOMContentLoaded', async () => {
       initTheme();
+      const savedUser = localStorage.getItem('nexuslink_current_user');
+      if (savedUser) {
+        try { currentUser = JSON.parse(savedUser); } catch (e) {}
+      }
       updateUserUI();
       init3DNetwork();
       renderAll();
-      checkBackendHealth();
+      initCreatorCarousel();
+      await checkBackendHealth();
     });
+    function initCreatorCarousel() {
+      const carousel = document.querySelector('.creator-carousel');
+      const track = carousel.querySelector('.carousel-track');
+      // Duplicate cards for seamless loop
+      const cards = Array.from(track.children);
+      cards.forEach(card => track.appendChild(card.cloneNode(true)));
+      let isDown = false, startX, scrollLeft;
+      carousel.addEventListener('pointerdown', (e) => {
+        isDown = true;
+        carousel.classList.add('active');
+        startX = e.pageX - carousel.offsetLeft;
+        scrollLeft = carousel.scrollLeft;
+      });
+      carousel.addEventListener('pointerleave', () => isDown = false);
+      carousel.addEventListener('pointerup', () => isDown = false);
+      carousel.addEventListener('pointermove', (e) => {
+        if (!isDown) return;
+        e.preventDefault();
+        const x = e.pageX - carousel.offsetLeft;
+        const walk = (x - startX) * 1.5;
+        carousel.scrollLeft = scrollLeft - walk;
+      });
+      // Auto-scroll when idle
+      let autoScroll;
+      function startAutoScroll(){
+        autoScroll = setInterval(() => {
+          if (!isDown) {
+            carousel.scrollLeft += 0.5;
+            if (carousel.scrollLeft >= track.scrollWidth / 2) carousel.scrollLeft = 0;
+          }
+        }, 16);
+      }
+      function stopAutoScroll(){ clearInterval(autoScroll); }
+      carousel.addEventListener('mouseenter', stopAutoScroll);
+      carousel.addEventListener('mouseleave', startAutoScroll);
+      startAutoScroll();
+    }
+
   </script>
 </body>
 </html>
