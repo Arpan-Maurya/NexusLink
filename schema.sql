@@ -12,6 +12,7 @@ CREATE TABLE IF NOT EXISTS users (
     email VARCHAR(255) UNIQUE NOT NULL,
     password_hash VARCHAR(255) NOT NULL,
     role VARCHAR(32) NOT NULL CHECK (role IN ('admin', 'client', 'promoter')),
+    name VARCHAR(255) DEFAULT '',
     wallet_balance NUMERIC(14, 4) NOT NULL DEFAULT 0.0000,
     device_fingerprint VARCHAR(255),
     country VARCHAR(64) DEFAULT 'Global',
