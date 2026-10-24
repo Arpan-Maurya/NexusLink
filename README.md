@@ -138,7 +138,4 @@ The schema is defined in [schema.sql](file:///C:/Users/harsh/.gemini/antigravity
    http://localhost:3000
    ```
 
-Default Demo Credentials:
-- **Admin:** `admin@nexuslink.network` / `admin123`
-- **Client:** `growth@web3defi.io` / `client123`
-- **Promoter:** `alex.seeder@community.org` / `promoter123`
+Create an account from the Sign Up form to test the registration flow. Demo credentials are intentionally not displayed in the frontend.

@@ -1,15 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>NexusLink | Decentralized Affiliate Network &amp; Anti-Fraud Engine</title>
-  
+  <title>NexusLink | Creator Campaigns &amp; Authentic Growth</title>
+
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  
+  <link
+    href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet" />
+
   <!-- FontAwesome & Three.js -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
@@ -62,7 +65,12 @@
       --nav-bg: rgba(8, 17, 34, 0.92);
     }
 
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       background-color: var(--bg-base);
       color: var(--text-main);
@@ -77,17 +85,21 @@
     /* Ambient dynamic glow */
     .ambient-glow {
       position: fixed;
-      top: 0; left: 0; width: 100%; height: 100%;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
       pointer-events: none;
       z-index: 0;
       background: radial-gradient(circle at 10% 15%, rgba(37, 99, 235, 0.07) 0%, transparent 50%),
-                  radial-gradient(circle at 90% 85%, rgba(2, 132, 199, 0.06) 0%, transparent 55%),
-                  radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.03) 0%, transparent 60%);
+        radial-gradient(circle at 90% 85%, rgba(2, 132, 199, 0.06) 0%, transparent 55%),
+        radial-gradient(circle at 50% 50%, rgba(5, 150, 105, 0.03) 0%, transparent 60%);
     }
+
     [data-theme="dark"] .ambient-glow {
       background: radial-gradient(circle at 10% 15%, rgba(59, 130, 246, 0.14) 0%, transparent 45%),
-                  radial-gradient(circle at 90% 85%, rgba(56, 189, 248, 0.10) 0%, transparent 50%),
-                  radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+        radial-gradient(circle at 90% 85%, rgba(56, 189, 248, 0.10) 0%, transparent 50%),
+        radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
     }
 
     /* Glass Cards */
@@ -100,6 +112,7 @@
       box-shadow: var(--card-shadow);
       transition: all 0.25s ease;
     }
+
     .glass-card:hover {
       border-color: var(--primary);
       box-shadow: 0 8px 30px rgba(37, 99, 235, 0.14);
@@ -119,39 +132,47 @@
       transition: all 0.2s ease;
       text-decoration: none;
     }
+
     .btn-primary {
       background: linear-gradient(135deg, var(--primary) 0%, var(--primary-hover) 100%);
       color: #ffffff !important;
       box-shadow: 0 4px 14px var(--primary-glow);
     }
+
     .btn-primary:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px var(--primary-glow);
     }
+
     .btn-secondary {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
       color: var(--text-main);
     }
+
     .btn-secondary:hover {
       background: rgba(37, 99, 235, 0.08);
       border-color: var(--primary);
       color: var(--primary);
       transform: translateY(-2px);
     }
+
     .btn-outline-primary {
       background: transparent;
       border: 1.5px solid var(--primary);
       color: var(--primary);
     }
+
     .btn-outline-primary:hover {
       background: var(--primary);
       color: #ffffff !important;
     }
+
     .btn-success {
       background: linear-gradient(135deg, #10b981 0%, #059669 100%);
       color: #fff;
     }
+
     .btn-danger {
       background: linear-gradient(135deg, #f43f5e 0%, #e11d48 100%);
       color: #fff;
@@ -166,6 +187,7 @@
       backdrop-filter: blur(18px);
       border-bottom: 1px solid var(--border-subtle);
     }
+
     .nav-inner {
       max-width: 1440px;
       margin: 0 auto;
@@ -176,12 +198,14 @@
       gap: 1rem;
       flex-wrap: wrap;
     }
+
     .brand {
       display: flex;
       align-items: center;
       gap: 0.85rem;
       cursor: pointer;
     }
+
     .brand-icon {
       width: 42px;
       height: 42px;
@@ -194,12 +218,14 @@
       color: #fff;
       box-shadow: 0 0 18px var(--primary-glow);
     }
+
     .brand-text h1 {
       font-size: 1.25rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       line-height: 1.1;
     }
+
     .brand-text span {
       font-size: 0.7rem;
       color: var(--accent-cyan);
@@ -218,6 +244,7 @@
       border: 1px solid var(--border-subtle);
       gap: 0.25rem;
     }
+
     .nav-tab-btn {
       padding: 0.5rem 0.95rem;
       border-radius: 8px;
@@ -233,10 +260,12 @@
       gap: 0.45rem;
       white-space: nowrap;
     }
+
     .nav-tab-btn:hover {
       color: #fff;
       background: rgba(255, 255, 255, 0.05);
     }
+
     .nav-tab-btn.active {
       background: var(--primary);
       color: #fff;
@@ -256,6 +285,7 @@
       color: var(--accent-emerald);
       font-weight: 600;
     }
+
     .status-dot {
       width: 7px;
       height: 7px;
@@ -264,9 +294,19 @@
       box-shadow: 0 0 8px var(--accent-emerald);
       animation: pulseDot 2s infinite ease-in-out;
     }
+
     @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.85); }
+
+      0%,
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(0.85);
+      }
     }
 
     /* Main Container */
@@ -285,12 +325,21 @@
       display: none;
       animation: fadeIn 0.3s ease;
     }
+
     .app-view.active {
       display: block;
     }
+
     @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(6px); }
-      to { opacity: 1; transform: translateY(0); }
+      from {
+        opacity: 0;
+        transform: translateY(6px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
     /* 3D Canvas Container */
@@ -305,11 +354,13 @@
       box-shadow: 0 15px 40px rgba(0, 0, 0, 0.5);
       background: radial-gradient(circle at center, #111a33 0%, #070a12 100%);
     }
+
     #three-viewport {
       width: 100%;
       height: 100%;
       display: block;
     }
+
     .canvas-overlay-content {
       position: absolute;
       top: 1.5rem;
@@ -317,20 +368,23 @@
       pointer-events: none;
       z-index: 10;
     }
+
     .canvas-overlay-content h2 {
       font-size: 1.85rem;
       font-weight: 800;
       letter-spacing: -0.02em;
       color: #fff;
-      text-shadow: 0 2px 10px rgba(0,0,0,0.8);
+      text-shadow: 0 2px 10px rgba(0, 0, 0, 0.8);
     }
+
     .canvas-overlay-content p {
       font-size: 0.9rem;
       color: var(--text-muted);
       margin-top: 0.3rem;
       max-width: 600px;
-      text-shadow: 0 1px 6px rgba(0,0,0,0.8);
+      text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8);
     }
+
     .canvas-controls-bar {
       position: absolute;
       bottom: 1.25rem;
@@ -339,6 +393,7 @@
       gap: 0.5rem;
       z-index: 10;
     }
+
     .canvas-badge {
       background: rgba(15, 23, 42, 0.85);
       border: 1px solid var(--border-subtle);
@@ -357,21 +412,35 @@
       gap: 1.25rem;
       margin-bottom: 2rem;
     }
+
     .metric-card {
       padding: 1.5rem;
       position: relative;
       overflow: hidden;
     }
+
     .metric-card::before {
       content: '';
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       background: var(--primary);
     }
-    .metric-card.cyan::before { background: var(--accent-cyan); }
-    .metric-card.emerald::before { background: var(--accent-emerald); }
-    .metric-card.rose::before { background: var(--accent-rose); }
+
+    .metric-card.cyan::before {
+      background: var(--accent-cyan);
+    }
+
+    .metric-card.emerald::before {
+      background: var(--accent-emerald);
+    }
+
+    .metric-card.rose::before {
+      background: var(--accent-rose);
+    }
+
     .metric-label {
       font-size: 0.75rem;
       font-weight: 700;
@@ -380,12 +449,14 @@
       color: var(--text-dim);
       margin-bottom: 0.4rem;
     }
+
     .metric-value {
       font-size: 2.1rem;
       font-weight: 800;
       color: #fff;
       font-feature-settings: 'tnum';
     }
+
     .metric-sub {
       font-size: 0.78rem;
       color: var(--text-muted);
@@ -396,11 +467,13 @@
     .data-table-wrap {
       overflow-x: auto;
     }
+
     table.data-table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.88rem;
     }
+
     table.data-table th {
       text-align: left;
       padding: 0.85rem 1rem;
@@ -410,11 +483,13 @@
       color: var(--text-dim);
       border-bottom: 1px solid var(--border-subtle);
     }
+
     table.data-table td {
       padding: 1rem;
       border-bottom: 1px solid rgba(255, 255, 255, 0.04);
       color: var(--text-main);
     }
+
     table.data-table tr:hover td {
       background: rgba(255, 255, 255, 0.02);
     }
@@ -431,10 +506,27 @@
       text-transform: uppercase;
       letter-spacing: 0.04em;
     }
-    .badge-emerald { background: rgba(16, 185, 129, 0.15); color: #10b981; }
-    .badge-amber { background: rgba(245, 158, 11, 0.15); color: #f59e0b; }
-    .badge-rose { background: rgba(244, 63, 94, 0.15); color: #f43f5e; }
-    .badge-indigo { background: rgba(37, 99, 235, 0.12); color: var(--primary); border: 1px solid rgba(37, 99, 235, 0.25); }
+
+    .badge-emerald {
+      background: rgba(16, 185, 129, 0.15);
+      color: #10b981;
+    }
+
+    .badge-amber {
+      background: rgba(245, 158, 11, 0.15);
+      color: #f59e0b;
+    }
+
+    .badge-rose {
+      background: rgba(244, 63, 94, 0.15);
+      color: #f43f5e;
+    }
+
+    .badge-indigo {
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--primary);
+      border: 1px solid rgba(37, 99, 235, 0.25);
+    }
 
     /* Modals */
     .modal-overlay {
@@ -448,7 +540,11 @@
       justify-content: center;
       padding: 1.5rem;
     }
-    .modal-overlay.open { display: flex; }
+
+    .modal-overlay.open {
+      display: flex;
+    }
+
     .modal-box {
       max-width: 600px;
       width: 100%;
@@ -459,9 +555,11 @@
       box-shadow: 0 20px 50px rgba(0, 0, 0, 0.35);
       position: relative;
     }
+
     .form-group {
       margin-bottom: 1.25rem;
     }
+
     .form-group label {
       display: block;
       font-size: 0.82rem;
@@ -469,6 +567,7 @@
       color: var(--text-muted);
       margin-bottom: 0.4rem;
     }
+
     .form-input {
       width: 100%;
       background: var(--bg-surface);
@@ -480,6 +579,7 @@
       outline: none;
       transition: all 0.2s;
     }
+
     .form-input:focus {
       border-color: var(--primary);
       box-shadow: 0 0 0 3px var(--primary-glow);
@@ -502,10 +602,22 @@
       color: var(--text-main);
       font-size: 0.9rem;
     }
-    .toast.show { display: flex; animation: slideIn 0.3s ease; }
+
+    .toast.show {
+      display: flex;
+      animation: slideIn 0.3s ease;
+    }
+
     @keyframes slideIn {
-      from { transform: translateY(15px); opacity: 0; }
-      to { transform: translateY(0); opacity: 1; }
+      from {
+        transform: translateY(15px);
+        opacity: 0;
+      }
+
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
     }
 
     /* Theme Toggle Switch */
@@ -523,10 +635,12 @@
       font-weight: 600;
       transition: all 0.2s ease;
     }
+
     .theme-toggle-btn:hover {
       border-color: var(--primary);
       color: var(--primary);
     }
+
     .theme-toggle-btn i {
       font-size: 0.9rem;
       color: var(--accent-amber);
@@ -548,47 +662,71 @@
 
     /* Landing Page Aesthetics */
     .landing-hero {
-  background: #F5F8EF;
-  text-align: center;
-  padding: 4rem 1rem 3rem;
-  max-width: 900px;
-  margin: 0 auto;
-  position: relative;
-  overflow: hidden;
-}
-/* Subtle blurred color fields */
-.blur-field {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(80px);
-  opacity: 0.3;
-}
-.blur-1 { width: 300px; height: 300px; background: #ffefc5; top: -50px; left: -100px; }
-.blur-2 { width: 250px; height: 250px; background: #c5ffe5; bottom: -80px; right: -120px; }
+      background: #F5F8EF;
+      text-align: center;
+      padding: 4rem 1rem 3rem;
+      max-width: 900px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
 
-/* Creator carousel styling */
-.creator-carousel {
-  width: 100%;
-  max-width: 1000px;
-  margin: 2rem auto 0;
-  overflow: hidden;
-  cursor: grab;
-}
-.carousel-track {
-  display: flex;
-  gap: 1rem;
-  user-select: none;
-  /* hide scrollbar */
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
-}
-.carousel-track::-webkit-scrollbar { display: none; }
-.carousel-card { flex: 0 0 auto; }
+    /* Subtle blurred color fields */
+    .blur-field {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      opacity: 0.3;
+    }
+
+    .blur-1 {
+      width: 300px;
+      height: 300px;
+      background: #ffefc5;
+      top: -50px;
+      left: -100px;
+    }
+
+    .blur-2 {
+      width: 250px;
+      height: 250px;
+      background: #c5ffe5;
+      bottom: -80px;
+      right: -120px;
+    }
+
+    /* Creator carousel styling */
+    .creator-carousel {
+      width: 100%;
+      max-width: 1000px;
+      margin: 2rem auto 0;
+      overflow: hidden;
+      cursor: grab;
+    }
+
+    .carousel-track {
+      display: flex;
+      gap: 1rem;
+      user-select: none;
+      /* hide scrollbar */
+      -ms-overflow-style: none;
+      /* IE and Edge */
+      scrollbar-width: none;
+      /* Firefox */
+    }
+
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-card {
+      flex: 0 0 auto;
       text-align: center;
       padding: 3rem 1rem 2.5rem;
       max-width: 900px;
       margin: 0 auto;
     }
+
     .landing-badge {
       display: inline-flex;
       align-items: center;
@@ -604,6 +742,7 @@
       text-transform: uppercase;
       letter-spacing: 0.05em;
     }
+
     .landing-hero h1 {
       font-size: 2.85rem;
       font-weight: 800;
@@ -612,11 +751,13 @@
       margin-bottom: 1.25rem;
       color: var(--text-main);
     }
+
     .landing-hero h1 span {
       background: linear-gradient(135deg, var(--primary) 0%, var(--accent-cyan) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
     }
+
     .landing-hero p {
       font-size: 1.1rem;
       line-height: 1.6;
@@ -626,6 +767,7 @@
       margin-left: auto;
       margin-right: auto;
     }
+
     .landing-actions {
       display: flex;
       justify-content: center;
@@ -633,20 +775,24 @@
       flex-wrap: wrap;
       margin-bottom: 2rem;
     }
+
     .landing-grid-3 {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
       gap: 1.5rem;
       margin-bottom: 3rem;
     }
+
     .landing-feature-card {
       padding: 2rem;
       border-radius: var(--radius-md);
       transition: all 0.25s ease;
     }
+
     .landing-feature-card:hover {
       transform: translateY(-4px);
     }
+
     .feature-icon-box {
       width: 52px;
       height: 52px;
@@ -657,10 +803,26 @@
       font-size: 1.4rem;
       margin-bottom: 1.25rem;
     }
-    .feature-icon-blue { background: rgba(37, 99, 235, 0.12); color: var(--primary); }
-    .feature-icon-cyan { background: rgba(2, 132, 199, 0.12); color: var(--accent-cyan); }
-    .feature-icon-emerald { background: rgba(5, 150, 105, 0.12); color: var(--accent-emerald); }
-    .feature-icon-amber { background: rgba(217, 119, 6, 0.12); color: var(--accent-amber); }
+
+    .feature-icon-blue {
+      background: rgba(37, 99, 235, 0.12);
+      color: var(--primary);
+    }
+
+    .feature-icon-cyan {
+      background: rgba(2, 132, 199, 0.12);
+      color: var(--accent-cyan);
+    }
+
+    .feature-icon-emerald {
+      background: rgba(5, 150, 105, 0.12);
+      color: var(--accent-emerald);
+    }
+
+    .feature-icon-amber {
+      background: rgba(217, 119, 6, 0.12);
+      color: var(--accent-amber);
+    }
 
     .usp-pill-box {
       display: flex;
@@ -669,6 +831,7 @@
       justify-content: center;
       margin-top: 1rem;
     }
+
     .usp-pill {
       background: var(--bg-surface);
       border: 1px solid var(--border-subtle);
@@ -681,7 +844,10 @@
       align-items: center;
       gap: 0.4rem;
     }
-    .usp-pill i { color: var(--accent-emerald); }
+
+    .usp-pill i {
+      color: var(--accent-emerald);
+    }
 
     .split-pie-bar {
       height: 14px;
@@ -691,8 +857,16 @@
       margin: 1rem 0;
       background: var(--border-subtle);
     }
-    .split-promoter { width: 60%; background: var(--accent-emerald); }
-    .split-platform { width: 40%; background: var(--primary); }
+
+    .split-promoter {
+      width: 60%;
+      background: var(--accent-emerald);
+    }
+
+    .split-platform {
+      width: 40%;
+      background: var(--primary);
+    }
 
     .landing-section-title {
       font-size: 1.85rem;
@@ -702,6 +876,7 @@
       color: var(--text-main);
       text-align: center;
     }
+
     .landing-section-subtitle {
       font-size: 0.95rem;
       color: var(--text-muted);
@@ -711,35 +886,1501 @@
       margin-left: auto;
       margin-right: auto;
     }
-    .demo-creds-banner {
-      background: rgba(37, 99, 235, 0.06);
-      border: 1px dashed var(--border-highlight);
-      border-radius: var(--radius-md);
-      padding: 1rem 1.25rem;
-      margin-top: 1.5rem;
-      font-size: 0.82rem;
-      color: var(--text-muted);
+
+    /* =========================================================================
+       EXACT LANDING PAGE AESTHETICS (Matching Screenshot with 100% Fidelity)
+       ========================================================================= */
+    :root {
+      --lp-bg: #FAF8F5;
+      --lp-dark-green: #0B382C;
+      --lp-dark-green-hover: #07261D;
+      --lp-brand-green: #0E3D2F;
+      --lp-accent-green: #2FBD53;
+      --lp-arrow-green: #2D9A49;
+      --lp-dark-text: #111827;
+      --lp-body-text: #4B5563;
+      --lp-badge-bg: rgba(244, 240, 230, 0.88);
+      --lp-badge-border: #E5DEC9;
+      --lp-button-cream: #FBF6EB;
+      --lp-button-cream-border: #E4DCC9;
+      --lp-mint-border: rgba(163, 217, 177, 0.55);
     }
-    .demo-creds-banner strong { color: var(--primary); }
-    .demo-badge-btn {
+
+    .landing-exact-wrapper {
+      position: relative;
+      background-color: var(--lp-bg);
+      color: var(--lp-dark-text);
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      min-height: 100vh;
+      overflow-x: hidden;
+      width: 100%;
+      margin: 0;
+      padding: 0 0 5rem;
+    }
+
+    /* Ambient Organic Aurora Waves */
+    .lp-ambient-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+
+    .lp-aurora-peach-tl {
+      position: absolute;
+      top: -140px;
+      left: -120px;
+      width: 620px;
+      height: 620px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(250, 222, 193, 0.65) 0%, rgba(254, 238, 215, 0.25) 45%, transparent 70%);
+      filter: blur(40px);
+    }
+
+    .lp-aurora-green-tr {
+      position: absolute;
+      top: -50px;
+      right: -80px;
+      width: 580px;
+      height: 700px;
+      background: radial-gradient(ellipse at top right, rgba(162, 222, 185, 0.55) 0%, rgba(190, 237, 206, 0.25) 45%, transparent 70%);
+      filter: blur(40px);
+    }
+
+    .lp-aurora-green-bl {
+      position: absolute;
+      bottom: 120px;
+      left: -100px;
+      width: 520px;
+      height: 600px;
+      background: radial-gradient(ellipse at bottom left, rgba(162, 222, 185, 0.5) 0%, rgba(190, 237, 206, 0.2) 40%, transparent 70%);
+      filter: blur(40px);
+    }
+
+    .lp-aurora-green-br {
+      position: absolute;
+      bottom: 80px;
+      right: -90px;
+      width: 560px;
+      height: 640px;
+      background: radial-gradient(ellipse at bottom right, rgba(162, 222, 185, 0.5) 0%, rgba(190, 237, 206, 0.2) 40%, transparent 70%);
+      filter: blur(40px);
+    }
+
+    /* Organic Ribbon Swooshes */
+    .lp-organic-wave-left {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 320px;
+      height: 480px;
+      pointer-events: none;
+      opacity: 0.75;
+    }
+
+    .lp-organic-wave-right {
+      position: absolute;
+      top: 0;
+      right: 0;
+      width: 380px;
+      height: 560px;
+      pointer-events: none;
+      opacity: 0.75;
+    }
+
+    /* Exact Navbar */
+    .exact-nav-header {
+      position: sticky;
+      top: 0;
+      z-index: 120;
+      background: rgba(250, 248, 245, 0.94);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+      transition: all 0.25s ease;
+      width: 100%;
+    }
+
+    .exact-nav-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 1.1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1.5rem;
+    }
+
+    .exact-nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
       cursor: pointer;
-      padding: 0.25rem 0.6rem;
+      text-decoration: none;
+    }
+
+    .exact-nav-brand-text {
+      font-size: 1.45rem;
+      font-weight: 800;
+      color: var(--lp-dark-text);
+      letter-spacing: -0.025em;
+    }
+
+    .exact-nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2.2rem;
+    }
+
+    .exact-nav-link {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: #374151;
+      text-decoration: none;
+      transition: color 0.2s ease;
+      cursor: pointer;
+    }
+
+    .exact-nav-link:hover {
+      color: var(--lp-dark-green);
+    }
+
+    .exact-nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .exact-btn-login {
+      padding: 0.55rem 1.45rem;
+      border-radius: 9999px;
+      background: #FFFFFF;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #111827;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.04);
+    }
+
+    .exact-btn-login:hover {
+      background: #F8F9FA;
+      border-color: #CBD5E1;
+      transform: translateY(-1px);
+    }
+
+    .exact-btn-start {
+      padding: 0.55rem 1.55rem;
+      border-radius: 9999px;
+      background: var(--lp-dark-green);
+      border: none;
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: #FFFFFF;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      box-shadow: 0 3px 10px rgba(11, 56, 44, 0.22);
+    }
+
+    .exact-btn-start:hover {
+      background: var(--lp-dark-green-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(11, 56, 44, 0.32);
+    }
+
+    /* Portal Quick Dropdown Button */
+    .exact-portal-dropdown {
+      position: relative;
+    }
+
+    .exact-portal-trigger {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid rgba(0, 0, 0, 0.1);
+      background: #FFFFFF;
+      color: #4B5563;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.88rem;
+      transition: all 0.2s ease;
+    }
+
+    .exact-portal-trigger:hover {
+      background: #F3F4F6;
+      color: var(--lp-dark-green);
+    }
+
+    .exact-portal-menu {
+      display: none;
+      position: absolute;
+      top: 46px;
+      right: 0;
+      width: 250px;
+      background: #FFFFFF;
+      border-radius: 14px;
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.16);
+      border: 1px solid rgba(0, 0, 0, 0.08);
+      padding: 0.75rem;
+      z-index: 200;
+    }
+
+    .exact-portal-menu.show {
+      display: block;
+      animation: fadeIn 0.2s ease;
+    }
+
+    .exact-portal-menu-title {
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      color: #9CA3AF;
+      padding: 0.35rem 0.65rem;
+      margin-bottom: 0.25rem;
+    }
+
+    .exact-portal-menu a {
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+      padding: 0.55rem 0.65rem;
+      border-radius: 8px;
+      color: #1F2937;
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      transition: all 0.15s ease;
+    }
+
+    .exact-portal-menu a:hover {
+      background: #F3F4F6;
+      color: var(--lp-dark-green);
+    }
+
+    .exact-portal-menu .quick-role-row {
+      display: flex;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid #F3F4F6;
+    }
+
+    .exact-portal-menu .quick-role-badge {
+      flex: 1;
+      text-align: center;
+      padding: 0.35rem 0.45rem;
       border-radius: 6px;
-      background: var(--bg-surface);
-      border: 1px solid var(--border-subtle);
-      font-size: 0.78rem;
-      font-family: 'JetBrains Mono', monospace;
-      margin: 0.2rem;
+      background: #F8FAFC;
+      border: 1px solid #E2E8F0;
+      font-size: 0.72rem;
+      font-weight: 600;
+      color: #475569;
+      cursor: pointer;
+      transition: all 0.15s ease;
+    }
+
+    .exact-portal-menu .quick-role-badge:hover {
+      background: var(--lp-dark-green);
+      color: #FFFFFF;
+      border-color: var(--lp-dark-green);
+    }
+
+    /* Portal Sticky Return Bar */
+    .portal-back-banner {
+      background: var(--lp-dark-green);
+      color: #FFFFFF;
+      padding: 0.65rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.88rem;
+      font-weight: 600;
+      z-index: 110;
+      position: sticky;
+      top: 0;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .portal-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      padding: 0.35rem 0.85rem;
+      border-radius: 9999px;
+      background: rgba(255, 255, 255, 0.15);
+      transition: background 0.2s ease;
+    }
+
+    .portal-back-btn:hover {
+      background: rgba(255, 255, 255, 0.25);
+    }
+
+    /* Hero Section */
+    .lp-hero-wrapper {
+      position: relative;
+      z-index: 10;
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 3rem 1.5rem 1.25rem;
+      text-align: center;
+    }
+
+    /* Trust Pill Badge */
+    .lp-badge-outer {
+      position: relative;
       display: inline-block;
-      transition: all 0.15s;
-      color: var(--text-main);
+      margin-bottom: 1.5rem;
     }
-    .demo-badge-btn:hover {
-      background: var(--primary);
-      color: #fff;
+
+    .lp-trust-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.55rem;
+      padding: 0.45rem 1.4rem;
+      border-radius: 9999px;
+      background: var(--lp-badge-bg);
+      border: 1px solid var(--lp-badge-border);
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: #1A3125;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.03);
     }
-  </style>\n    <!-- Import handwritten font -->\n    <link href=\"https://fonts.googleapis.com/css2?family=Caveat:wght@400;600&display=swap\" rel=\"stylesheet\"/>
+
+    .lp-trust-pill i {
+      color: #175438;
+      font-size: 0.95rem;
+    }
+
+    .lp-doodle-squiggle-badge {
+      position: absolute;
+      top: -24px;
+      right: -32px;
+      pointer-events: none;
+    }
+
+    /* Hero Headline Box with Spark Doodle */
+    .lp-headline-container {
+      position: relative;
+      display: inline-block;
+      max-width: 880px;
+      margin: 0 auto 1.15rem;
+    }
+
+    .lp-doodle-spark-left {
+      position: absolute;
+      top: 18px;
+      left: -70px;
+      pointer-events: none;
+    }
+
+    .lp-headline-text {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 4.1rem;
+      font-weight: 800;
+      line-height: 1.12;
+      color: #111827;
+      letter-spacing: -0.035em;
+      margin: 0;
+      text-align: center;
+    }
+
+    .lp-hero-subtitle {
+      font-size: 1.12rem;
+      line-height: 1.65;
+      color: var(--lp-body-text);
+      max-width: 660px;
+      margin: 0 auto 2.3rem;
+      text-align: center;
+      font-weight: 400;
+    }
+
+    .lp-hero-cta-group {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.25rem;
+      margin-bottom: 2.25rem;
+      flex-wrap: wrap;
+    }
+
+    .lp-cta-primary {
+      padding: 0.95rem 2.3rem;
+      border-radius: 9999px;
+      background: var(--lp-dark-green);
+      color: #FFFFFF;
+      font-size: 1.02rem;
+      font-weight: 600;
+      border: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 8px 24px rgba(11, 56, 44, 0.28);
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .lp-cta-primary:hover {
+      background: var(--lp-dark-green-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 12px 30px rgba(11, 56, 44, 0.38);
+    }
+
+    .lp-cta-secondary {
+      padding: 0.95rem 2.3rem;
+      border-radius: 9999px;
+      background: var(--lp-button-cream);
+      border: 1px solid var(--lp-button-cream-border);
+      color: #182C23;
+      font-size: 1.02rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
+
+    .lp-cta-secondary:hover {
+      background: #F3EBD8;
+      transform: translateY(-2px);
+      border-color: #D6C8AC;
+    }
+
+    /* Handwritten Doodle Callouts */
+    .lp-callout-wrapper {
+      position: relative;
+      max-width: 1340px;
+      margin: 0 auto;
+    }
+
+    .lp-handwritten-callout {
+      position: absolute;
+      font-family: 'Caveat', cursive;
+      font-weight: 700;
+      color: #1C4D38;
+      pointer-events: none;
+      z-index: 25;
+      text-align: center;
+      line-height: 1.05;
+    }
+
+    .lp-callout-creators {
+      top: -30px;
+      left: 35px;
+      font-size: 2.1rem;
+      transform: rotate(-14deg);
+    }
+
+    .lp-arrow-creators {
+      position: absolute;
+      top: 35px;
+      left: 75px;
+      width: 44px;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    .lp-callout-growth {
+      top: -30px;
+      right: 45px;
+      font-size: 2.1rem;
+      transform: rotate(5deg);
+    }
+
+    .lp-arrow-growth {
+      position: absolute;
+      top: 40px;
+      right: 70px;
+      width: 54px;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    /* 3D Curved Perspective Carousel */
+    .lp-carousel-viewport {
+      position: relative;
+      z-index: 20;
+      max-width: 1360px;
+      margin: 0 auto 3.5rem;
+      padding: 1.5rem 1rem;
+      perspective: 1200px;
+    }
+
+    .lp-cards-fanned-arc {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      position: relative;
+    }
+
+    .lp-video-card {
+      position: relative;
+      width: 168px;
+      height: 295px;
+      border-radius: 22px;
+      overflow: hidden;
+      cursor: pointer;
+      flex-shrink: 0;
+      box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.28), 0 6px 14px -4px rgba(0, 0, 0, 0.12);
+      transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.4s ease, border-color 0.3s ease;
+      background: #111827;
+      transform-style: preserve-3d;
+    }
+
+    .lp-video-card img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .lp-card-bottom-grad {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      padding: 1.25rem 0.85rem 0.95rem;
+      background: linear-gradient(to top, rgba(0, 0, 0, 0.92) 0%, rgba(0, 0, 0, 0.55) 50%, transparent 100%);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      z-index: 2;
+    }
+
+    .lp-play-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+      margin-bottom: 0.45rem;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .lp-play-badge i {
+      color: #0B382C;
+      font-size: 9px;
+      margin-left: 2px;
+    }
+
+    .lp-card-text-title {
+      color: #FFFFFF;
+      font-size: 0.86rem;
+      font-weight: 700;
+      line-height: 1.2;
+      text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
+      letter-spacing: -0.01em;
+    }
+
+    /* 3D Arc Positioning for the 7 Cards */
+    .lp-card-arc-1 {
+      transform: translateY(22px) rotateY(18deg) rotateZ(-2.5deg) scale(0.88);
+      z-index: 1;
+    }
+
+    .lp-card-arc-2 {
+      transform: translateY(11px) rotateY(11deg) rotateZ(-1.2deg) scale(0.93);
+      z-index: 2;
+    }
+
+    .lp-card-arc-3 {
+      transform: translateY(3px) rotateY(5deg) scale(0.97);
+      z-index: 3;
+    }
+
+    .lp-card-arc-4 {
+      /* CENTER HERO CARD */
+      transform: translateY(-16px) scale(1.10);
+      z-index: 6;
+      border: 2px solid rgba(255, 255, 255, 0.65);
+      box-shadow: 0 28px 56px -12px rgba(11, 56, 44, 0.4), 0 14px 28px -6px rgba(0, 0, 0, 0.25);
+    }
+
+    .lp-card-arc-5 {
+      transform: translateY(3px) rotateY(-5deg) scale(0.97);
+      z-index: 3;
+    }
+
+    .lp-card-arc-6 {
+      transform: translateY(11px) rotateY(-11deg) rotateZ(1.2deg) scale(0.93);
+      z-index: 2;
+    }
+
+    .lp-card-arc-7 {
+      transform: translateY(22px) rotateY(-18deg) rotateZ(2.5deg) scale(0.88);
+      z-index: 1;
+    }
+
+    /* Hover Interaction: Expands, elevates, straightens perspective */
+    .lp-video-card:hover {
+      transform: translateY(-24px) scale(1.14) rotateY(0deg) rotateZ(0deg) !important;
+      z-index: 15 !important;
+      box-shadow: 0 32px 64px -14px rgba(11, 56, 44, 0.45), 0 18px 30px -6px rgba(0, 0, 0, 0.3) !important;
+      border: 2px solid rgba(255, 255, 255, 0.95);
+    }
+
+    .lp-video-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .lp-video-card:hover .lp-play-badge {
+      transform: scale(1.15);
+      background: #FFFFFF;
+    }
+
+    /* Bottom Decorative Arrows */
+    .lp-arrow-bottom-left-box {
+      position: absolute;
+      bottom: -45px;
+      left: 35px;
+      width: 44px;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    .lp-arrow-bottom-right-box {
+      position: absolute;
+      bottom: -45px;
+      right: 35px;
+      width: 44px;
+      pointer-events: none;
+      z-index: 25;
+    }
+
+    /* 4 Feature Columns */
+    .lp-features-section {
+      position: relative;
+      z-index: 20;
+      max-width: 1100px;
+      margin: 0 auto 3.5rem;
+      padding: 0 1.5rem;
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 2.2rem;
+      text-align: center;
+    }
+
+    .lp-feature-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: transform 0.25s ease;
+    }
+
+    .lp-feature-box:hover {
+      transform: translateY(-4px);
+    }
+
+    .lp-feature-circle-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      border: 1.5px solid var(--lp-accent-green);
+      background: rgba(47, 189, 83, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 1.15rem;
+      color: #177C3F;
+      font-size: 1.25rem;
+      transition: all 0.25s ease;
+    }
+
+    .lp-feature-box:hover .lp-feature-circle-icon {
+      background: rgba(47, 189, 83, 0.15);
+      box-shadow: 0 8px 20px rgba(47, 189, 83, 0.2);
+      transform: scale(1.06);
+    }
+
+    .lp-feature-title {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: var(--lp-dark-text);
+      margin-bottom: 0.4rem;
+      letter-spacing: -0.015em;
+    }
+
+    .lp-feature-desc {
+      font-size: 0.88rem;
+      line-height: 1.45;
+      color: var(--lp-body-text);
+      max-width: 220px;
+    }
+
+    /* Bottom Stats Banner */
+    .lp-metrics-banner {
+      position: relative;
+      z-index: 20;
+      max-width: 960px;
+      margin: 0 auto 4rem;
+      background: rgba(255, 255, 255, 0.72);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border: 1.5px solid var(--lp-mint-border);
+      border-radius: 28px;
+      padding: 2.25rem 3rem;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      text-align: center;
+      box-shadow: 0 16px 36px -12px rgba(11, 56, 44, 0.08);
+    }
+
+    .lp-metric-unit {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .lp-metric-digits {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 2.65rem;
+      font-weight: 800;
+      color: var(--lp-dark-green);
+      letter-spacing: -0.03em;
+      line-height: 1.1;
+      margin-bottom: 0.35rem;
+    }
+
+    .lp-metric-caption {
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--lp-body-text);
+    }
+
+    /* Clean Footer */
+    .lp-exact-footer {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 2.5rem 2rem 1.5rem;
+      border-top: 1px solid rgba(0, 0, 0, 0.06);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      color: #6B7280;
+      font-size: 0.86rem;
+      position: relative;
+      z-index: 20;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+
+    .lp-footer-links {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .lp-footer-links a {
+      color: #4B5563;
+      text-decoration: none;
+      transition: color 0.15s ease;
+    }
+
+    .lp-footer-links a:hover {
+      color: var(--lp-dark-green);
+    }
+
+    /* Modal Overlay & Card Reel Modal */
+    .lp-modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(11, 24, 18, 0.75);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      z-index: 1000;
+      align-items: center;
+      justify-content: center;
+      padding: 1.5rem;
+    }
+
+    .lp-modal-backdrop.show {
+      display: flex;
+      animation: fadeIn 0.25s ease;
+    }
+
+    .lp-modal-window {
+      background: #FFFFFF;
+      border-radius: 24px;
+      max-width: 680px;
+      width: 100%;
+      overflow: hidden;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.3);
+      position: relative;
+    }
+
+    .lp-modal-close-btn {
+      position: absolute;
+      top: 1.25rem;
+      right: 1.25rem;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: rgba(0, 0, 0, 0.06);
+      border: none;
+      color: #1F2937;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s ease;
+      z-index: 10;
+    }
+
+    .lp-modal-close-btn:hover {
+      background: #E5E7EB;
+      transform: scale(1.08);
+    }
+
+    /* Responsive adjustments */
+    @media (max-width: 1080px) {
+      .lp-headline-text {
+        font-size: 3.2rem;
+      }
+      .lp-cards-fanned-arc {
+        gap: 8px;
+      }
+      .lp-video-card {
+        width: 135px;
+        height: 240px;
+      }
+      .lp-callout-creators {
+        left: 10px;
+        font-size: 1.6rem;
+      }
+      .lp-callout-growth {
+        right: 10px;
+        font-size: 1.6rem;
+      }
+      .lp-features-section {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 2rem;
+      }
+    }
+
+    @media (max-width: 768px) {
+      .exact-nav-links {
+        display: none;
+      }
+      .lp-headline-text {
+        font-size: 2.5rem;
+      }
+      .lp-cards-fanned-arc {
+        overflow-x: auto;
+        justify-content: flex-start;
+        padding-bottom: 1.5rem;
+      }
+      .lp-video-card {
+        transform: none !important;
+        width: 160px;
+        height: 280px;
+      }
+      .lp-callout-creators, .lp-callout-growth, .lp-doodle-spark-left, .lp-arrow-creators, .lp-arrow-growth {
+        display: none;
+      }
+      .lp-features-section {
+        grid-template-columns: 1fr;
+      }
+      .lp-metrics-banner {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        padding: 1.5rem;
+      }
+    }
+
+
+    /* NexusLink reference landing page */
+    :root { --nl-green:#064b35; --nl-green-dark:#033b2b; --nl-cream:#fff8e9; --nl-ink:#10110f; }
+    body { background:#fff8e9; color:var(--nl-ink); }
+    .ambient-glow { background:radial-gradient(circle at 8% 5%,rgba(255,166,119,.30),transparent 36%),radial-gradient(circle at 94% 58%,rgba(142,226,179,.30),transparent 38%),radial-gradient(circle at 45% 95%,rgba(187,241,201,.34),transparent 42%); }
+    .top-nav { background:rgba(255,248,233,.90); border-bottom:1px solid rgba(6,75,53,.08); backdrop-filter:blur(18px); }
+    .brand-icon { background:var(--nl-green); color:white; border-radius:12px; }
+    .brand-text h1 { color:#111; }
+    .brand-text span { color:#69716a; }
+    .nav-tab-btn.active,.nav-tab-btn:hover { color:var(--nl-green); background:rgba(6,75,53,.08); }
+    .btn-primary { background:var(--nl-green); box-shadow:0 8px 20px rgba(6,75,53,.14); }
+    .btn-primary:hover { background:var(--nl-green-dark); }
+    .nl-landing { position:relative; isolation:isolate; overflow:hidden; max-width:1440px; margin:0 auto; padding:46px clamp(18px,4vw,58px) 56px; }
+    .nl-orb { position:absolute; z-index:-1; border-radius:50%; filter:blur(2px); pointer-events:none; }
+    .nl-orb-peach { width:440px;height:360px;left:-170px;top:-140px;background:rgba(255,174,132,.26); }
+    .nl-orb-mint { width:500px;height:560px;right:-260px;top:240px;background:rgba(149,231,181,.30); }
+    .nl-trust { display:flex; align-items:center; justify-content:center; gap:9px; width:max-content; max-width:100%; margin:0 auto 20px; padding:9px 17px; border:1px solid rgba(6,75,53,.12); border-radius:999px; background:rgba(255,249,232,.78); color:var(--nl-green); font-size:.82rem;font-weight:700; }
+    .nl-hero-title { text-align:center; font-size:clamp(2.5rem,5vw,4.6rem); line-height:1.02; letter-spacing:-.055em; font-weight:800; margin:0 auto 18px; max-width:1000px; color:#10110f; }
+    .nl-hero-title span { color:var(--nl-green); }
+    .nl-hero-copy { text-align:center; color:#282a25; font-size:clamp(.98rem,1.35vw,1.18rem); line-height:1.65; max-width:760px; margin:0 auto; }
+    .nl-hero-actions { display:flex; justify-content:center; flex-wrap:wrap; gap:14px; margin:24px auto 48px; }
+    .nl-button { display:inline-flex; align-items:center; justify-content:center; gap:10px; border-radius:999px; padding:14px 24px; font:700 .92rem 'Plus Jakarta Sans',sans-serif; border:1px solid transparent; cursor:pointer; transition:transform .2s,box-shadow .2s; }
+    .nl-button:hover { transform:translateY(-2px); }
+    .nl-button-primary { color:#fff; background:var(--nl-green); box-shadow:0 9px 22px rgba(6,75,53,.16); }
+    .nl-button-light { color:#14251d; background:rgba(255,250,237,.9); border-color:rgba(6,75,53,.20); }
+    .nl-note { position:absolute; top:320px; color:var(--nl-green); font-family:'Caveat',cursive; font-size:clamp(1.15rem,2vw,1.8rem); font-weight:700; line-height:1.05; transform:rotate(-8deg); }
+    .nl-note-left { left:clamp(10px,3vw,44px); }.nl-note-right { right:clamp(10px,3vw,44px); transform:rotate(7deg); }
+    .nl-hand-arrow { position:absolute; z-index:2; width:clamp(30px,4vw,52px); height:auto; object-fit:contain; pointer-events:none; user-select:none; filter:drop-shadow(0 1px 1px rgba(6,75,53,.06)); }
+    .nl-hand-arrow-left { left:clamp(56px,7.2vw,105px); top:clamp(365px,31vw,430px); transform:rotate(8deg); }
+    .nl-hand-arrow-right { right:clamp(55px,7.2vw,104px); top:clamp(370px,32vw,438px); transform:rotate(-7deg) scaleX(-1); }
+    .nl-nav-menu #tab-overview, .nl-nav-menu #tab-admin { display:inline-flex; align-items:center; gap:6px; }
+    .nl-nav-menu #tab-overview i, .nl-nav-menu #tab-admin i { font-size:.78em; }
+    @media(max-width:1050px) { .nl-nav-menu #tab-overview, .nl-nav-menu #tab-admin { font-size:.7rem; } }
+    @media(max-width:780px) { .nl-hand-arrow { display:none; } }
+    .nl-card-row { display:grid; grid-template-columns:repeat(7,minmax(0,1fr)); align-items:center; gap:10px; max-width:1180px; margin:0 auto 56px; }
+    .nl-category-card { height:clamp(190px,25vw,285px); position:relative; border-radius:16px; overflow:hidden; background:#d2c1ad; box-shadow:0 12px 22px rgba(44,48,34,.16); transform:rotate(-1.5deg); }
+    .nl-category-card:nth-child(even) { transform:rotate(1.4deg) translateY(10px); }.nl-category-card:nth-child(3n) { transform:rotate(-2deg) translateY(4px); }
+    .nl-category-featured { height:clamp(220px,28vw,310px); transform:translateY(-9px); }
+    .nl-category-card::after { content:""; position:absolute; inset:30% 0 0; background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,.78) 100%); }
+    .nl-category-card img { width:100%; height:100%; object-fit:cover; display:block; }
+    .nl-card-caption { position:absolute; z-index:1; left:10px; right:7px; bottom:12px; display:flex; flex-direction:column; align-items:flex-start; gap:2px; color:#fff; font-size:clamp(.66rem,.8vw,.82rem); line-height:1.25; text-shadow:0 1px 4px rgba(0,0,0,.4); }
+    .nl-card-caption strong { font-weight:800; }.nl-card-caption span:last-child { font-weight:500; }
+    .nl-play { display:grid;place-items:center;width:21px;height:21px;margin-bottom:3px;border-radius:50%;background:#fff;color:var(--nl-green);font-size:8px;text-shadow:none; }
+    .nl-benefits { display:grid; grid-template-columns:repeat(4,minmax(0,1fr)); gap:22px; max-width:1120px; margin:0 auto 42px; text-align:center; }
+    .nl-benefit-icon { display:grid;place-items:center;width:43px;height:43px;border:1px solid rgba(6,75,53,.6);border-radius:50%;color:var(--nl-green);margin:0 auto 12px;font-size:1.1rem; }
+    .nl-benefit h3 { font-size:.94rem; font-weight:800; margin-bottom:7px; }.nl-benefit p { color:#44483f;font-size:.82rem;line-height:1.6; }
+    .nl-stats { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px;max-width:1080px;margin:0 auto;padding:22px 18px;background:rgba(255,255,248,.65);border:1px solid rgba(6,75,53,.15);border-radius:28px;box-shadow:0 8px 24px rgba(28,67,43,.06);text-align:center; }
+    .nl-stats div { display:flex; flex-direction:column; gap:4px; }.nl-stats strong { color:var(--nl-green);font-size:clamp(1.8rem,3.2vw,2.7rem);letter-spacing:-.04em; }.nl-stats span { font-size:.85rem;color:#30332d; }
+    .nl-below-fold { max-width:1120px;margin:70px auto 0; }.nl-section-heading { text-align:center;max-width:700px;margin:0 auto 28px; }.nl-section-heading>span { color:var(--nl-green);font-size:.8rem;font-weight:800;text-transform:uppercase;letter-spacing:.12em; }.nl-section-heading h2 { font-size:clamp(1.8rem,3vw,2.7rem);letter-spacing:-.04em;margin:10px 0; }.nl-section-heading p { color:#55594f;line-height:1.7; }
+    .nl-below-fold .landing-grid-3 { display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px; }.nl-below-fold .landing-feature-card { background:rgba(255,255,255,.62);border:1px solid rgba(6,75,53,.12);box-shadow:0 8px 22px rgba(28,67,43,.05);padding:25px; }.nl-below-fold .landing-feature-card h3 { font-size:1.1rem;font-weight:800;margin:15px 0 9px;color:#14251d; }.nl-below-fold .landing-feature-card p { font-size:.9rem;line-height:1.7;color:#55594f; }
+    .nl-final-cta { display:flex;align-items:center;justify-content:space-between;gap:22px;margin-top:26px;padding:28px 32px;border-radius:24px;background:rgba(220,244,220,.7);border:1px solid rgba(6,75,53,.12); }.nl-final-cta h2 { font-size:1.45rem;margin-bottom:6px; }.nl-final-cta p { color:#485249;font-size:.9rem; }
+    @media(max-width:1000px) { .nl-card-row { grid-template-columns:repeat(4,minmax(0,1fr)); }.nl-category-card { height:230px; }.nl-category-featured { height:250px; }.nl-note { display:none; }.nl-hero-actions { margin-bottom:36px; } }
+    @media(max-width:650px) { .nl-landing { padding:30px 15px 36px; }.nl-hero-title { font-size:2.55rem; }.nl-hero-copy br { display:none; }.nl-card-row { grid-template-columns:repeat(2,minmax(0,1fr)); gap:12px; }.nl-category-card,.nl-category-featured { height:245px; transform:none; }.nl-category-card:nth-child(even),.nl-category-card:nth-child(3n) { transform:none; }.nl-category-card:last-child { display:none; }.nl-benefits { grid-template-columns:repeat(2,minmax(0,1fr)); gap:26px 12px; }.nl-stats { padding:18px 8px; border-radius:20px; }.nl-stats span { font-size:.72rem; }.nl-below-fold .landing-grid-3 { grid-template-columns:1fr; }.nl-final-cta { align-items:flex-start;flex-direction:column;padding:24px; }.desktop-break { display:none; } }
+
+
+    .nl-nav-menu { gap:clamp(4px,1vw,16px); }
+    .nl-nav-menu .nav-tab-btn { background:transparent;border:0;color:#20251f;font-size:.82rem;padding:.55rem .4rem;white-space:nowrap; }
+    .nl-nav-menu .nav-tab-btn:hover { color:var(--nl-green);background:transparent; }
+    .nl-header-actions { display:flex;align-items:center;gap:10px;white-space:nowrap; }
+    .nl-header-login,.nl-header-start { border:0;border-radius:999px;padding:11px 19px;font:700 .82rem 'Plus Jakarta Sans',sans-serif;cursor:pointer; }
+    .nl-header-login { background:rgba(255,255,255,.82);border:1px solid rgba(6,75,53,.10);color:#171b17; }
+    .nl-header-start { background:var(--nl-green);color:white; }
+    .nl-header-start:hover { background:var(--nl-green-dark); }
+    @media(max-width:1050px) { .nl-nav-menu { gap:2px; }.nl-nav-menu .nav-tab-btn { font-size:.74rem;padding:.5rem .3rem; }.nl-header-login,.nl-header-start { padding:9px 13px; } }
+    @media(max-width:780px) { .nl-nav-menu { display:none; }.brand-text span { display:none; } }
+
+
+    /* Reference-match refinement: tighter hero, compact fanned cards, soft gradient ambience */
+    body { background:#fff8e9 !important; }
+    .ambient-glow {
+      position:fixed; inset:0; z-index:-2; pointer-events:none;
+      background:
+        radial-gradient(ellipse 42% 38% at 4% 12%, rgba(255,174,132,.27) 0%, rgba(255,195,158,.15) 42%, transparent 76%),
+        radial-gradient(ellipse 40% 48% at 100% 60%, rgba(153,231,183,.25) 0%, rgba(190,244,207,.13) 48%, transparent 78%),
+        radial-gradient(ellipse 55% 32% at 50% 100%, rgba(202,241,198,.24) 0%, transparent 76%),
+        linear-gradient(112deg,#fff5e9 0%,#fff9ed 52%,#f5f8e9 100%);
+    }
+    .top-nav {
+      background:rgba(255,248,233,.92) !important;
+      border-bottom:1px solid rgba(6,75,53,.08) !important;
+      box-shadow:none !important;
+      backdrop-filter:blur(18px);
+    }
+    .nav-inner { min-height:64px; padding-top:10px !important; padding-bottom:10px !important; }
+    .brand-icon { border-radius:50% !important; }
+    .nl-landing {
+      max-width:1440px;
+      padding:26px clamp(20px,3.2vw,48px) 42px !important;
+    }
+    .nl-orb { filter:blur(30px) !important; opacity:.85; }
+    .nl-orb-peach {
+      width:560px !important; height:500px !important; left:-230px !important; top:-185px !important;
+      background:radial-gradient(ellipse at center,rgba(255,177,137,.32) 0%,rgba(255,197,163,.18) 42%,transparent 73%) !important;
+    }
+    .nl-orb-mint {
+      width:620px !important; height:720px !important; right:-310px !important; top:180px !important;
+      background:radial-gradient(ellipse at center,rgba(151,232,184,.30) 0%,rgba(188,240,203,.17) 45%,transparent 74%) !important;
+    }
+    .nl-trust { margin-bottom:17px !important; padding:8px 16px !important; font-size:.78rem !important; }
+    .nl-hero-title {
+      font-size:clamp(2.8rem,4.35vw,4rem) !important;
+      line-height:1.00 !important; letter-spacing:-.058em !important;
+      max-width:960px !important; margin-bottom:15px !important;
+    }
+    .nl-hero-copy { font-size:clamp(1rem,1.2vw,1.12rem) !important; line-height:1.58 !important; }
+    .nl-hero-actions { margin:20px auto 30px !important; gap:14px !important; }
+    .nl-button { padding:13px 23px !important; font-size:.88rem !important; }
+    .nl-note { top:260px !important; font-size:clamp(1.25rem,1.75vw,1.7rem) !important; }
+    .nl-note-left { left:clamp(12px,2.4vw,38px) !important; }
+    .nl-note-right { right:clamp(12px,2.4vw,38px) !important; }
+    .nl-card-row {
+      width:100%; max-width:1320px !important;
+      grid-template-columns:repeat(7,minmax(0,1fr)) !important;
+      align-items:center !important; gap:clamp(7px,.75vw,12px) !important;
+      margin:0 auto 42px !important;
+    }
+    .nl-category-card {
+      min-width:0; height:clamp(210px,17vw,270px) !important;
+      border-radius:14px !important;
+      transform:rotate(-2deg) translateY(8px) !important;
+      box-shadow:0 14px 22px rgba(52,61,43,.16) !important;
+    }
+    .nl-category-card:nth-child(even) { transform:rotate(1.7deg) translateY(16px) !important; }
+    .nl-category-card:nth-child(3n) { transform:rotate(-2.5deg) translateY(5px) !important; }
+    .nl-category-card:nth-child(5) { transform:rotate(1.7deg) translateY(9px) !important; }
+    .nl-category-featured {
+      height:clamp(235px,19vw,290px) !important;
+      transform:translateY(-3px) rotate(.3deg) !important;
+      border-radius:15px !important;
+    }
+    .nl-category-card img { object-fit:cover !important; }
+    .nl-category-card::after {
+      inset:48% 0 0 !important;
+      background:linear-gradient(180deg,rgba(0,0,0,0) 0%,rgba(0,0,0,.22) 30%,rgba(0,0,0,.82) 100%) !important;
+    }
+    .nl-card-caption {
+      left:8px !important; right:5px !important; bottom:9px !important;
+      gap:1px !important; font-size:clamp(.62rem,.72vw,.78rem) !important; line-height:1.18 !important;
+    }
+    .nl-play { width:18px !important; height:18px !important; font-size:7px !important; margin-bottom:3px !important; }
+    .nl-benefits { margin-bottom:32px !important; gap:18px !important; max-width:1120px !important; }
+    .nl-benefit-icon { width:38px !important; height:38px !important; margin-bottom:10px !important; }
+    .nl-benefit h3 { font-size:.85rem !important; margin-bottom:6px !important; }
+    .nl-benefit p { font-size:.75rem !important; line-height:1.5 !important; }
+    .nl-stats { max-width:1080px !important; padding:18px 18px !important; border-radius:25px !important; }
+    .nl-stats strong { font-size:clamp(1.8rem,2.7vw,2.45rem) !important; }
+    @media (min-width:1400px) {
+      .nl-landing { padding-top:30px !important; }
+      .nl-card-row { max-width:1320px !important; }
+    }
+    @media (max-width:1000px) {
+      .nl-landing { padding-top:24px !important; }
+      .nl-hero-title { font-size:clamp(2.5rem,5.4vw,3.6rem) !important; }
+      .nl-note { display:none !important; }
+      .nl-card-row { grid-template-columns:repeat(7,minmax(0,1fr)) !important; gap:6px !important; }
+      .nl-category-card { height:clamp(180px,25vw,235px) !important; }
+      .nl-category-featured { height:clamp(200px,28vw,250px) !important; }
+      .nl-card-caption { font-size:clamp(.55rem,1vw,.7rem) !important; left:6px !important; }
+    }
+    @media (max-width:650px) {
+      .nl-landing { padding:26px 15px 34px !important; }
+      .nl-hero-title { font-size:2.45rem !important; line-height:1.04 !important; }
+      .nl-hero-actions { margin-bottom:26px !important; }
+      .nl-card-row { grid-template-columns:repeat(2,minmax(0,1fr)) !important; gap:12px !important; }
+      .nl-category-card,.nl-category-featured { height:245px !important; transform:none !important; }
+      .nl-category-card:nth-child(even),.nl-category-card:nth-child(3n),.nl-category-card:nth-child(5) { transform:none !important; }
+      .nl-category-card:last-child { display:block !important; }
+      .nl-card-caption { font-size:.75rem !important; left:10px !important; bottom:12px !important; }
+      .nl-play { width:20px !important; height:20px !important; }
+      .nl-benefits { grid-template-columns:repeat(2,minmax(0,1fr)) !important; }
+    }
+
+
+    /* NexusLink polish: glass navbar, consistent green interactions, lifted campaign cards */
+    :root {
+      --primary: #064b35;
+      --primary-hover: #033b2b;
+      --primary-glow: rgba(6, 75, 53, .18);
+      --accent-cyan: #0e6b4c;
+      --accent-emerald: #16805d;
+      --border-highlight: rgba(6, 75, 53, .30);
+    }
+    [data-theme="dark"] {
+      --primary: #0b5a40;
+      --primary-hover: #06432f;
+      --primary-glow: rgba(6, 75, 53, .20);
+      --accent-cyan: #16805d;
+      --accent-emerald: #16805d;
+      --border-highlight: rgba(22, 128, 93, .32);
+    }
+
+    header.top-nav {
+      position: sticky !important;
+      top: 10px !important;
+      z-index: 500 !important;
+      width: calc(100% - 32px) !important;
+      max-width: 1480px !important;
+      margin: 10px auto 0 !important;
+      border: 1px solid rgba(255,255,255,.72) !important;
+      border-bottom-color: rgba(6,75,53,.14) !important;
+      border-radius: 22px !important;
+      background: rgba(255, 250, 239, .66) !important;
+      background-image: linear-gradient(115deg, rgba(255,255,255,.62), rgba(255,250,239,.38)) !important;
+      -webkit-backdrop-filter: blur(24px) saturate(145%) !important;
+      backdrop-filter: blur(24px) saturate(145%) !important;
+      box-shadow: 0 10px 34px rgba(38, 62, 45, .075), inset 0 1px 0 rgba(255,255,255,.72) !important;
+    }
+    .nav-inner {
+      min-height: 64px !important;
+      padding: 9px clamp(16px, 2.5vw, 32px) !important;
+      flex-wrap: nowrap !important;
+      gap: clamp(10px, 1.8vw, 26px) !important;
+    }
+    .brand { flex-shrink: 0; }
+    .brand-icon { box-shadow: 0 5px 14px rgba(6,75,53,.16) !important; }
+    .brand-text h1 { color: #101a14 !important; }
+    .brand-text span { color: #52645a !important; }
+    .nl-nav-menu {
+      padding: 5px 8px !important;
+      border: 1px solid rgba(6,75,53,.10) !important;
+      border-radius: 999px !important;
+      background: rgba(255,255,255,.24) !important;
+      gap: clamp(3px, .6vw, 10px) !important;
+    }
+    .nl-nav-menu .nav-tab-btn,
+    .nl-nav-menu .nav-tab-btn.active,
+    .nl-nav-menu .nav-tab-btn:hover,
+    .nl-nav-menu .nav-tab-btn:focus-visible {
+      color: #263a2f !important;
+      background: transparent !important;
+      box-shadow: none !important;
+      border-color: transparent !important;
+      outline-color: rgba(6,75,53,.35) !important;
+    }
+    .nl-nav-menu .nav-tab-btn:hover,
+    .nl-nav-menu .nav-tab-btn.active {
+      color: #064b35 !important;
+      background: rgba(6,75,53,.075) !important;
+      border-radius: 999px !important;
+    }
+    .nl-header-login {
+      background: rgba(255,255,255,.72) !important;
+      border: 1px solid rgba(6,75,53,.12) !important;
+      color: #17251c !important;
+      transition: transform .22s ease, background .22s ease, box-shadow .22s ease !important;
+    }
+    .nl-header-login:hover,
+    .nl-header-login:focus-visible {
+      background: rgba(255,255,255,.96) !important;
+      color: #064b35 !important;
+      border-color: rgba(6,75,53,.25) !important;
+      box-shadow: 0 5px 14px rgba(6,75,53,.10) !important;
+      transform: translateY(-1px) !important;
+    }
+    .nl-header-start,
+    .nl-header-start:hover,
+    .nl-header-start:focus-visible {
+      background: #064b35 !important;
+      color: #fff !important;
+      border: 1px solid rgba(6,75,53,.12) !important;
+      box-shadow: 0 7px 18px rgba(6,75,53,.16) !important;
+    }
+    .nl-header-start:hover { background: #033b2b !important; transform: translateY(-1px); }
+
+    /* Remove legacy blue/purple hover and active treatments across the app. */
+    .glass-card:hover {
+      border-color: rgba(6,75,53,.24) !important;
+      box-shadow: 0 8px 28px rgba(6,75,53,.10) !important;
+    }
+    .btn-primary, .btn-primary:hover, .btn-primary:focus-visible,
+    .btn-outline-primary:hover, .btn-outline-primary:focus-visible {
+      --primary: #064b35;
+      --primary-hover: #033b2b;
+    }
+    .btn-primary { background: linear-gradient(135deg,#07553c,#06432f) !important; }
+    .btn-primary:hover { background: linear-gradient(135deg,#06432f,#033b2b) !important; }
+    .btn-secondary:hover {
+      background: rgba(6,75,53,.065) !important;
+      border-color: rgba(6,75,53,.28) !important;
+      color: #064b35 !important;
+    }
+    .btn-outline-primary { border-color: rgba(6,75,53,.35) !important; color: #064b35 !important; }
+    .btn-outline-primary:hover { background: #064b35 !important; color: #fff !important; }
+    .nav-tab-btn.active { color: #064b35 !important; background: rgba(6,75,53,.08) !important; }
+    .nav-tab-btn:hover { color: #064b35 !important; }
+    a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid rgba(6,75,53,.55) !important;
+      outline-offset: 3px;
+    }
+
+    /* Hover lift: keep the cards' staggered resting layout, but straighten and raise the hovered card. */
+    .nl-card-row { position: relative; isolation: isolate; }
+    .nl-category-card {
+      z-index: 1;
+      transform-origin: 50% 75%;
+      transition: transform .34s cubic-bezier(.2,.75,.25,1), box-shadow .34s ease, filter .34s ease !important;
+      will-change: transform;
+    }
+    .nl-category-card img {
+      transition: transform .5s cubic-bezier(.2,.75,.25,1), filter .35s ease !important;
+      transform: scale(1.001);
+    }
+    .nl-category-card:hover,
+    .nl-category-card:focus-within {
+      z-index: 20 !important;
+      transform: translateY(-14px) scale(1.055) rotate(0deg) !important;
+      box-shadow: 0 24px 42px rgba(28,48,35,.25) !important;
+      filter: saturate(1.04);
+    }
+    .nl-category-card:hover img,
+    .nl-category-card:focus-within img { transform: scale(1.055); }
+    .nl-category-card:hover .nl-card-caption,
+    .nl-category-card:focus-within .nl-card-caption { text-shadow: 0 2px 8px rgba(0,0,0,.6) !important; }
+    .nl-category-card:hover .nl-play,
+    .nl-category-card:focus-within .nl-play {
+      color: #064b35 !important;
+      box-shadow: 0 2px 9px rgba(0,0,0,.18);
+    }
+    @media (hover: none), (max-width: 650px) {
+      .nl-category-card:hover,
+      .nl-category-card:focus-within { transform: none !important; }
+      .nl-category-card:hover img,
+      .nl-category-card:focus-within img { transform: none !important; }
+    }
+    @media (max-width: 780px) {
+      header.top-nav { width: calc(100% - 20px) !important; top: 6px !important; margin-top: 6px !important; border-radius: 17px !important; }
+      .nav-inner { flex-wrap: wrap !important; }
+      .nl-header-actions { margin-left: auto; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .nl-category-card, .nl-category-card img, .nl-header-login, .nl-header-start { transition: none !important; }
+    }
+
+  
+
+    /* Full-bleed ambient background: remove the boxed landing-page canvas */
+    html, body { min-height:100%; background:#fff8e9 !important; }
+    body { overflow-x:hidden; }
+    .app-main {
+      max-width:none !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+      background:transparent !important;
+    }
+    #view-landing, #view-landing.app-view.active {
+      width:100% !important;
+      max-width:none !important;
+      margin:0 !important;
+      padding:0 !important;
+      background:transparent !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+    }
+    .nl-landing {
+      width:100% !important;
+      max-width:none !important;
+      margin:0 !important;
+      border:0 !important;
+      border-radius:0 !important;
+      box-shadow:none !important;
+      background:transparent !important;
+      overflow:hidden;
+      padding-left:clamp(20px,4.2vw,64px) !important;
+      padding-right:clamp(20px,4.2vw,64px) !important;
+    }
+    .ambient-glow {
+      position:fixed !important;
+      inset:0 !important;
+      z-index:0 !important;
+      pointer-events:none !important;
+      background-color:#fff8e9 !important;
+      background-image:
+        radial-gradient(ellipse 46% 56% at 0% 7%, rgba(255,174,132,.38) 0%, rgba(255,194,157,.23) 36%, rgba(255,224,199,.10) 58%, transparent 78%),
+        radial-gradient(ellipse 42% 62% at 100% 49%, rgba(154,232,183,.34) 0%, rgba(190,242,204,.22) 38%, rgba(218,246,220,.10) 58%, transparent 78%),
+        radial-gradient(ellipse 58% 34% at 50% 100%, rgba(202,241,198,.30) 0%, rgba(224,246,215,.14) 48%, transparent 78%),
+        linear-gradient(115deg,#fff4e8 0%,#fff9ee 48%,#f8f8e9 100%) !important;
+    }
+    /* Keep page content above the full-viewport gradients without creating a panel */
+    .app-main, #view-landing, .nl-landing { position:relative; z-index:1; }
+    .nl-orb { z-index:-1 !important; filter:blur(52px) !important; opacity:.65 !important; }
+    .nl-orb-peach {
+      width:min(64vw,820px) !important; height:min(58vw,640px) !important;
+      left:-26vw !important; top:-14vw !important;
+      background:radial-gradient(ellipse at center,rgba(255,177,137,.22) 0%,rgba(255,197,163,.12) 42%,transparent 74%) !important;
+    }
+    .nl-orb-mint {
+      width:min(60vw,760px) !important; height:min(72vw,820px) !important;
+      right:-28vw !important; top:18vh !important;
+      background:radial-gradient(ellipse at center,rgba(151,232,184,.22) 0%,rgba(188,240,203,.12) 45%,transparent 76%) !important;
+    }
+    @media(max-width:650px) {
+      .nl-landing { padding-left:15px !important; padding-right:15px !important; }
+    }
+
+    /* ===== NexusLink light brand-system and dashboard spacing refinement ===== */
+    :root,
+    [data-theme="dark"] {
+      --bg-base: #fff8ed;
+      --bg-surface: rgba(255, 253, 246, .96);
+      --bg-card: rgba(255, 255, 255, .94);
+      --bg-card-hover: #ffffff;
+      --border-subtle: #e7e6d8;
+      --border-highlight: rgba(6, 75, 53, .28);
+      --primary: #07543d;
+      --primary-hover: #06432f;
+      --primary-glow: rgba(6, 75, 53, .14);
+      --accent-cyan: #087653;
+      --accent-emerald: #059669;
+      --accent-amber: #c27a12;
+      --accent-rose: #d9465c;
+      --text-main: #17251f;
+      --text-muted: #53665e;
+      --text-dim: #718078;
+      --card-shadow: 0 7px 22px rgba(41, 59, 43, .075);
+      --nav-bg: rgba(255, 252, 244, .82);
+    }
+
+    html, body { color: var(--text-main); }
+    body, body[data-theme="dark"] {
+      background-color: #fff8ed !important;
+      color: #17251f !important;
+    }
+    body[data-theme="dark"] .ambient-glow {
+      background-image:
+        radial-gradient(ellipse 46% 56% at 0% 7%, rgba(255,174,132,.34) 0%, rgba(255,194,157,.20) 36%, transparent 78%),
+        radial-gradient(ellipse 42% 62% at 100% 49%, rgba(154,232,183,.30) 0%, rgba(190,242,204,.18) 38%, transparent 78%),
+        linear-gradient(115deg,#fff4e8 0%,#fff9ee 48%,#f8f8e9 100%) !important;
+    }
+    .glass-card {
+      background: rgba(255,255,255,.93) !important;
+      border-color: #e5e8df !important;
+      color: #17251f !important;
+      box-shadow: 0 7px 22px rgba(41,59,43,.075) !important;
+    }
+    .glass-card:hover {
+      border-color: rgba(6,75,53,.28) !important;
+      box-shadow: 0 10px 26px rgba(6,75,53,.11) !important;
+    }
+    .glass-card h1, .glass-card h2, .glass-card h3,
+    .glass-card h4, .glass-card p, .glass-card span,
+    .glass-card td, .glass-card th, .metric-card,
+    .metric-card h1, .metric-card h2, .metric-card h3,
+    .metric-card p, .metric-card span, .app-view h2,
+    .app-view h3, .app-view td, .app-view th {
+      color: inherit;
+    }
+    .app-view h2 { color:#17251f !important; }
+    .app-view > div > p,
+    .app-view p { color:#53665e; }
+    .data-table th { color:#667b70 !important; }
+    .data-table td { color:#26362f !important; }
+    .data-table tr:hover td { background:rgba(6,75,53,.035) !important; }
+    .btn-primary, .btn-success {
+      background:linear-gradient(135deg,#07543d,#08704e) !important;
+      color:#fff !important;
+      box-shadow:0 4px 14px rgba(6,75,53,.13) !important;
+    }
+    .btn-primary:hover, .btn-success:hover {
+      background:linear-gradient(135deg,#06432f,#07543d) !important;
+      color:#fff !important;
+    }
+    .btn-secondary, .btn-outline-primary {
+      color:#07543d !important;
+      border-color:#d9e4d9 !important;
+      background:rgba(255,255,255,.82) !important;
+    }
+    .btn-secondary:hover, .btn-outline-primary:hover {
+      color:#06432f !important;
+      border-color:#a8c9b5 !important;
+      background:rgba(6,75,53,.07) !important;
+    }
+    .nav-tab-btn { color:#34483e !important; }
+    .nav-tab-btn:hover, .nav-tab-btn.active {
+      color:#07543d !important;
+      background:rgba(6,75,53,.075) !important;
+      box-shadow:none !important;
+    }
+    .status-pill, .badge, .tag { color:#07543d; }
+    ::selection { background:#0b684a !important; color:#fffdf5 !important; }
+
+    /* Keep the homepage full-bleed, but give dashboard content breathing room. */
+    .app-main {
+      flex:1;
+      position:relative;
+      z-index:1;
+      max-width:1460px !important;
+      width:calc(100% - clamp(28px, 5vw, 80px)) !important;
+      margin:0 auto !important;
+      padding:1.4rem 0 4rem !important;
+      background:transparent !important;
+    }
+    body:has(#view-landing.active) .app-main {
+      max-width:none !important;
+      width:100% !important;
+      margin:0 !important;
+      padding:0 !important;
+    }
+    /* Dashboard tables and metric groups no longer touch the viewport edges. */
+    .app-view:not(#view-landing) > .glass-card,
+    .app-view:not(#view-landing) > .metrics-grid,
+    .app-view:not(#view-landing) > .canvas-3d-wrap,
+    .app-view:not(#view-landing) > .dashboard-grid,
+    .app-view:not(#view-landing) > .two-col-grid {
+      width:100%;
+      max-width:100%;
+    }
+    .metrics-grid { gap:1rem !important; }
+    .metric-card { border-radius:16px !important; }
+    .canvas-3d-wrap {
+      border-radius:20px !important;
+      overflow:hidden;
+    }
+    .canvas-3d-wrap h2, .canvas-3d-wrap h3 { color:#f8fafc !important; }
+    .canvas-3d-wrap p { color:#bdc9d8 !important; }
+    .canvas-3d-wrap .text-muted { color:#bdc9d8 !important; }
+    @media(max-width:760px) {
+      .app-main {
+        width:calc(100% - 28px) !important;
+        padding-top:1rem !important;
+      }
+      body:has(#view-landing.active) .app-main {
+        width:100% !important;
+        padding:0 !important;
+      }
+    }
+
+  
+
+    /* Visibility hotfix: dashboard metric values were inheriting the old dark-theme white. */
+    .app-view:not(#view-landing) .metric-card .metric-value,
+    .app-view:not(#view-landing) .metric-value,
+    .app-view:not(#view-landing) [id$="-balance"],
+    .app-view:not(#view-landing) [id$="-clicks"],
+    .app-view:not(#view-landing) [id$="-count"] {
+      color: #07543d !important;
+      -webkit-text-fill-color: #07543d !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+    }
+    .app-view:not(#view-landing) .metric-label {
+      color: #53665e !important;
+      opacity: 1 !important;
+    }
+    .app-view:not(#view-landing) .metric-sub {
+      color: #53665e !important;
+      opacity: 1 !important;
+    }
+    .app-view:not(#view-landing) h1,
+    .app-view:not(#view-landing) h2,
+    .app-view:not(#view-landing) h3,
+    .app-view:not(#view-landing) h4,
+    .app-view:not(#view-landing) label,
+    .app-view:not(#view-landing) .form-label {
+      color: #17251f;
+    }
+    .canvas-3d-wrap .canvas-badge {
+      color: #8fe8c2 !important;
+      border-color: rgba(190, 245, 221, .72) !important;
+      background: rgba(7, 20, 34, .78) !important;
+      opacity: 1 !important;
+    }
+    .canvas-3d-wrap .canvas-badge i { color: #8fe8c2 !important; }
+    .canvas-3d-wrap .canvas-controls-bar .btn,
+    .canvas-3d-wrap .canvas-controls-bar button {
+      color: #07543d !important;
+      -webkit-text-fill-color: #07543d !important;
+      opacity: 1 !important;
+    }
+    .canvas-3d-wrap .canvas-overlay-content h2 { color: #f8fafc !important; }
+    .canvas-3d-wrap .canvas-overlay-content p { color: #d7e1ed !important; }
+
+  </style>
+  <!-- Google Fonts: Caveat (handwritten) & Plus Jakarta Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
 </head>
+
 <body>
 
   <div class="ambient-glow"></div>
@@ -757,52 +2398,18 @@
         </div>
       </div>
 
-      <!-- Main Clean Navigation Tabs -->
-      <nav class="nav-menu">
-        <button class="nav-tab-btn active" id="tab-landing" onclick="navigateTab('landing')">
-          <i class="fa-solid fa-house"></i> Home
-        </button>
-        <button class="nav-tab-btn" id="tab-brand" onclick="navigateTab('brand')">
-          <i class="fa-solid fa-building"></i> Brand Portal
-        </button>
-        <button class="nav-tab-btn" id="tab-promoter" onclick="navigateTab('promoter')">
-          <i class="fa-solid fa-users-viewfinder"></i> Promoter Portal
-        </button>
-        <button class="nav-tab-btn" id="tab-admin" onclick="navigateTab('admin')">
-          <i class="fa-solid fa-shield-halved"></i> Admin Portal
-        </button>
-        <button class="nav-tab-btn" id="tab-overview" onclick="navigateTab('overview')">
-          <i class="fa-solid fa-globe"></i> 3D Network
-        </button>
+      <!-- Main navigation -->
+      <nav class="nav-menu nl-nav-menu">
+        <button class="nav-tab-btn" id="tab-brand" onclick="navigateTab('brand')">Brands</button>
+        <button class="nav-tab-btn" id="tab-promoter" onclick="navigateTab('promoter')">Promoters</button>
+        <button class="nav-tab-btn" id="tab-overview" onclick="navigateTab('overview')"><i class="fa-solid fa-cubes-stacked" aria-hidden="true"></i> 3D Network Portal</button>
+        <button class="nav-tab-btn" id="tab-admin" onclick="navigateTab('admin')"><i class="fa-solid fa-shield-halved" aria-hidden="true"></i> Admin</button>
+        <button class="nav-tab-btn" id="nav-contact" onclick="openAuthModal('signin')">Contact</button>
       </nav>
 
-      <!-- Status Indicator, Theme Toggle, Auth, Simulator -->
-      <div style="display: flex; align-items: center; gap: 0.65rem; flex-wrap: wrap;">
-        <!-- Server Status Badge -->
-        <div class="status-pill" id="backend-status-pill" title="NexusLink Engine Status">
-          <div class="status-dot"></div>
-          <span id="backend-status-text">Checking...</span>
-        </div>
-
-        <!-- Theme Switcher Button -->
-        <button class="theme-toggle-btn" id="theme-toggle-btn" onclick="toggleTheme()" title="Switch Light/Dark Mode">
-          <i class="fa-solid fa-moon" id="theme-toggle-icon"></i>
-          <span id="theme-toggle-text">Dark Mode</span>
-        </button>
-
-        <!-- Current User Role Chip -->
-        <div class="user-pill" id="current-user-pill">
-          <i class="fa-solid fa-user-shield"></i>
-          <span id="current-user-role-label">Guest Visitor</span>
-        </div>
-
-        <button class="btn btn-secondary" id="auth-nav-btn" style="padding: 0.45rem 0.85rem; font-size: 0.8rem;" onclick="openAuthModal('signin')">
-          <i class="fa-solid fa-right-to-bracket"></i> Sign In
-        </button>
-
-        <button class="btn btn-primary" style="padding: 0.45rem 0.95rem; font-size: 0.8rem;" onclick="openTestModal()">
-          <i class="fa-solid fa-radar"></i> Run Simulator
-        </button>
+      <div class="nl-header-actions">
+        <button class="nl-header-login" id="auth-nav-btn" onclick="openAuthModal('signin')">Log in</button>
+        <button class="nl-header-start" onclick="openAuthModal('signup', 'client')">Get Started</button>
       </div>
     </div>
   </header>
@@ -814,220 +2421,53 @@
     <!-- 0. HIGH-CONVERTING LANDING PAGE (About Us, Why Us, USPs, Fund Flow)   -->
     <!-- ===================================================================== -->
     <section class="app-view active" id="view-landing">
-      <div class="landing-hero">
-  <!-- Subtle blurred color fields -->
-  <div class="blur-field blur-1"></div>
-  <div class="blur-field blur-2"></div>
-  <!-- Trust badge -->
-  <div class="landing-badge trust-badge" style="color: #08482D; font-size: 0.9rem;">
-    &#9679; Trusted by 10,000+ brands &amp; creators
-  </div>
-  <h1 class="hero-headline">
-    Turn Real People Into Your <span style="background: linear-gradient(135deg, var(--primary), var(--accent-cyan)); -webkit-background-clip: text; -webkit-text-fill-color: transparent;">Growth Engine</span>
-  </h1>
-  <p class="hero-subtext">
-    Launch campaigns, collaborate with verified promoters, track real engagement and grow your brand with authentic reach.
-  </p>
-  <div class="landing-actions">
-    <button class="btn btn-primary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'client')">
-      Start a Campaign →
-    </button>
-    <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'promoter')">
-      Join as a Promoter
-    </button>
-    <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="navigateTab('overview')">
-      Explore 3D Mesh
-    </button>
-  </div>
-  <!-- Hand‑drawn visual notes -->
-  <div class="handwritten-notes">
-    <svg width="100%" height="120" viewBox="0 0 800 120" preserveAspectRatio="none">
-      <style>.note{font-family:'Caveat', cursive; fill:#08482D; font-size:1.2rem;}</style>
-      <text x="10" y="30" class="note">&lt;-- Seamless Campaign Cards</text>
-      <path d="M150,40 Q200,20 250,40" stroke="#08482D" fill="none" stroke-width="2"/>
-    </svg>
-  </div>
-  <!-- Creator/Category carousel -->
-  <div class="creator-carousel" id="creator-carousel">
-    <div class="carousel-track">
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-leaf"></i></div><h4>Beauty Campaign</h4></div>
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-palette"></i></div><h4>Creative Promotion</h4></div>
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-bolt"></i></div><h4>Instant Offers</h4></div>
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-rocket"></i></div><h4>Product Showcase</h4></div>
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-heart"></i></div><h4>Lifestyle Promotion</h4></div>
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-gamepad"></i></div><h4>Gaming Campaign</h4></div>
-      <!-- duplicate for seamless loop -->
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-leaf"></i></div><h4>Beauty Campaign</h4></div>
-      <div class="carousel-card glass-card"><div class="card-icon"><i class="fa-solid fa-palette"></i></div><h4>Creative Promotion</h4></div>
-    </div>
-  </div>
-</div>
-        <div class="landing-badge">
-          <i class="fa-solid fa-shield-check"></i> Decentralized Community Affiliate Network
-        </div>
-        <h1>
-          Autonomous Affiliate Arbitrage &amp; <span>Zero-Fraud Traffic</span>
-        </h1>
-        <p>
-          NexusLink connects Web3 brands with verified community seeders across Telegram, Discord, WhatsApp, and Reddit with cryptographic smart-escrow settlements and sub-millisecond bot interception.
-        </p>
-        
-        <div class="landing-actions">
-          <button class="btn btn-primary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'client')">
-            <i class="fa-solid fa-rocket"></i> Onboard as Brand
-          </button>
-          <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="openAuthModal('signup', 'promoter')">
-            <i class="fa-solid fa-users"></i> Onboard as Promoter
-          </button>
-          <button class="btn btn-secondary" style="padding: 0.85rem 1.6rem; font-size: 0.95rem;" onclick="navigateTab('overview')">
-            <i class="fa-solid fa-cubes"></i> Explore 3D Mesh
-          </button>
+      <div class="nl-landing">
+        <div class="nl-orb nl-orb-peach"></div>
+        <div class="nl-orb nl-orb-mint"></div>
+
+        <div class="nl-trust"><i class="fa-solid fa-users"></i> Trusted by 10,000+ brands &amp; creators</div>
+        <h1 class="nl-hero-title">Turn Real People Into<br><span>Your Growth Engine</span></h1>
+        <p class="nl-hero-copy">Launch campaigns, collaborate with verified promoters,<br class="desktop-break"> track real engagement and grow your brand with authentic reach.</p>
+        <div class="nl-hero-actions">
+          <button class="nl-button nl-button-primary" onclick="openAuthModal('signup', 'client')">Start a Campaign <i class="fa-solid fa-arrow-right"></i></button>
+          <button class="nl-button nl-button-light" onclick="openAuthModal('signup', 'promoter')">Join as a Promoter</button>
         </div>
 
-        <!-- Demonstration Notice Banner -->
-        <div class="demo-creds-banner">
-          <i class="fa-solid fa-circle-info" style="color: var(--primary);"></i>
-          <strong>Instant Demo Access:</strong> Switch directly between roles using test credentials:
-          <span class="demo-badge-btn" onclick="quickLogin('admin')">Admin: admin@nexuslink.network</span>
-          <span class="demo-badge-btn" onclick="quickLogin('client')">Brand: growth@web3defi.io</span>
-          <span class="demo-badge-btn" onclick="quickLogin('promoter')">Promoter: alex.seeder@community.org</span>
+        <div class="nl-note nl-note-left">Authentic<br>Creators</div>
+        <img class="nl-hand-arrow nl-hand-arrow-left" src="Union (1).svg" alt="Decorative arrow pointing toward authentic creators" aria-hidden="true">
+        <div class="nl-note nl-note-right">Real<br>Growth</div>
+        <img class="nl-hand-arrow nl-hand-arrow-right" src="Union (2).svg" alt="Decorative arrow pointing toward real growth" aria-hidden="true">
+        <div class="nl-card-row" aria-label="Campaign categories">
+          <article class="nl-category-card"><img src="assets/cards/skincare.jpg" alt="Skincare creator campaign"><div class="nl-card-caption"><span class="nl-play"><i class="fa-solid fa-play"></i></span><strong>Skincare</strong><span>Campaign</span></div></article>
+          <article class="nl-category-card"><img src="assets/cards/lifestyle.jpg" alt="Lifestyle promotion"><div class="nl-card-caption"><span class="nl-play"><i class="fa-solid fa-play"></i></span><strong>Lifestyle</strong><span>Promotion</span></div></article>
+          <article class="nl-category-card"><img src="assets/cards/product.jpg" alt="Product showcase"><div class="nl-card-caption"><span class="nl-play"><i class="fa-solid fa-play"></i></span><strong>Product</strong><span>Showcase</span></div></article>
+          <article class="nl-category-card nl-category-featured"><img src="assets/cards/brand.jpg" alt="Brand collaboration"><div class="nl-card-caption"><span class="nl-play"><i class="fa-solid fa-play"></i></span><strong>Brand</strong><span>Collaboration</span></div></article>
+          <article class="nl-category-card"><img src="assets/cards/food.jpg" alt="Food and beverage promotion"><div class="nl-card-caption"><span class="nl-play"><i class="fa-solid fa-play"></i></span><strong>Food &amp; Beverage</strong><span>Promotion</span></div></article>
+          <article class="nl-category-card"><img src="assets/cards/tech.jpg" alt="Technology review"><div class="nl-card-caption"><span class="nl-play"><i class="fa-solid fa-play"></i></span><strong>Tech</strong><span>Review</span></div></article>
+          <article class="nl-category-card"><img src="assets/cards/home.jpg" alt="Home and living campaign"><div class="nl-card-caption"><span class="nl-play"><i class="fa-solid fa-play"></i></span><strong>Home &amp; Living</strong><span>Campaign</span></div></article>
         </div>
-      </div>
 
-      <!-- Quick Highlights Grid -->
-      <div class="landing-grid-3">
-        <!-- Revenue Stream & Fund Utilization -->
-        <div class="glass-card landing-feature-card">
-          <div class="feature-icon-box feature-icon-emerald">
-            <i class="fa-solid fa-coins"></i>
+        <div class="nl-benefits" id="nl-benefits">
+          <article class="nl-benefit"><span class="nl-benefit-icon"><i class="fa-solid fa-user-check"></i></span><h3>Verified Promoters</h3><p>Work with real and trusted<br>creators.</p></article>
+          <article class="nl-benefit"><span class="nl-benefit-icon"><i class="fa-solid fa-wallet"></i></span><h3>Secure Payments</h3><p>Transparent and on-time<br>payouts.</p></article>
+          <article class="nl-benefit"><span class="nl-benefit-icon"><i class="fa-solid fa-chart-line"></i></span><h3>Real-time Tracking</h3><p>Track clicks, conversions<br>and ROI.</p></article>
+          <article class="nl-benefit"><span class="nl-benefit-icon"><i class="fa-solid fa-shield-halved"></i></span><h3>Fraud Protection</h3><p>AI-powered fraud detection<br>for authentic growth.</p></article>
+        </div>
+
+        <div class="nl-stats" id="nl-stats">
+          <div><strong>10K+</strong><span>Active Promoters</span></div>
+          <div><strong>500+</strong><span>Brands on Board</span></div>
+          <div><strong>1M+</strong><span>Campaign Engagements</span></div>
+        </div>
+
+        <div class="nl-below-fold">
+          <div class="nl-section-heading"><span>Built for authentic growth</span><h2>Better campaigns. Real communities.</h2><p>NexusLink helps brands work with trusted promoters while tracking engagement and protecting campaign budgets.</p></div>
+          <div class="landing-grid-3">
+            <article class="glass-card landing-feature-card"><div class="feature-icon-box feature-icon-emerald"><i class="fa-solid fa-coins"></i></div><h3>Transparent Rewards</h3><p>Every verified click follows a clear reward split, with campaign activity and payouts recorded for review.</p></article>
+            <article class="glass-card landing-feature-card"><div class="feature-icon-box feature-icon-blue"><i class="fa-solid fa-shield-virus"></i></div><h3>Anti-Fraud Protection</h3><p>Traffic checks help flag suspicious user agents, datacenter traffic and repeated clicks before rewards are issued.</p></article>
+            <article class="glass-card landing-feature-card"><div class="feature-icon-box feature-icon-cyan"><i class="fa-solid fa-chart-simple"></i></div><h3>Campaign Insights</h3><p>Track campaign activity, referral clicks and performance from a central dashboard.</p></article>
           </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">Revenue Model &amp; Fund Utilization</h3>
-          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
-            Every verified human click triggers an automated, mathematically immutable 60/40 settlement split from the client's escrow balance:
-          </p>
-          <div class="split-pie-bar">
-            <div class="split-promoter" title="60% to Promoter"></div>
-            <div class="split-platform" title="40% to Platform Treasury"></div>
-          </div>
-          <div style="display: flex; justify-content: space-between; font-size: 0.78rem; font-weight: 700; margin-bottom: 0.75rem;">
-            <span style="color: var(--accent-emerald);"><i class="fa-solid fa-circle-dot"></i> 60% Promoter Reward</span>
-            <span style="color: var(--primary);"><i class="fa-solid fa-circle-dot"></i> 40% Platform Revenue</span>
-          </div>
-          <p style="color: var(--text-dim); font-size: 0.8rem;">
-            Funds are utilized for escrow security, real-time ASN threat intelligence feeds, and instant withdrawals in INR (₹).
-          </p>
-        </div>
-
-        <!-- Anti-Fraud Engine USP -->
-        <div class="glass-card landing-feature-card">
-          <div class="feature-icon-box feature-icon-blue">
-            <i class="fa-solid fa-shield-virus"></i>
-          </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">Proprietary Anti-Fraud Engine</h3>
-          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
-            Sub-2ms heuristic inspection pipeline quashing fraudulent traffic before any funds unlock:
-          </p>
-          <ul style="list-style: none; margin-top: 0.75rem; font-size: 0.82rem; color: var(--text-muted); display: flex; flex-direction: column; gap: 0.4rem;">
-            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>AWS / Cloud Datacenter Subnet Blocking</strong></li>
-            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>Headless Browser &amp; Bot Signature Interception</strong></li>
-            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>Tor Exit Node &amp; Anonymous Proxy Quarantining</strong></li>
-            <li><i class="fa-solid fa-check" style="color: var(--accent-emerald);"></i> <strong>Strict Rate Limiting (2 clicks / IP / 60 min)</strong></li>
-          </ul>
-        </div>
-
-        <!-- USPs & Value Proposition -->
-        <div class="glass-card landing-feature-card">
-          <div class="feature-icon-box feature-icon-cyan">
-            <i class="fa-solid fa-award"></i>
-          </div>
-          <h3 style="font-size: 1.2rem; font-weight: 700; margin-bottom: 0.5rem; color: var(--text-main);">Key Value Propositions (USPs)</h3>
-          <p style="color: var(--text-muted); font-size: 0.88rem; line-height: 1.6;">
-            Why web3 brands and growth seeders choose NexusLink over traditional affiliate networks:
-          </p>
-          <div style="margin-top: 1rem; display: flex; flex-direction: column; gap: 0.5rem;">
-            <div class="usp-pill"><i class="fa-solid fa-bolt"></i> Atomic Escrow Settlements</div>
-            <div class="usp-pill"><i class="fa-solid fa-magnifying-glass-dollar"></i> Zero-Fraud Guarantee for Advertisers</div>
-            <div class="usp-pill"><i class="fa-solid fa-indian-rupee-sign"></i> Transparent INR (₹) Accounting</div>
-            <div class="usp-pill"><i class="fa-solid fa-share-nodes"></i> Native Telegram, WhatsApp &amp; Discord Seeding</div>
-          </div>
-        </div>
-      </div>
-
-      <!-- About Us & Why Us Section -->
-      <div class="glass-card" style="padding: 2.5rem; margin-bottom: 3.5rem;">
-        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2.5rem; align-items: center;">
-          <div>
-            <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; letter-spacing: -0.02em;">
-              About NexusLink
-            </h2>
-            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.7; margin-bottom: 1rem;">
-              NexusLink was founded to eliminate the multi-billion rupee affiliate click-fraud epidemic. By combining deterministic IP/ASN intelligence, browser heuristic profiling, and programmatic escrow vaults, we offer an open, auditable advertising clearinghouse for high-growth communities.
-            </p>
-            <p style="color: var(--text-muted); font-size: 0.92rem; line-height: 1.7;">
-              Advertisers only pay for genuine human engagement, while verified promoters enjoy automated, guaranteed payouts without platform withholding risks.
-            </p>
-          </div>
-          <div>
-            <h2 style="font-size: 1.85rem; font-weight: 800; color: var(--text-main); margin-bottom: 1rem; letter-spacing: -0.02em;">
-              Why Choose Us?
-            </h2>
-            <div style="display: flex; flex-direction: column; gap: 1rem;">
-              <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(37, 99, 235, 0.1); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: 1.1rem; flex-shrink: 0;">
-                  <i class="fa-solid fa-lock"></i>
-                </div>
-                <div>
-                  <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">Escrow-Backed Integrity</h4>
-                  <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Campaign budgets are locked in dedicated vaults; funds cannot be misappropriated or withheld arbitrarily.</p>
-                </div>
-              </div>
-              <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(5, 150, 105, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-emerald); font-size: 1.1rem; flex-shrink: 0;">
-                  <i class="fa-solid fa-user-check"></i>
-                </div>
-                <div>
-                  <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">We Are Onboarding Promoters &amp; Brands</h4>
-                  <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Currently accepting new community leaders, Telegram group administrators, Discord mods, and growth brands into our active cohort.</p>
-                </div>
-              </div>
-              <div style="display: flex; gap: 1rem; align-items: flex-start;">
-                <div style="width: 38px; height: 38px; border-radius: 10px; background: rgba(2, 132, 199, 0.1); display: flex; align-items: center; justify-content: center; color: var(--accent-cyan); font-size: 1.1rem; flex-shrink: 0;">
-                  <i class="fa-solid fa-file-invoice"></i>
-                </div>
-                <div>
-                  <h4 style="font-size: 1rem; font-weight: 700; color: var(--text-main); margin-bottom: 0.2rem;">Complete Financial Transparency</h4>
-                  <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">Immutable double-entry ledger visible to all ecosystem participants, exported on-demand in CSV format.</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Quick Role Action Cards -->
-      <h3 class="landing-section-title">Access Dedicated Portals</h3>
-      <p class="landing-section-subtitle">Jump straight into tailored workflows built for brands, seeders, and platform administrators.</p>
-
-      <div class="landing-grid-3" style="margin-bottom: 2rem;">
-        <div class="glass-card" style="padding: 1.75rem; text-align: center;">
-          <div style="font-size: 2.2rem; color: var(--primary); margin-bottom: 0.75rem;"><i class="fa-solid fa-building"></i></div>
-          <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-main);">Brand / Advertiser Portal</h4>
-          <p style="color: var(--text-muted); font-size: 0.84rem; margin-bottom: 1.25rem;">Deploy campaigns, fund escrow in ₹, configure community niches, and view real-time conversions.</p>
-          <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="navigateTab('brand')">Enter Brand Portal</button>
-        </div>
-
-        <div class="glass-card" style="padding: 1.75rem; text-align: center;">
-          <div style="font-size: 2.2rem; color: var(--accent-emerald); margin-bottom: 0.75rem;"><i class="fa-solid fa-users-viewfinder"></i></div>
-          <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-main);">Promoter / Seeder Portal</h4>
-          <p style="color: var(--text-muted); font-size: 0.84rem; margin-bottom: 1.25rem;">Browse active campaigns, generate unique tracking slugs, submit proof of seeding, and withdraw in ₹.</p>
-          <button class="btn btn-primary" style="width: 100%; justify-content: center;" onclick="navigateTab('promoter')">Enter Promoter Portal</button>
-        </div>
-
-        <div class="glass-card" style="padding: 1.75rem; text-align: center;">
-          <div style="font-size: 2.2rem; color: var(--accent-rose); margin-bottom: 0.75rem;"><i class="fa-solid fa-shield-halved"></i></div>
-          <h4 style="font-size: 1.15rem; font-weight: 700; margin-bottom: 0.4rem; color: var(--text-main);">Admin Governance Portal</h4>
-          <p style="color: var(--text-muted); font-size: 0.84rem; margin-bottom: 1.25rem;">Live anti-fraud threat feed, withdrawal authorizations, double-entry financial ledger, and platform spread audit.</p>
-          <button class="btn btn-secondary" style="width: 100%; justify-content: center;" onclick="navigateTab('admin')">Enter Admin Portal</button>
+          <div class="nl-final-cta"><div><h2>Ready to grow with real people?</h2><p>Start a campaign or join the promoter community.</p></div><button class="nl-button nl-button-primary" onclick="openAuthModal('signup', 'client')">Get Started <i class="fa-solid fa-arrow-right"></i></button></div>
         </div>
       </div>
     </section>
@@ -1036,18 +2476,20 @@
     <!-- 1. 3D NETWORK OVERVIEW VIEW -->
     <!-- ===================================================================== -->
     <section class="app-view" id="view-overview">
-      
+
       <!-- Interactive Three.js 3D Globe & Node Canvas -->
       <div class="canvas-3d-wrap">
         <canvas id="three-viewport"></canvas>
         <div class="canvas-overlay-content">
           <h2>Decentralized Affiliate Mesh &amp; Security Protocol</h2>
-          <p>Real-time WebGL node graph tracking verified clicks, active brand campaigns, and anti-fraud threat quarantines.</p>
+          <p>Real-time WebGL node graph tracking verified clicks, active brand campaigns, and anti-fraud threat
+            quarantines.</p>
         </div>
         <div class="canvas-controls-bar">
           <div class="canvas-badge"><i class="fa-solid fa-circle-nodes"></i> Mesh Nodes: 36</div>
           <div class="canvas-badge"><i class="fa-solid fa-rotate"></i> Auto-Rotate: Active</div>
-          <button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;" onclick="reset3DCamera()">
+          <button class="btn btn-secondary" style="padding: 0.35rem 0.75rem; font-size: 0.75rem;"
+            onclick="reset3DCamera()">
             <i class="fa-solid fa-arrows-rotate"></i> Reset Angle
           </button>
         </div>
@@ -1078,15 +2520,17 @@
       </div>
 
       <!-- Quick Summary Cards -->
-      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
-        
+      <div
+        style="display: grid; grid-template-columns: repeat(auto-fit, minmax(360px, 1fr)); gap: 1.5rem; margin-bottom: 2rem;">
+
         <!-- Live Anti-Fraud Feed Snippet -->
         <div class="glass-card" style="padding: 1.5rem;">
           <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
             <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fa-solid fa-shield-virus" style="color: var(--accent-rose);"></i> Recent Threat Interceptions
             </h3>
-            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="navigateTab('antifraud')">
+            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;"
+              onclick="navigateTab('antifraud')">
               View All <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
@@ -1112,7 +2556,8 @@
             <h3 style="font-size: 1.1rem; display: flex; align-items: center; gap: 0.5rem;">
               <i class="fa-solid fa-layer-group" style="color: var(--accent-cyan);"></i> Top Active Campaigns
             </h3>
-            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;" onclick="navigateTab('brand')">
+            <button class="btn btn-secondary" style="padding: 0.35rem 0.7rem; font-size: 0.75rem;"
+              onclick="navigateTab('brand')">
               Manage <i class="fa-solid fa-arrow-right"></i>
             </button>
           </div>
@@ -1140,10 +2585,12 @@
     <!-- 2. ANTI-FRAUD ENGINE VIEW -->
     <!-- ===================================================================== -->
     <section class="app-view" id="view-antifraud">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-size: 1.6rem; font-weight: 800;">Real-Time Anti-Fraud &amp; Bot Inspection Engine</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Multi-layered heuristic algorithm intercepting headless browsers, datacenter subnets, and proxies before payouts execute.</p>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Multi-layered heuristic algorithm intercepting
+            headless browsers, datacenter subnets, and proxies before payouts execute.</p>
         </div>
         <button class="btn btn-primary" onclick="openTestModal()">
           <i class="fa-solid fa-flask-vial"></i> Test Traffic Headers
@@ -1172,7 +2619,8 @@
       <!-- Threat Logs Table -->
       <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-shield-virus" style="color: var(--accent-rose);"></i> Live Bot / Datacenter Threat Interception Logs
+          <i class="fa-solid fa-shield-virus" style="color: var(--accent-rose);"></i> Live Bot / Datacenter Threat
+          Interception Logs
         </h3>
         <div class="data-table-wrap">
           <table class="data-table">
@@ -1198,15 +2646,14 @@
     <!-- 2. BRAND / CLIENT CAMPAIGN PORTAL VIEW -->
     <!-- ===================================================================== -->
     <section class="app-view" id="view-brand">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-size: 1.6rem; font-weight: 800;">Client &amp; Brand Campaign Vault</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Fund smart-escrow contracts in ₹, set geographic targeting, and review verified community clicks.</p>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Fund smart-escrow contracts in ₹, set geographic
+            targeting, and review verified community clicks.</p>
         </div>
         <div style="display: flex; gap: 0.75rem;">
-          <button class="btn btn-secondary" onclick="quickLogin('client')">
-            <i class="fa-solid fa-user-check"></i> Brand Demo Login
-          </button>
           <button class="btn btn-primary" onclick="openCampaignModal()">
             <i class="fa-solid fa-plus"></i> Create New Campaign
           </button>
@@ -1242,10 +2689,12 @@
     <!-- 4. PROMOTER PORTAL VIEW -->
     <!-- ===================================================================== -->
     <section class="app-view" id="view-promoter">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-size: 1.6rem; font-weight: 800;">Promoter &amp; Community Seeder Portal</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Earn 60% of CPC rewards on every verified human community referral.</p>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Earn 60% of CPC rewards on every verified human
+            community referral.</p>
         </div>
         <button class="btn btn-primary" onclick="openWithdrawModal()">
           <i class="fa-solid fa-wallet"></i> Request Payout (₹11,877.30)
@@ -1322,15 +2771,14 @@
     <!-- 5. ADMIN GOVERNANCE PORTAL VIEW -->
     <!-- ===================================================================== -->
     <section class="app-view" id="view-admin">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
+      <div
+        style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; flex-wrap: wrap; gap: 1rem;">
         <div>
           <h2 style="font-size: 1.6rem; font-weight: 800;">Administrator Governance &amp; Security Console</h2>
-          <p style="color: var(--text-muted); font-size: 0.88rem;">Double-entry immutable balance journal, anti-fraud risk telemetry, and promoter withdrawal authorization queue.</p>
+          <p style="color: var(--text-muted); font-size: 0.88rem;">Double-entry immutable balance journal, anti-fraud
+            risk telemetry, and promoter withdrawal authorization queue.</p>
         </div>
         <div style="display: flex; gap: 0.75rem;">
-          <button class="btn btn-secondary" onclick="quickLogin('admin')">
-            <i class="fa-solid fa-user-shield"></i> Admin Demo Login
-          </button>
           <button class="btn btn-secondary" onclick="exportLedgerCSV()">
             <i class="fa-solid fa-download"></i> Export Audit CSV
           </button>
@@ -1340,7 +2788,8 @@
       <!-- Pending Withdrawals Table -->
       <div class="glass-card" style="padding: 1.5rem; margin-bottom: 2rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-money-bill-transfer" style="color: var(--accent-amber);"></i> Pending Payout Authorizations
+          <i class="fa-solid fa-money-bill-transfer" style="color: var(--accent-amber);"></i> Pending Payout
+          Authorizations
         </h3>
         <div class="data-table-wrap">
           <table class="data-table">
@@ -1364,7 +2813,8 @@
       <!-- Ledger Entries -->
       <div class="glass-card" style="padding: 1.5rem;">
         <h3 style="font-size: 1.15rem; margin-bottom: 1rem; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-book-journal-whills" style="color: var(--primary);"></i> Double-Entry Journal Records (₹)
+          <i class="fa-solid fa-book-journal-whills" style="color: var(--primary);"></i> Double-Entry Journal Records
+          (₹)
         </h3>
         <div class="data-table-wrap">
           <table class="data-table">
@@ -1395,28 +2845,24 @@
   <div class="modal-overlay" id="modal-auth">
     <div class="modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <h3 style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;" id="auth-modal-title">
+        <h3
+          style="font-size: 1.3rem; font-weight: 800; color: var(--text-main); display: flex; align-items: center; gap: 0.5rem;"
+          id="auth-modal-title">
           <i class="fa-solid fa-user-shield" style="color: var(--primary);"></i> Account Portal
         </h3>
-        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.3rem;" onclick="closeAuthModal()">&times;</button>
+        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.3rem;"
+          onclick="closeAuthModal()">&times;</button>
       </div>
 
       <!-- Auth Mode Tabs -->
-      <div style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: var(--bg-surface); padding: 0.3rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
-        <button type="button" class="btn" id="btn-tab-signin" style="flex: 1; justify-content: center; font-size: 0.85rem;" onclick="switchAuthTab('signin')">Sign In</button>
-        <button type="button" class="btn btn-secondary" id="btn-tab-signup" style="flex: 1; justify-content: center; font-size: 0.85rem;" onclick="switchAuthTab('signup')">Create Account</button>
-      </div>
-
-      <!-- Demo Credentials Quick Selector -->
-      <div style="background: rgba(37, 99, 235, 0.08); border: 1px solid var(--border-highlight); border-radius: 8px; padding: 0.75rem 1rem; margin-bottom: 1.25rem; font-size: 0.8rem;">
-        <div style="font-weight: 700; color: var(--primary); margin-bottom: 0.35rem;">
-          <i class="fa-solid fa-bolt"></i> Quick Demo Logins:
-        </div>
-        <div style="display: flex; gap: 0.4rem; flex-wrap: wrap;">
-          <button type="button" class="demo-badge-btn" onclick="fillAuthForm('admin@nexuslink.network', 'admin123', 'admin')">Admin</button>
-          <button type="button" class="demo-badge-btn" onclick="fillAuthForm('growth@web3defi.io', 'client123', 'client')">Brand (Client)</button>
-          <button type="button" class="demo-badge-btn" onclick="fillAuthForm('alex.seeder@community.org', 'promoter123', 'promoter')">Promoter (Seeder)</button>
-        </div>
+      <div
+        style="display: flex; gap: 0.5rem; margin-bottom: 1.25rem; background: var(--bg-surface); padding: 0.3rem; border-radius: 8px; border: 1px solid var(--border-subtle);">
+        <button type="button" class="btn" id="btn-tab-signin"
+          style="flex: 1; justify-content: center; font-size: 0.85rem;" onclick="switchAuthTab('signin')">Sign
+          In</button>
+        <button type="button" class="btn btn-secondary" id="btn-tab-signup"
+          style="flex: 1; justify-content: center; font-size: 0.85rem;" onclick="switchAuthTab('signup')">Create
+          Account</button>
       </div>
 
       <form id="auth-form" onsubmit="handleAuthSubmit(event)">
@@ -1446,57 +2892,22 @@
 
         <div class="form-group" id="group-auth-niches" style="display: none;">
           <label>Target Seeding Communities</label>
-          <input type="text" id="auth-niches" class="form-input" placeholder="WhatsApp, Telegram, Discord, Reddit" value="Telegram, WhatsApp" />
+          <input type="text" id="auth-niches" class="form-input" placeholder="WhatsApp, Telegram, Discord, Reddit"
+            value="Telegram, WhatsApp" />
         </div>
 
-        <button type="submit" class="btn btn-primary" id="auth-submit-btn" style="width: 100%; justify-content: center; margin-top: 1rem; padding: 0.75rem;">
+        <button type="submit" class="btn btn-primary" id="auth-submit-btn"
+          style="width: 100%; justify-content: center; margin-top: 1rem; padding: 0.75rem;">
           Sign In
         </button>
       </form>
     </div>
   </div>
 
-  <!-- Anti-Fraud Test Simulator Modal -->
-  <div class="modal-overlay" id="modal-test">
-    <div class="modal-box">
-      <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
-        <h3 style="font-size: 1.25rem; font-weight: 800; display: flex; align-items: center; gap: 0.5rem;">
-          <i class="fa-solid fa-flask-vial" style="color: var(--accent-rose);"></i> Anti-Fraud Inspection Engine Test
-        </h3>
-        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;" onclick="closeTestModal()">&times;</button>
-      </div>
-      <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1.5rem;">
-        Simulate an incoming HTTP referral click against the inspection algorithm (Evaluates Datacenter IP, Bot User-Agents, Proxies, and Rate Limits).
-      </p>
-
-      <div class="form-group">
-        <label>Simulation Preset</label>
-        <select class="form-input" id="sim-preset" onchange="applySimPreset()">
-          <option value="clean">Clean Human Consumer (Residential IP / Chrome)</option>
-          <option value="bot">Puppeteer Automated Headless Browser</option>
-          <option value="datacenter">AWS EC2 Datacenter Scraper (Python-requests)</option>
-          <option value="tor">Tor Anonymizing Exit Node</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label>Connecting IP Address</label>
-        <input type="text" id="sim-ip" class="form-input" value="103.21.244.12" />
-      </div>
-
-      <div class="form-group">
-        <label>HTTP User-Agent</label>
-        <input type="text" id="sim-ua" class="form-input" value="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" />
-      </div>
-
-      <div style="display: flex; gap: 1rem; margin-top: 1.5rem;">
-        <button class="btn btn-primary" style="flex: 1; justify-content: center;" onclick="runFraudTest()">
-          Evaluate Against Engine
-        </button>
-      </div>
 
       <!-- Results Box -->
-      <div id="sim-results" style="display: none; margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle);">
+      <div id="sim-results"
+        style="display: none; margin-top: 1.5rem; padding: 1.25rem; border-radius: 12px; background: rgba(0,0,0,0.5); border: 1px solid var(--border-subtle);">
         <!-- Injected via JS -->
       </div>
     </div>
@@ -1507,13 +2918,15 @@
     <div class="modal-box">
       <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.25rem;">
         <h3 style="font-size: 1.25rem; font-weight: 800;">Create Brand Campaign &amp; Fund Escrow</h3>
-        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;" onclick="closeCampaignModal()">&times;</button>
+        <button style="background: none; border: none; color: var(--text-muted); cursor: pointer; font-size: 1.2rem;"
+          onclick="closeCampaignModal()">&times;</button>
       </div>
 
       <form onsubmit="handleCreateCampaign(event)">
         <div class="form-group">
           <label>Campaign Title</label>
-          <input type="text" id="camp-title" class="form-input" placeholder="e.g. NexusStaking Community Airdrop" required />
+          <input type="text" id="camp-title" class="form-input" placeholder="e.g. NexusStaking Community Airdrop"
+            required />
         </div>
         <div class="form-group">
           <label>Destination Target URL</label>
@@ -1635,33 +3048,6 @@
       }
     }
 
-    function fillAuthForm(email, pass, role) {
-  document.getElementById('auth-email').value = email;
-  document.getElementById('auth-password').value = pass;
-  document.getElementById('auth-role').value = role;
-  // Switch to sign-in tab and auto-submit the form
-  switchAuthTab('signin');
-  const form = document.getElementById('auth-form');
-  if (form) {
-    form.dispatchEvent(new Event('submit', { cancelable: true }));
-  }
-}
-      document.getElementById('auth-email').value = email;
-      document.getElementById('auth-password').value = pass;
-      document.getElementById('auth-role').value = role;
-      switchAuthTab('signin');
-    }
-
-    function quickLogin(role) {
-      if (role === 'admin') {
-        fillAuthForm('admin@nexuslink.network', 'admin123', 'admin');
-      } else if (role === 'client') {
-        fillAuthForm('growth@web3defi.io', 'client123', 'client');
-      } else if (role === 'promoter') {
-        fillAuthForm('alex.seeder@community.org', 'promoter123', 'promoter');
-      }
-    }
-
     // API Helper with JWT token injection
     async function fetchApi(url, options = {}) {
       const token = localStorage.getItem('nexuslink_token');
@@ -1674,8 +3060,8 @@
 
     async function handleAuthSubmit(e) {
       if (e && e.preventDefault) e.preventDefault();
-      const email = document.getElementById('auth-email').value.trim() || 'demo@nexuslink.network';
-      const password = document.getElementById('auth-password').value || 'password123';
+      const email = document.getElementById('auth-email').value.trim();
+      const password = document.getElementById('auth-password').value;
       const role = document.getElementById('auth-role').value;
       const name = document.getElementById('auth-name').value.trim() || email.split('@')[0];
       const nichesInput = document.getElementById('auth-niches');
@@ -1712,14 +3098,13 @@
           }
         } else {
           const errData = await res.json().catch(() => ({}));
-          if (errData.error) {
-            showToast(errData.error);
-          }
-          currentUser = { email, role, name };
+          showToast(errData.error || 'Authentication failed. Please check your details and try again.');
+          return;
         }
       } catch (err) {
-        console.warn('Offline mode or server error during auth:', err);
-        currentUser = { email, role, name };
+        console.error('Unable to reach the authentication server:', err);
+        showToast('Could not connect to NexusLink. Please start the server and try again.');
+        return;
       }
 
       updateUserUI();
@@ -1748,7 +3133,7 @@
             localStorage.removeItem('nexuslink_token');
             localStorage.removeItem('nexuslink_current_user');
             currentUser = { email: 'guest@nexuslink.network', role: 'guest', name: 'Guest Visitor' };
-            chip.innerText = 'Guest Visitor';
+            if (chip) chip.innerText = 'Guest Visitor';
             authBtn.innerHTML = '<i class="fa-solid fa-right-to-bracket"></i> Sign In';
             authBtn.onclick = () => openAuthModal('signin');
             navigateTab('landing');
@@ -2264,8 +3649,8 @@
               ${link ? `<code style="color: var(--accent-cyan); font-weight: bold;">/r/${link.custom_slug}</code>` : '<span style="color: var(--text-dim);">Not joined</span>'}
             </td>
             <td>
-              ${link ? `<button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="copyLink('${link.custom_slug}')"><i class="fa-regular fa-copy"></i> Copy Link</button>` : 
-                       `<button class="btn btn-primary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="joinCampaign('${c.id}')"><i class="fa-solid fa-link"></i> Generate Link</button>`}
+              ${link ? `<button class="btn btn-secondary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="copyLink('${link.custom_slug}')"><i class="fa-regular fa-copy"></i> Copy Link</button>` :
+              `<button class="btn btn-primary" style="padding: 0.35rem 0.65rem; font-size: 0.75rem;" onclick="joinCampaign('${c.id}')"><i class="fa-solid fa-link"></i> Generate Link</button>`}
             </td>
           `;
           tbodyMarket.appendChild(tr);
@@ -2492,12 +3877,6 @@
     }
 
     // Modal Handlers
-    function openTestModal() {
-      document.getElementById('modal-test').classList.add('open');
-    }
-    function closeTestModal() {
-      document.getElementById('modal-test').classList.remove('open');
-    }
     function openCampaignModal() {
       document.getElementById('modal-campaign').classList.add('open');
     }
@@ -2541,100 +3920,6 @@
       showToast(`Payout request of ₹${amount.toLocaleString('en-IN')} submitted to admin ledger!`);
     }
 
-    function applySimPreset() {
-      const p = document.getElementById('sim-preset').value;
-      if (p === 'clean') {
-        document.getElementById('sim-ip').value = '103.21.244.12';
-        document.getElementById('sim-ua').value = 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) Chrome/120.0.0.0 Safari/537.36';
-      } else if (p === 'bot') {
-        document.getElementById('sim-ip').value = '198.51.100.22';
-        document.getElementById('sim-ua').value = 'Mozilla/5.0 (compatible; HeadlessChrome/118.0.0.0 Puppeteer)';
-      } else if (p === 'datacenter') {
-        document.getElementById('sim-ip').value = '54.210.88.19';
-        document.getElementById('sim-ua').value = 'Mozilla/5.0 (X11; Linux x86_64) Python-requests/2.31.0';
-      } else if (p === 'tor') {
-        document.getElementById('sim-ip').value = '185.220.101.5';
-        document.getElementById('sim-ua').value = 'Mozilla/5.0 (Windows NT 10.0; rv:109.0) Gecko/20100101 TorBrowser/13.0';
-      }
-    }
-
-    async function runFraudTest() {
-      const ip = document.getElementById('sim-ip').value.trim();
-      const ua = document.getElementById('sim-ua').value.trim();
-      const resBox = document.getElementById('sim-results');
-
-      // Attempt live backend API call first
-      try {
-        const response = await fetch('/api/test-fraud-engine', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ test_ip: ip, test_user_agent: ua })
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          displayFraudResult(data.valid, data.reason, data.riskScore, ip, ua);
-          return;
-        }
-      } catch (err) {
-        // Backend not running on local port (e.g. standalone GitHub Pages), fallback to client evaluator
-      }
-
-      // Standalone Evaluator
-      const uaLower = ua.toLowerCase();
-      let valid = true;
-      let reason = 'Legitimate Human Consumer Verified';
-      let riskScore = 12;
-
-      if (uaLower.includes('headless') || uaLower.includes('puppeteer') || uaLower.includes('bot') || uaLower.includes('python')) {
-        valid = false;
-        reason = 'Automated Headless / Bot User-Agent signature intercepted';
-        riskScore = 95;
-      } else if (ip.startsWith('54.') || ip.startsWith('52.') || ip.startsWith('34.') || ip.startsWith('198.51.') || ip.startsWith('185.220.')) {
-        valid = false;
-        reason = 'Known Cloud Hosting Provider / Datacenter / Tor Subnet detected';
-        riskScore = 92;
-      }
-
-      displayFraudResult(valid, reason, riskScore, ip, ua);
-    }
-
-    function displayFraudResult(valid, reason, riskScore, ip, ua) {
-      const resBox = document.getElementById('sim-results');
-      resBox.style.display = 'block';
-      resBox.style.borderColor = valid ? 'var(--accent-emerald)' : 'var(--accent-rose)';
-      resBox.innerHTML = `
-        <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;">
-          <i class="fa-solid ${valid ? 'fa-circle-check' : 'fa-triangle-exclamation'}" style="color: ${valid ? 'var(--accent-emerald)' : 'var(--accent-rose)'}; font-size: 1.25rem;"></i>
-          <h4 style="color: ${valid ? 'var(--accent-emerald)' : 'var(--accent-rose)'}; font-size: 1.1rem;">
-            ${valid ? 'PASS: Traffic Certified Legitimate' : 'FAIL: Bot Threat Intercepted & Blocked'}
-          </h4>
-        </div>
-        <p style="font-size: 0.88rem; color: #fff; margin-bottom: 0.5rem;"><strong>Risk Score:</strong> ${riskScore} / 100</p>
-        <p style="font-size: 0.85rem; color: var(--text-muted); line-height: 1.5;">${reason}</p>
-        <p style="font-size: 0.8rem; color: var(--text-dim); margin-top: 0.5rem;">
-          <strong>Action:</strong> ${valid ? 'Smart Escrow unlocked (60% Promoter / 40% Platform)' : 'Zero deduction & registered in threat ledger'}
-        </p>
-      `;
-
-      if (!valid) {
-        const store = getStore();
-        store.threat_logs.unshift({
-          id: `t-${Date.now()}`,
-          ip_address: ip,
-          user_agent: ua,
-          slug: 'alex-defi-alpha',
-          risk_score: riskScore,
-          reason: reason,
-          created_at: new Date().toISOString().replace('T', ' ').slice(0, 19)
-        });
-        saveStore(store);
-
-       
-       renderAll();
-      }
-    }
-
     function exportLedgerCSV() {
       const token = localStorage.getItem('nexuslink_token');
       const url = token ? `/api/admin/ledger/export-csv?token=${encodeURIComponent(token)}` : '/api/admin/ledger/export-csv';
@@ -2672,7 +3957,7 @@
       initTheme();
       const savedUser = localStorage.getItem('nexuslink_current_user');
       if (savedUser) {
-        try { currentUser = JSON.parse(savedUser); } catch (e) {}
+        try { currentUser = JSON.parse(savedUser); } catch (e) { }
       }
       updateUserUI();
       init3DNetwork();
@@ -2704,7 +3989,7 @@
       });
       // Auto-scroll when idle
       let autoScroll;
-      function startAutoScroll(){
+      function startAutoScroll() {
         autoScroll = setInterval(() => {
           if (!isDown) {
             carousel.scrollLeft += 0.5;
@@ -2712,7 +3997,7 @@
           }
         }, 16);
       }
-      function stopAutoScroll(){ clearInterval(autoScroll); }
+      function stopAutoScroll() { clearInterval(autoScroll); }
       carousel.addEventListener('mouseenter', stopAutoScroll);
       carousel.addEventListener('mouseleave', startAutoScroll);
       startAutoScroll();
@@ -2720,4 +4005,5 @@
 
   </script>
 </body>
+
 </html>
